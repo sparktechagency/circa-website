@@ -8,8 +8,8 @@ import { Button } from '../../button';
 
 export function NewPasswordForm() {
 
-     const router = useRouter();
-  
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''
@@ -21,33 +21,33 @@ export function NewPasswordForm() {
   const [error, setError] = useState('');
 
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  
 
-    const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
       return;
     }
-    
+
     // Validate password strength
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters long');
       setIsLoading(false);
       return;
     }
-    
+
     try {
       // TODO: Replace with actual password reset API call
       // const response = await fetch('/api/auth/reset-password', {
@@ -58,14 +58,14 @@ export function NewPasswordForm() {
       //     password: formData.password 
       //   })
       // });
-      
+
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Mock successful reset
       console.log('Password reset successful');
       setIsSuccess(true);
-      
+
       // Redirect to login after 3 seconds
       setTimeout(() => {
         router.replace('/login');
@@ -77,17 +77,42 @@ export function NewPasswordForm() {
       setIsLoading(false);
     }
   };
-  
+
 
   return (
-     <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-md ">
+        <div
+          className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-5"
+          style={{
+            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
+            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+          }}
+        >
+          {/* Refresh / C icon */}
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M22 3.5L24.5 8.5L19.5 9"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
         <div className="text-center mb-8">
           {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl font-serif text-white mb-2">Create New Password</h1>
-          <p className="text-gray-400">Choose a strong password for your account</p>
+          <h1 className="text-4xl font-serif text-white mb-2">Reset Password</h1>
+          <p className="text-gray-400">Set a new password for your account</p>
         </div>
-        
+
+
         <div className="bg-[#111111] p-8 rounded-xl border border-primary/20">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
@@ -114,7 +139,7 @@ export function NewPasswordForm() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Confirm New Password
@@ -139,33 +164,22 @@ export function NewPasswordForm() {
                 </button>
               </div>
             </div>
-            
-            <div className="bg-[#1A1A1A] border border-primary/10 rounded-lg p-4">
-              <p className="text-xs text-gray-400 mb-2">Password requirements:</p>
-              <ul className="text-xs text-gray-500 space-y-1">
-                <li className={formData.password.length >= 8 ? '' : 'text-red-600'}>
-                  • At least 8 characters
-                </li>
-                <li className={formData.password === formData.confirmPassword && formData.password ? '' : 'text-red-600'}>
-                  • Passwords match
-                </li>
-              </ul>
-            </div>
-            
+
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Resetting Password...' : 'Reset Password'}
             </Button>
-            
+
             {error && (
               <div className="text-sm text-red-500 text-center">
                 {error}
               </div>
             )}
           </form>
-          
+
           <div className="mt-6 text-center">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="text-sm text-gray-400 hover:text-primary transition-colors"
             >
               Back to Sign In

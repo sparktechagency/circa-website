@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 export default function OTPVerifyForm() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(180);
-  const [isLoading, setIsLoading] = useState(false);  
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -80,10 +80,10 @@ export default function OTPVerifyForm() {
 
     setIsLoading(true);
     setError('');
-router.push("new-password")
+    router.push("new-password")
     try {
       // Api call here
-      
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
       setError(errorMessage);
@@ -105,15 +105,35 @@ router.push("new-password")
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-b from-[#0F0F0F] to-black text-white font-sans">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 mb-6 border border-primary/20 shadow-[0_0_20px_rgba(212,175,55,0.05)]">
-            <ShieldCheck className="w-8 h-8 text-primary" />
-          </div>
-          <h1 className="text-3xl md:text-4xl font-serif text-white mb-3">Security Verification</h1>
-          <p className="text-gray-400 text-sm md:text-base px-4">
-            We've sent a 6-digit verification code to <br/>
-            <span className="text-primary font-medium">m***@luxuryconcierge.com</span>
-          </p>
+        <div
+          className="w-16 h-16  mx-auto rounded-2xl flex items-center justify-center mb-5"
+          style={{
+            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
+            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+          }}
+        >
+          {/* Refresh / C icon */}
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M22 3.5L24.5 8.5L19.5 9"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+
+ <div className="text-center mb-8">
+          {/* <Logo className="justify-center mb-8" /> */}
+          <h1 className="text-4xl font-serif text-white mb-2">Verify OTP</h1>
+          <p className="text-gray-400">Enter the code sent to your email (check Inbox or Spam)</p>
         </div>
 
         <div className="bg-[#141414] p-8 rounded-2xl border border-white/5 shadow-2xl relative overflow-hidden">
@@ -129,7 +149,7 @@ router.push("new-password")
                 {otp.map((digit, index) => (
                   <Input
                     key={index}
-                    ref={(el:any) => {
+                    ref={(el: any) => {
                       if (el) inputRefs.current[index] = el;
                     }}
                     type="text"
@@ -140,9 +160,8 @@ router.push("new-password")
                     onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
                     disabled={isExpired || isLoading}
                     maxLength={1}
-                    className={`w-full h-14 md:h-16 text-center text-2xl font-bold ${
-                      isExpired ? 'opacity-50' : ''
-                    }`}
+                    className={`w-full h-14 md:h-16 text-center text-2xl font-bold ${isExpired ? 'opacity-50' : ''
+                      }`}
                   />
                 ))}
               </div>
@@ -213,13 +232,7 @@ router.push("new-password")
             </button>
           </div>
         </div>
-
-        <div className="mt-8 text-center">
-          <p className="text-[10px] md:text-xs text-gray-600 uppercase tracking-widest leading-relaxed">
-            Secure Encrypted Session <br/>
-            Ref ID: OTP-{Math.random().toString(36).substring(7).toUpperCase()}
-          </p>
-        </div>
+       
       </div>
 
       <style>{`

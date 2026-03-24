@@ -1,393 +1,185 @@
-'use client'
+'use client';
+
 import React, { useState } from 'react';
-
-
-import { User, Mail, Lock, Phone, Building, DollarSign, MapPin, Briefcase } from 'lucide-react';
+import { Mail, Lock, EyeOff, Eye, UserRound, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '../../button';
 
 export function SignupForm() {
-  const router = useRouter()
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    role: '',
-    // Agent fields
-    agencyDetails: '',
-    ffcNumber: '',
-    // Investor fields
-    investorType: '',
-    investmentAmount: '',
-    location: '',
-    // Developer fields
-    companyName: ''
-  });
+  const router = useRouter();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      setIsLoading(false);
-      return;
-    }
-    
-    // Validate password strength
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
-      setIsLoading(false);
-      return;
-    }
 
-    // Validate role selection
-    if (!formData.role) {
-      setError('Please select your role');
-      setIsLoading(false);
-      return;
-    }    
-    try {              
-      // Mock successful registration
-      console.log('Sign up successful:', { 
-        name: `${formData.firstName} ${formData.lastName}`, 
-        email: formData.email,
-        phone: formData.phone,
-        role: formData.role
-      });
-      
-      // Redirect to dashboard after successful signup
-      router.replace('/login');
+    try {
+      console.log('Signup successful:', { fullName, email, phone });
+      router.replace('/user-dashboard');
     } catch (err) {
-      setError('An error occurred during registration. Please try again.');
-      console.error('Sign up error:', err);
+      setError('Something went wrong. Please try again.');
+      console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
     }
   };
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-  
+
   return (
-    <div className="">
-      <div className="w-full">
-        <div className="text-center mb-8">
-          {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl font-serif text-white mb-2">Join Investors Hub</h1>
-          <p className="text-gray-400">Create your account and start investing</p>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div
+        className="w-full md:w-md rounded-3xl p-10 flex flex-col items-center"
+        style={{ background: '#15151a' }}
+      >
+        {/* App Icon */}
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+          style={{
+            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
+            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+          }}
+        >
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M22 3.5L24.5 8.5L19.5 9"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
-        
-        <div className="bg-[#111111] p-8 rounded-xl border border-[#D4AF37]/20">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name Fields - Split for better UX */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  First Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                    placeholder="John"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  placeholder="Doe"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Contact Number
-              </label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  placeholder="+27 82 123 4567"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  placeholder="Minimum 8 characters"
-                  required
-                />
-              </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  placeholder="Re-enter password"
-                  required
-                />
-              </div>
-            </div>
+        {/* Heading */}
+        <h1
+          className="text-2xl font-bold mb-1"
+          style={{ color: '#a89fe8', fontFamily: "'DM Sans', sans-serif" }}
+        >
+          Create an Account
+        </h1>
+        <p className="text-sm mb-8" style={{ color: '#6b6b7b' }}>
+          Get Started with Circa!
+        </p>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                I am a
-              </label>
-              <div className="relative">
-                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg pl-12 pr-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  required
-                >
-                  <option value="">Select your role</option>
-                  <option value="investor">Investor</option>
-                  <option value="agent">Agent</option>
-                  <option value="developer">Developer</option>
-                  <option value="seller">Seller</option>
-                </select>
-              </div>
-              <p className="mt-1.5 text-xs text-gray-500">Helps us personalize your experience</p>
-            </div>
-
-            {/* Conditional Fields with smooth transition */}
-            {formData.role && (
-              <div className="pt-4 border-t border-[#D4AF37]/10 space-y-5 animate-fadeIn">
-                {/* Agent Conditional Fields */}
-                {formData.role === 'agent' && (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Agency Details
-                      </label>
-                      <div className="relative">
-                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                        <input
-                          type="text"
-                          name="agencyDetails"
-                          value={formData.agencyDetails}
-                          onChange={handleChange}
-                          className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                          placeholder="e.g. ABC Realty, Sandton Branch"
-                          required
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        FFC Number
-                      </label>
-                      <input
-                        type="text"
-                        name="ffcNumber"
-                        value={formData.ffcNumber}
-                        onChange={handleChange}
-                        className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                        placeholder="FFC-123456"
-                        required
-                      />
-                    </div>
-                  </>
-                )}
-
-                {/* Investor Conditional Fields */}
-                {formData.role === 'investor' && (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Investor Type
-                      </label>
-                      <select
-                        name="investorType"
-                        value={formData.investorType}
-                        onChange={handleChange}
-                        className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
-                        required
-                      >
-                        <option value="">Select type</option>
-                        <option value="private">Private Investor</option>
-                        <option value="institutional">Institutional Investor</option>
-                      </select>
-                      <p className="mt-1.5 text-xs text-gray-500">This information helps us match opportunities</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Investment Budget
-                      </label>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                        <input
-                          type="number"
-                          name="investmentAmount"
-                          value={formData.investmentAmount}
-                          onChange={handleChange}
-                          className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                          placeholder="e.g. 500000"
-                          min="0"
-                          step="10000"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Location
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                        <select
-                          name="location"
-                          value={formData.location}
-                          onChange={handleChange}
-                          className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg pl-12 pr-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
-                          required
-                        >
-                          <option value="">Select location</option>
-                          <option value="south-africa">South Africa</option>
-                          <option value="international">International</option>
-                        </select>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Developer Conditional Fields */}
-                {formData.role === 'developer' && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Company Name
-                    </label>
-                    <div className="relative">
-                      <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                      <input
-                        type="text"
-                        name="companyName"
-                        value={formData.companyName}
-                        onChange={handleChange}
-                        className="w-full bg-[#1A1A1A] border border-[#D4AF37]/20 rounded-lg px-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                        placeholder="e.g. XYZ Developments (Pty) Ltd"
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            <div className="text-xs text-gray-400 pt-2">
-              <label className="flex items-start">
-                <input type="checkbox" className="mr-2 mt-1 accent-[#D4AF37]" required />
-                <span>
-                  I agree to the{' '}
-                  <Link href="/terms" className="text-[#D4AF37] hover:text-[#E4C77D]">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link href="/privacy" className="text-[#D4AF37] hover:text-[#E4C77D]">
-                    Privacy Policy
-                  </Link>
-                </span>
-              </label>
-            </div>
-            
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating Account...' : 'Create Account'}
-            </Button>
-
-            <p className="text-xs text-center text-gray-500">
-              All information is handled confidentially.
-            </p>
-            
-            {error && (
-              <div className="mt-2 text-sm text-red-500">
-                {error}
-              </div>
-            )}
-          </form>
-          
-          <div className="mt-6 text-center text-sm text-gray-400">
-            Already have an account?{' '}
-            <Link href="/login" className="text-[#D4AF37] hover:text-[#E4C77D] font-medium">
-              Sign in
-            </Link>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="w-full space-y-3">
+          {/* Full Name */}
+          <div
+            className="flex items-center gap-3 rounded-xl px-4 py-3.5"
+            style={{ background: '#1e1e27' }}
+          >
+            <UserRound className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Full Name"
+              required
+              className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
+            />
           </div>
-        </div>
+
+          {/* Email */}
+          <div
+            className="flex items-center gap-3 rounded-xl px-4 py-3.5"
+            style={{ background: '#1e1e27' }}
+          >
+            <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
+            />
+          </div>
+
+          {/* Phone */}
+          <div
+            className="flex items-center gap-3 rounded-xl px-4 py-3.5"
+            style={{ background: '#1e1e27' }}
+          >
+            <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Phone No"
+              required
+              className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
+            />
+          </div>
+
+          {/* Password */}
+          <div
+            className="flex items-center gap-3 rounded-xl px-4 py-3.5"
+            style={{ background: '#1e1e27' }}
+          >
+            <Lock className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="focus:outline-none"
+            >
+              {showPassword ? (
+                <Eye className="w-5 h-5" style={{ color: '#6b6b7b' }} />
+              ) : (
+                <EyeOff className="w-5 h-5" style={{ color: '#6b6b7b' }} />
+              )}
+            </button>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <p className="text-xs text-red-400 text-center">{error}</p>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+            style={{
+              background: 'linear-gradient(135deg, #a89fe8, #7b6fd4)',
+              boxShadow: '0 4px 20px rgba(123, 111, 212, 0.4)',
+            }}
+          >
+            {isLoading ? 'Creating Account...' : 'Login'}
+          </button>
+        </form>
+
+        {/* Login link */}
+        <p className="mt-6 text-xs" style={{ color: '#6b6b7b' }}>
+          Already have an account?{' '}
+          <Link
+            href="/login"
+            className="font-medium"
+            style={{ color: '#a89fe8' }}
+          >
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
