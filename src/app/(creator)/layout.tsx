@@ -1,10 +1,6 @@
-
-import NavServer from "@/components/shared/Navbar/NavbarServer";
-
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* <NavServer /> */}
+    <div className="min-h-screen flex flex-col">      
       <main className=" mb-auto">{children}</main>
     </div>
   );
