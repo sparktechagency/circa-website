@@ -16,6 +16,7 @@ import {
   CreditCard,
   MessageCircleMore,
   GitPullRequestArrow,
+  CircleDollarSign,
 } from "lucide-react";
 import Cookies from "js-cookie";
 import Image from "next/image";
@@ -30,18 +31,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Dashboard", href: "/creator-home", icon: LayoutDashboard },
-  { name: "My Listing", href: "/user-dashboard/my-listing", icon: GitPullRequestArrow },
-  { name: "Requests", href: "/user-dashboard/requests", icon: FileText },
-  { name: "Stock", href: "/user-dashboard/stock", icon: Package },
-  {
-    name: "Subscription",
-    href: "/user-dashboard/subscription",
-    icon: CreditCard,
-  },
-  { name: "Investor Brief", href: "/user-dashboard/investor-brief", icon: User },
+  { name: "Earning", href: "/earning", icon: CircleDollarSign },
   { name: "Profile", href: "/user-dashboard/profile", icon: User },
-  { name: "Feedback", href: "/user-dashboard/feedback", icon: MessageCircleMore },
-  { name: "Settings", href: "/user-dashboard/settings", icon: Settings },
+
   // {
   //   name: "Help & Support",
   //   href: "/user-dashboard/help-and-support",
