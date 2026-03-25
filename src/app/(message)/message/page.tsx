@@ -1,4 +1,5 @@
 import React from "react";
+import { LuSearch } from "react-icons/lu";
 
 export default function MessagePage() {
   return (
@@ -6,25 +7,14 @@ export default function MessagePage() {
       {/* Left List Area */}
       <div className="w-80 border-r border-[#242424] flex-col h-full hidden md:flex">
         <div className="p-4 border-b border-[#242424] pb-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Message</h2>
-            <div className="flex gap-3">
-              <button className="w-8 h-8 rounded-full bg-[#141416] flex justify-center items-center text-gray-400">
-                🔔
-              </button>
-              <button className="w-8 h-8 rounded-full bg-[#141416] flex justify-center items-center text-gray-400">
-                🧾
-              </button>
-            </div>
-          </div>
           <div className="relative">
             <input
               type="text"
               placeholder="Search"
-              className="w-full bg-[#141416] border border-[#242424] rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-primary text-white"
+              className="w-full bg-[#141416] border border-[#242424] rounded-full py-3 pl-10 pr-4 text-sm focus:outline-none focus:border-primary text-white"
             />
-            <span className="absolute left-4 top-2.5 text-gray-400 text-xs">
-              🔍
+            <span className="absolute left-4 top-3 text-gray-400 text-xs">
+              <LuSearch size={20} />
             </span>
           </div>
         </div>
