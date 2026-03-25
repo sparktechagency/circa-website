@@ -30,7 +30,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div
         className="w-full md:w-md rounded-3xl p-10 flex flex-col items-center"
         style={{ background: '#15151a' }}
