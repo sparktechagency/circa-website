@@ -29,7 +29,7 @@ export default function App() {
         <div className="relative mb-8 flex justify-center">
           <div className="absolute inset-0 bg-blue-500 blur-3xl rounded-full opacity-10 transform -translate-y-8"></div>
           <div className="relative animate-bounce duration-[2000ms]">
-            <Ghost size={120} className="text-blue-400 opacity-90" strokeWidth={1.5} />
+            <Ghost size={120} className="text-primary opacity-90" strokeWidth={1.5} />
           </div>
         </div>
 
@@ -50,7 +50,7 @@ export default function App() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="/"
-            className="flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 w-full sm:w-auto justify-center"
+            className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 w-full sm:w-auto justify-center"
           >
             <Home size={18} />
             Return Home
