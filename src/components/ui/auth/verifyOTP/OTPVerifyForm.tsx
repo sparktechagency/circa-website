@@ -1,19 +1,31 @@
-'use client'
-import { useState, useEffect, useRef, FormEvent, ChangeEvent, KeyboardEvent } from 'react';
-import { ArrowLeft, ShieldCheck, RefreshCcw, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useRouter } from 'next/navigation';
+"use client";
+import {
+  useState,
+  useEffect,
+  useRef,
+  FormEvent,
+  ChangeEvent,
+  KeyboardEvent,
+} from "react";
+import {
+  ArrowLeft,
+  ShieldCheck,
+  RefreshCcw,
+  AlertCircle,
+  CheckCircle2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
 export default function OTPVerifyForm() {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(180);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
 
   const router = useRouter();
 
@@ -33,7 +45,7 @@ export default function OTPVerifyForm() {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleChange = (index: number, value: string): void => {
@@ -48,15 +60,22 @@ export default function OTPVerifyForm() {
     }
   };
 
-  const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+  const handleKeyDown = (
+    index: number,
+    e: KeyboardEvent<HTMLInputElement>,
+  ): void => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6).split('');
+    const pasteData = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6)
+      .split("");
 
     if (pasteData.length > 0) {
       const newOtp = [...otp];
@@ -72,20 +91,20 @@ export default function OTPVerifyForm() {
 
   const handleVerify = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const code = otp.join('');
+    const code = otp.join("");
     if (code.length < 6) {
-      setError('Please enter the complete verification code.');
+      setError("Please enter the complete verification code.");
       return;
     }
 
     setIsLoading(true);
-    setError('');
-    router.push("new-password")
+    setError("");
+    router.push("new-password");
     try {
       // Api call here
-
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+      const errorMessage =
+        err instanceof Error ? err.message : "An error occurred";
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -95,12 +114,11 @@ export default function OTPVerifyForm() {
   const handleResend = () => {
     setTimeLeft(180);
     setIsExpired(false);
-    setOtp(['', '', '', '', '', '']);
-    setError('');
+    setOtp(["", "", "", "", "", ""]);
+    setError("");
     setIsLoading(false);
     setTimeout(() => inputRefs.current[0]?.focus(), 100);
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-b from-[#0F0F0F] to-black text-white font-sans">
@@ -108,8 +126,8 @@ export default function OTPVerifyForm() {
         <div
           className="w-16 h-16  mx-auto rounded-2xl flex items-center justify-center mb-5"
           style={{
-            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
-            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+            background: "linear-gradient(145deg, #a89fe8, #7b6fd4)",
+            boxShadow: "0 8px 24px rgba(123, 111, 212, 0.35)",
           }}
         >
           {/* Refresh / C icon */}
@@ -130,10 +148,12 @@ export default function OTPVerifyForm() {
           </svg>
         </div>
 
- <div className="text-center mb-8">
+        <div className="text-center mb-8">
           {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl font-serif text-white mb-2">Verify OTP</h1>
-          <p className="text-gray-400">Enter the code sent to your email (check Inbox or Spam)</p>
+          <h1 className="text-4xl  text-white mb-2">Verify OTP</h1>
+          <p className="text-gray-400">
+            Enter the code sent to your email (check Inbox or Spam)
+          </p>
         </div>
 
         <div className="bg-[#141414] p-8 rounded-2xl border border-white/5 shadow-2xl relative overflow-hidden">
@@ -145,7 +165,10 @@ export default function OTPVerifyForm() {
                 Enter Verification Code
               </label>
 
-              <div className="flex justify-between gap-2 md:gap-3" onPaste={handlePaste}>
+              <div
+                className="flex justify-between gap-2 md:gap-3"
+                onPaste={handlePaste}
+              >
                 {otp.map((digit, index) => (
                   <Input
                     key={index}
@@ -156,12 +179,17 @@ export default function OTPVerifyForm() {
                     inputMode="numeric"
                     autoComplete="one-time-code"
                     value={digit}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)}
-                    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      handleChange(index, e.target.value)
+                    }
+                    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
+                      handleKeyDown(index, e)
+                    }
                     disabled={isExpired || isLoading}
                     maxLength={1}
-                    className={`w-full h-14 md:h-16 text-center text-2xl font-bold ${isExpired ? 'opacity-50' : ''
-                      }`}
+                    className={`w-full h-14 md:h-16 text-center text-2xl font-bold ${
+                      isExpired ? "opacity-50" : ""
+                    }`}
                   />
                 ))}
               </div>
@@ -173,7 +201,11 @@ export default function OTPVerifyForm() {
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>This code has expired</AlertDescription>
                 </Alert>
-                <Button variant="outline" onClick={handleResend} className="w-full">
+                <Button
+                  variant="outline"
+                  onClick={handleResend}
+                  className="w-full"
+                >
                   <RefreshCcw className="w-4 h-4 mr-2" />
                   Resend New Code
                 </Button>
@@ -183,7 +215,7 @@ export default function OTPVerifyForm() {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isLoading || otp.includes('')}
+                  disabled={isLoading || otp.includes("")}
                 >
                   {isLoading ? (
                     <span className="flex items-center">
@@ -191,14 +223,16 @@ export default function OTPVerifyForm() {
                       Verifying...
                     </span>
                   ) : (
-                    'Verify Code'
+                    "Verify Code"
                   )}
                 </Button>
 
                 <div className="flex items-center justify-between text-xs md:text-sm">
                   <div className="flex items-center text-gray-500">
                     Code expires in:
-                    <span className={`ml-2 font-mono font-bold ${timeLeft < 30 ? 'text-red-400 animate-pulse' : 'text-primary'}`}>
+                    <span
+                      className={`ml-2 font-mono font-bold ${timeLeft < 30 ? "text-red-400 animate-pulse" : "text-primary"}`}
+                    >
                       {formatTime(timeLeft)}
                     </span>
                   </div>
@@ -232,7 +266,6 @@ export default function OTPVerifyForm() {
             </button>
           </div>
         </div>
-       
       </div>
 
       <style>{`

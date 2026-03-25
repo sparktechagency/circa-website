@@ -29,7 +29,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { name: "Dashboard", href: "/user-dashboard", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/creator-home", icon: LayoutDashboard },
   { name: "My Listing", href: "/user-dashboard/my-listing", icon: GitPullRequestArrow },
   { name: "Requests", href: "/user-dashboard/requests", icon: FileText },
   { name: "Stock", href: "/user-dashboard/stock", icon: Package },
@@ -129,7 +129,7 @@ export function CreatorSidebar() {
                   className={`
                     flex items-center gap-3 px-4 py-3 rounded-lg transition-all
                     ${isActive
-                      ? "bg-[#D4AF371A] text-primary font-medium border border-[#D4AF374D]"
+                      ? "bg-primary text-white font-medium border border-[#D4AF374D]"
                       : "text-[#99A1AF] hover:bg-[#1A1A1A] hover:text-primary/60"
                     }
                     ${isCollapsed ? "justify-center" : ""}

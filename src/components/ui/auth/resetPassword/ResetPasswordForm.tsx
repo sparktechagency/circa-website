@@ -1,22 +1,22 @@
-'use client'
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '../../button';
-import { useRouter } from 'next/navigation';
+import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { Button } from "../../button";
+import { useRouter } from "next/navigation";
 
 export function ResetPasswordForm() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       // TODO: Replace with actual password reset API call
@@ -26,17 +26,15 @@ export function ResetPasswordForm() {
       //   body: JSON.stringify({ email })
       // });
 
-
       // Mock successful request
-      router.push("otp-verify")
+      router.push("otp-verify");
     } catch (err) {
-      setError('An error occurred. Please try again.');
-      console.error('Password reset error:', err);
+      setError("An error occurred. Please try again.");
+      console.error("Password reset error:", err);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-br from-black via-[#0A0A0A] to-black">
@@ -44,8 +42,8 @@ export function ResetPasswordForm() {
         <div
           className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-5"
           style={{
-            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
-            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+            background: "linear-gradient(145deg, #a89fe8, #7b6fd4)",
+            boxShadow: "0 8px 24px rgba(123, 111, 212, 0.35)",
           }}
         >
           {/* Refresh / C icon */}
@@ -67,8 +65,10 @@ export function ResetPasswordForm() {
         </div>
         <div className="text-center mb-8">
           {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl font-serif text-white mb-2">Reset Password</h1>
-          <p className="text-gray-400">Enter your email to receive reset instructions</p>
+          <h1 className="text-4xl  text-white mb-2">Reset Password</h1>
+          <p className="text-gray-400">
+            Enter your email to receive reset instructions
+          </p>
         </div>
 
         <div className="bg-[#111111] p-8 rounded-xl border border-[#D4AF37]/20">
@@ -91,13 +91,11 @@ export function ResetPasswordForm() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Sending OTP' : 'Send OTP'}
+              {isLoading ? "Sending OTP" : "Send OTP"}
             </Button>
 
             {error && (
-              <div className="text-sm text-red-500 text-center">
-                {error}
-              </div>
+              <div className="text-sm text-red-500 text-center">{error}</div>
             )}
           </form>
 
@@ -113,7 +111,9 @@ export function ResetPasswordForm() {
         </div>
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          <p>For security purposes, password reset links expire after 1 hour.</p>
+          <p>
+            For security purposes, password reset links expire after 1 hour.
+          </p>
         </div>
       </div>
     </div>

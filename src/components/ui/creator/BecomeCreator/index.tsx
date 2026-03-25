@@ -8,41 +8,76 @@ import ApplicationSubmitted from "./ApplicationSubmitted";
 
 type Step = "landing" | "vibe" | "verify" | "submitted";
 
+interface VibeData {
+    selectedCategories: string[];
+    friendsMode: boolean;
+    selectedSocialTags: string[];
+}
 
+interface VerifyData {
+    username: string;
+    dob: string;
+    bio: string;
+}
+
+interface VerifyFiles {
+    avatar: File | null;
+    sampleContent: File | null;
+}
 
 export default function BecomeCreator() {
-  const [step, setStep] = useState<Step>("landing");
+    const [step, setStep] = useState<Step>("landing");
+    const [vibeData, setVibeData] = useState<VibeData | null>(null);
 
+    const handleVibeComplete = (data: VibeData) => {
+        setVibeData(data);
+        setStep("verify");
+    };
 
+    const handleVerifyComplete = (data: VerifyData, files: VerifyFiles) => {
+        // ── Separate files from form data ──
+        const formData = {
+            ...vibeData,
+            ...data,
+        };
 
+        const fileData = {
+            avatar: files.avatar
+                ? { name: files.avatar.name, size: files.avatar.size, type: files.avatar.type }
+                : null,
+            sampleContent: files.sampleContent
+                ? { name: files.sampleContent.name, size: files.sampleContent.size, type: files.sampleContent.type }
+                : null,
+        };
 
-  return (
-    <div className="min-h-screen  flex items-center justify-center font-sans px-4 py-10">
+        console.log("📋 Submitted Form Data:", formData);
+        console.log("📁 Submitted Files:", fileData);
+        console.log("🗂️ Raw File Objects:", files);
 
+        setStep("submitted");
+    };
 
-      <div className="w-full max-w-sm">
+    return (
+        <div className="min-h-screen flex items-center justify-center font-sans px-4 py-10">
+            <div className="w-full md:max-w-xl">
 
-        {/* ── STEP 1: Landing ── */}
-        {step === "landing" && (
-          <GetStarted onGetStarted={() => setStep("vibe")} />
-        )}
+                {step === "landing" && (
+                    <GetStarted onGetStarted={() => setStep("vibe")} />
+                )}
 
-        {/* ── STEP 2: Vibe ── */}
-        {step === "vibe" && (
-          <Vive onVibeComplete={() => setStep("verify")} />
-        )}
+                {step === "vibe" && (
+                    <Vive onVibeComplete={handleVibeComplete} />
+                )}
 
-        {/* ── STEP 3: Verify ── */}
-        {step === "verify" && (
-          <Verify onVerifyComplete={() => setStep("submitted")} />
-        )}
+                {step === "verify" && (
+                    <Verify onVerifyComplete={handleVerifyComplete} />
+                )}
 
-        {/* ── STEP 4: Submitted ── */}
-        {step === "submitted" && (
-          <ApplicationSubmitted />
-        )}
+                {step === "submitted" && (
+                    <ApplicationSubmitted />
+                )}
 
-      </div>
-    </div>
-  );
+            </div>
+        </div>
+    );
 }

@@ -1,17 +1,46 @@
 import React, { useState } from 'react'
 
-const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
+interface VerifyData {
+    username: string;
+    dob: string;
+    bio: string;
+}
+
+interface VerifyFiles {
+    avatar: File | null;
+    sampleContent: File | null;
+}
+
+const Verify = ({
+    onVerifyComplete,
+}: {
+    onVerifyComplete: (data: VerifyData, files: VerifyFiles) => void;
+}) => {
     const [username, setUsername] = useState("");
     const [dob, setDob] = useState("");
     const [bio, setBio] = useState("");
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [sampleFile, setSampleFile] = useState<File | null>(null);
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0] ?? null;
         if (file) {
-            const url = URL.createObjectURL(file);
-            setAvatarPreview(url);
+            setAvatarFile(file);
+            setAvatarPreview(URL.createObjectURL(file));
         }
+    };
+
+    const handleSampleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setSampleFile(file);
+    };
+
+    const handleConfirm = () => {
+        onVerifyComplete(
+            { username, dob, bio },
+            { avatar: avatarFile, sampleContent: sampleFile }
+        );
     };
 
     return (
@@ -19,7 +48,7 @@ const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
             <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 24 }}>Get Verified</h1>
 
             {/* Avatar upload */}
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
+            <div className='flex justify-center mb-10'>
                 <div style={{ position: "relative", width: 100, height: 100 }}>
                     <div
                         style={{
@@ -66,16 +95,14 @@ const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
             </div>
 
             {/* Fields */}
-            {[
-                { label: "User Name", value: username, setter: setUsername, type: "text", placeholder: "" },
-                { label: "Date of birth", value: dob, setter: setDob, type: "date", placeholder: "" },
-            ].map(({ label, value, setter, type }) => (
-                <div key={label} style={{ marginBottom: 20 }}>
-                    <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 8 }}>{label}</label>
+            <div className='space-y-20'>
+                <div style={{ marginBottom: 20 }}>
+                    <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 8 }}>User Name</label>
                     <input
-                        type={type}
-                        value={value}
-                        onChange={(e) => setter(e.target.value)}
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder={`Enter your username`}
                         style={{
                             width: "100%",
                             padding: "14px 16px",
@@ -84,18 +111,18 @@ const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
                             border: "1.5px solid #2a2a36",
                             color: "#fff",
                             fontSize: 14,
+                            boxSizing: "border-box",
                         }}
                     />
                 </div>
-            ))}
 
-            <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 8 }}>Short Bio</label>
-                <div style={{ position: "relative" }}>
-                    <textarea
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value.slice(0, 150))}
-                        rows={3}
+                <div style={{ marginBottom: 20 }}>
+                    <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 8 }}>Date of birth</label>
+                    <input
+                        type="date"
+                        value={dob}
+                        onChange={(e) => setDob(e.target.value)}
+                        placeholder={`Enter your date of birth`}
                         style={{
                             width: "100%",
                             padding: "14px 16px",
@@ -104,43 +131,71 @@ const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
                             border: "1.5px solid #2a2a36",
                             color: "#fff",
                             fontSize: 14,
-                            resize: "none",
+                            boxSizing: "border-box",
                         }}
                     />
-                    <span style={{ position: "absolute", bottom: 10, right: 12, color: "#666", fontSize: 12 }}>{bio.length}/150</span>
                 </div>
-            </div>
 
-            {/* Upload sample content */}
-            <div style={{ marginBottom: 28 }}>
-                <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 10 }}>Upload Sample Content</label>
-                <label
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 8,
-                        padding: "28px 16px",
-                        borderRadius: 12,
-                        border: "2px dashed #2e2e3e",
-                        background: "#12121a",
-                        cursor: "pointer",
-                    }}
-                >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" strokeWidth="1.5">
-                        <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" />
-                        <path d="m21 15-5-5L5 21" />
-                    </svg>
-                    <span style={{ color: "#c8c8d8", fontSize: 14 }}>Tap to browse</span>
-                    <span style={{ color: "#666", fontSize: 12 }}>Image, Video or Audio</span>
-                    <input type="file" accept="image/*,video/*,audio/*" style={{ display: "none" }} />
-                </label>
+                <div style={{ marginBottom: 20 }}>
+                    <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 8 }}>Short Bio</label>
+                    <div style={{ position: "relative" }}>
+                        <textarea
+                            value={bio}
+                            onChange={(e) => setBio(e.target.value.slice(0, 150))}
+                            rows={3}
+                            style={{
+                                width: "100%",
+                                padding: "14px 16px",
+                                borderRadius: 12,
+                                background: "#18181f",
+                                border: "1.5px solid #2a2a36",
+                                color: "#fff",
+                                fontSize: 14,
+                                resize: "none",
+                                boxSizing: "border-box",
+                            }}
+                        />
+                        <span style={{ position: "absolute", bottom: 10, right: 12, color: "#666", fontSize: 12 }}>{bio.length}/150</span>
+                    </div>
+                </div>
+
+                {/* Upload sample content */}
+                <div style={{ marginBottom: 28 }}>
+                    <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 10 }}>Upload Sample Content</label>
+                    <label
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 8,
+                            padding: "28px 16px",
+                            borderRadius: 12,
+                            border: `2px dashed ${sampleFile ? "#7c6ef5" : "#2e2e3e"}`,
+                            background: sampleFile ? "#18181f" : "#12121a",
+                            cursor: "pointer",
+                            transition: "border-color 0.2s",
+                        }}
+                    >
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" strokeWidth="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" />
+                            <path d="m21 15-5-5L5 21" />
+                        </svg>
+                        {sampleFile ? (
+                            <span style={{ color: "#a89af5", fontSize: 14, fontWeight: 500 }}>{sampleFile.name}</span>
+                        ) : (
+                            <>
+                                <span style={{ color: "#c8c8d8", fontSize: 14 }}>Tap to browse</span>
+                                <span style={{ color: "#666", fontSize: 12 }}>Image, Video or Audio</span>
+                            </>
+                        )}
+                        <input type="file" accept="image/*,video/*,audio/*" style={{ display: "none" }} onChange={handleSampleChange} />
+                    </label>
+                </div>
             </div>
 
             <button
-                className="btn-primary"
-                onClick={onVerifyComplete}
+                onClick={handleConfirm}
                 style={{
                     width: "100%",
                     padding: "17px",
@@ -157,7 +212,7 @@ const Verify = ({ onVerifyComplete }: { onVerifyComplete: () => void }) => {
                 Confirm
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default Verify
+export default Verify;

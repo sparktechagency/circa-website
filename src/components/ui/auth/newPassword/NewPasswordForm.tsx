@@ -1,49 +1,46 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
-import { Eye, EyeOff, Lock } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Button } from '../../button';
+import { Eye, EyeOff, Lock } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "../../button";
 
 export function NewPasswordForm() {
-
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: ''
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
-
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       setIsLoading(false);
       return;
     }
 
     // Validate password strength
     if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
+      setError("Password must be at least 8 characters long");
       setIsLoading(false);
       return;
     }
@@ -53,31 +50,30 @@ export function NewPasswordForm() {
       // const response = await fetch('/api/auth/reset-password', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ 
+      //   body: JSON.stringify({
       //     token,
-      //     password: formData.password 
+      //     password: formData.password
       //   })
       // });
 
       // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Mock successful reset
-      console.log('Password reset successful');
+      console.log("Password reset successful");
       setIsSuccess(true);
 
       // Redirect to login after 3 seconds
       setTimeout(() => {
-        router.replace('/login');
+        router.replace("/login");
       }, 3000);
     } catch (err) {
-      setError('An error occurred. The reset link may be invalid or expired.');
-      console.error('Password reset error:', err);
+      setError("An error occurred. The reset link may be invalid or expired.");
+      console.error("Password reset error:", err);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -85,8 +81,8 @@ export function NewPasswordForm() {
         <div
           className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-5"
           style={{
-            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
-            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
+            background: "linear-gradient(145deg, #a89fe8, #7b6fd4)",
+            boxShadow: "0 8px 24px rgba(123, 111, 212, 0.35)",
           }}
         >
           {/* Refresh / C icon */}
@@ -108,10 +104,9 @@ export function NewPasswordForm() {
         </div>
         <div className="text-center mb-8">
           {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl font-serif text-white mb-2">Reset Password</h1>
+          <h1 className="text-4xl  text-white mb-2">Reset Password</h1>
           <p className="text-gray-400">Set a new password for your account</p>
         </div>
-
 
         <div className="bg-[#111111] p-8 rounded-xl border border-primary/20">
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -122,7 +117,7 @@ export function NewPasswordForm() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
@@ -135,7 +130,11 @@ export function NewPasswordForm() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -147,7 +146,7 @@ export function NewPasswordForm() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -160,20 +159,21 @@ export function NewPasswordForm() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
 
-
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Resetting Password...' : 'Reset Password'}
+              {isLoading ? "Resetting Password..." : "Reset Password"}
             </Button>
 
             {error && (
-              <div className="text-sm text-red-500 text-center">
-                {error}
-              </div>
+              <div className="text-sm text-red-500 text-center">{error}</div>
             )}
           </form>
 

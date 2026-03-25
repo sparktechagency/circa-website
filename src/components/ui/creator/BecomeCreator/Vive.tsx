@@ -11,14 +11,22 @@ const CATEGORIES = [
     { id: "fashion", label: "Fashion", emoji: "👗" },
 ];
 
-
 const SOCIAL_TAGS = ["Friends", "Flirty", "Passionate"];
 
+interface VibeData {
+    selectedCategories: string[];
+    friendsMode: boolean;
+    selectedSocialTags: string[];
+}
 
-const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
+const Vive = ({
+    onVibeComplete,
+}: {
+    onVibeComplete: (data: VibeData) => void;
+}) => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const [friendsMode, setFriendsMode] = useState(true);
-    const [selectedTag, setSelectedTag] = useState("Friends");
+    const [friendsMode, setFriendsMode] = useState(false);
+    const [selectedSocialTags, setSelectedSocialTags] = useState<string[]>([]);
 
     const toggleCategory = (id: string) => {
         setSelectedCategories((prev) =>
@@ -26,6 +34,19 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
         );
     };
 
+    const toggleSocialTag = (tag: string) => {
+        setSelectedSocialTags((prev) =>
+            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+        );
+    };
+
+    const handleConfirm = () => {
+        onVibeComplete({
+            selectedCategories,
+            friendsMode,
+            selectedSocialTags,
+        });
+    };
 
     return (
         <div className="fade-in" style={{ color: "#fff" }}>
@@ -33,15 +54,14 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
             <p style={{ color: "#8a8a9a", fontSize: 14, marginBottom: 24 }}>You can select multiple categories.</p>
 
             {/* Category grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 28 }}>
+            <div className='grid grid-cols-2 md::grid-cols-4 gap-3 mb-10' >
                 {CATEGORIES.map((cat) => (
                     <button
                         key={cat.id}
-                        className={`cat-card${selectedCategories.includes(cat.id) ? " selected" : ""}`}
                         onClick={() => toggleCategory(cat.id)}
                         style={{
-                            background: "#18181f",
-                            border: "1.5px solid #2a2a36",
+                            background: selectedCategories.includes(cat.id) ? "#2a2450" : "#18181f",
+                            border: `1.5px solid ${selectedCategories.includes(cat.id) ? "#7c6ef5" : "#2a2a36"}`,
                             borderRadius: 16,
                             padding: "20px 12px",
                             cursor: "pointer",
@@ -49,10 +69,19 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
                             flexDirection: "column",
                             alignItems: "center",
                             gap: 8,
+                            transition: "all 0.18s",
                         }}
                     >
                         <span style={{ fontSize: 28 }}>{cat.emoji}</span>
-                        <span style={{ color: "#d4d4e8", fontSize: 14, fontWeight: 500 }}>{cat.label}</span>
+                        <span
+                            style={{
+                                color: selectedCategories.includes(cat.id) ? "#a89af5" : "#d4d4e8",
+                                fontSize: 14,
+                                fontWeight: 500,
+                            }}
+                        >
+                            {cat.label}
+                        </span>
                     </button>
                 ))}
             </div>
@@ -71,8 +100,10 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
             >
                 <span style={{ color: "#c8c8d8", fontSize: 14 }}>Enable Friends &amp; Flirting Mode</span>
                 <button
-                    onClick={() => setFriendsMode((v) => !v)}
-                    className="toggle-track"
+                    onClick={() => {
+                        setFriendsMode((v) => !v);
+                        if (friendsMode) setSelectedSocialTags([]);
+                    }}
                     style={{
                         width: 48,
                         height: 26,
@@ -82,6 +113,7 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
                         cursor: "pointer",
                         position: "relative",
                         flexShrink: 0,
+                        transition: "background 0.2s",
                     }}
                 >
                     <span
@@ -99,37 +131,42 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
                 </button>
             </div>
 
-            {/* Categories label */}
-            <div style={{ marginBottom: 14 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Categories</h3>
-                <p style={{ color: "#8a8a9a", fontSize: 13, marginBottom: 14 }}>
-                    For users who want to chat, flirt, and make new connections—casual, fun, and respectful
-                </p>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                    {SOCIAL_TAGS.map((tag) => (
-                        <button
-                            key={tag}
-                            className={`tag-pill${selectedTag === tag ? " active" : ""}`}
-                            onClick={() => setSelectedTag(tag)}
-                            style={{
-                                padding: "8px 18px",
-                                borderRadius: 999,
-                                border: "1.5px solid #3a3a4a",
-                                background: "transparent",
-                                color: "#c8c8d8",
-                                fontSize: 14,
-                                fontWeight: 500,
-                            }}
-                        >
-                            {tag}
-                        </button>
-                    ))}
+            {/* Social Tags — only visible when Friends & Flirting Mode is ON */}
+            {friendsMode && (
+                <div style={{ marginBottom: 14, animation: "fadeIn 0.25s ease" }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Categories</h3>
+                    <p style={{ color: "#8a8a9a", fontSize: 13, marginBottom: 14 }}>
+                        For users who want to chat, flirt, and make new connections—casual, fun, and respectful
+                    </p>
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        {SOCIAL_TAGS.map((tag) => {
+                            const isActive = selectedSocialTags.includes(tag);
+                            return (
+                                <button
+                                    key={tag}
+                                    onClick={() => toggleSocialTag(tag)}
+                                    style={{
+                                        padding: "8px 18px",
+                                        borderRadius: 999,
+                                        border: `1.5px solid ${isActive ? "#7c6ef5" : "#3a3a4a"}`,
+                                        background: isActive ? "#2a2450" : "transparent",
+                                        color: isActive ? "#a89af5" : "#c8c8d8",
+                                        fontSize: 14,
+                                        fontWeight: 500,
+                                        cursor: "pointer",
+                                        transition: "all 0.18s",
+                                    }}
+                                >
+                                    {tag}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <button
-                className="btn-primary"
-                onClick={onVibeComplete}
+                onClick={handleConfirm}
                 style={{
                     width: "100%",
                     padding: "17px",
@@ -147,7 +184,7 @@ const Vive = ({ onVibeComplete }: { onVibeComplete: () => void }) => {
                 Confirm
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default Vive
+export default Vive;
