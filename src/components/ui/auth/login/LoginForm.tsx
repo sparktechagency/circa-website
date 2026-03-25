@@ -18,8 +18,7 @@ export function LoginForm() {
     setIsLoading(true);
     setError('');
 
-    try {
-      console.log('Login successful:', { email });
+    try {      
       router.replace('/user-dashboard');
     } catch (err) {
       setError('Invalid email or password. Please try again.');
