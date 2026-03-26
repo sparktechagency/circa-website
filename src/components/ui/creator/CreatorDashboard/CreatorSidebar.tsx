@@ -1,25 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Cookies from "js-cookie";
 import {
+  ChevronLeft,
+  CircleDollarSign,
   LayoutDashboard,
-  User,
-  Settings,
   LogOut,
   Menu,
-  X,
-  ChevronLeft,
-  FileText,
-  Package,
-  CreditCard,
   MessageCircleMore,
-  GitPullRequestArrow,
-  CircleDollarSign,
+  Plus,
+  Settings,
+  User,
+  X
 } from "lucide-react";
-import Cookies from "js-cookie";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 
 
 
@@ -31,8 +28,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Dashboard", href: "/creator-home", icon: LayoutDashboard },
-  { name: "Earning", href: "/earning", icon: CircleDollarSign },
-  { name: "Profile", href: "/user-dashboard/profile", icon: User },
+  { name: "Earning", href: "/earning", icon: CircleDollarSign },  
+  { name: "Post", href: "/post", icon: Plus },
+  { name: "Message", href: "/creator-message", icon: MessageCircleMore },
+  { name: "Profile", href: "/creator-profile", icon: User },
+  { name: "Setting", href: "/creator-setting", icon: Settings },
 
   // {
   //   name: "Help & Support",
@@ -111,7 +111,7 @@ export function CreatorSidebar() {
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const isActive = pathname === "/transactions" && item.href === "/earning" ?  true : pathname === item.href;
 
               return (
                 <Link
