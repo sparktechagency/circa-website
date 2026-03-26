@@ -28,7 +28,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Dashboard", href: "/creator-home", icon: LayoutDashboard },
-  { name: "Earning", href: "/earning", icon: CircleDollarSign },  
+  { name: "Earning", href: "/earning", icon: CircleDollarSign },
   { name: "Post", href: "/post", icon: Plus },
   { name: "Message", href: "/creator-message", icon: MessageCircleMore },
   { name: "Profile", href: "/creator-profile", icon: User },
@@ -46,7 +46,7 @@ export function CreatorSidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  
+
   const handleLogout = () => {
     Cookies.remove("accessToken");
     window.location.href = "/login";
@@ -85,25 +85,23 @@ export function CreatorSidebar() {
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-primary/20">
+          <div className="p-6 pb-10">
             <div className="flex items-center justify-between">
               {!isCollapsed && (
-                <div className="flex items-center gap-3">
-                  <Image height={100} width={100} className="h-12! w-12! rounded-full border-2 border-slate-200/80" src="/logo.png" alt="Profile" /> 
-                  <div>
-                    <h3 className="text-white font-semibold">Circa</h3>                    
-                  </div>
-                </div>
+                <Link href="/" className="flex items-center gap-3">
+                  <Image
+                    src="/logo.png"
+                    alt="Circa Logo"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10"
+                  />
+                  <span className="text-xl font-medium text-primary tracking-wide">
+                    Circa
+                  </span>
+                </Link>
               )}
-              <button
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                className="hidden lg:block p-1.5 hover:bg-[#1A1A1A] rounded-lg transition-colors text-gray-400 hover:text-primary"
-              >
-                <ChevronLeft
-                  className={`w-5 h-5 transition-transform ${isCollapsed ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
+
             </div>
           </div>
 
@@ -111,7 +109,7 @@ export function CreatorSidebar() {
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === "/transactions" && item.href === "/earning" ?  true : pathname === item.href;
+              const isActive = pathname === "/transactions" && item.href === "/earning" ? true : pathname === item.href;
 
               return (
                 <Link
@@ -119,10 +117,10 @@ export function CreatorSidebar() {
                   href={item.href}
                   onClick={() => setIsMobileOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+                   flex items-center gap-3 px-3 py-3 rounded-lg font-semibold transition-all
                     ${isActive
-                      ? "bg-primary text-white font-medium border border-[#D4AF374D]"
-                      : "text-[#99A1AF] hover:bg-[#1A1A1A] hover:text-primary/60"
+                      ? "bg-primary text-white"
+                      : "text-gray-400 hover:text-white hover:bg-[#1a1a1e]"
                     }
                     ${isCollapsed ? "justify-center" : ""}
                   `}
