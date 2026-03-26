@@ -1,9 +1,12 @@
-
 import Link from "next/link";
+import { MOCK_POSTS } from "@/constants/home-data";
+import PostCard from "@/components/ui/fans/home/PostCard";
 
 export default function HomePage() {
+
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       <div
         className=" h-34 w-full rounded-lg overflow-hidden flex  items-center justify-start px-6"
         style={{
@@ -19,21 +22,21 @@ export default function HomePage() {
             SANTA  </span>  <br /> 
             for your creators</span>
         </div> 
-        <button className="bg-[#F084A9] text-white  py-1.5 rounded-lg text-sm">
+        <div className="max-w-28 text-center bg-[#F084A9] text-white  py-1.5 rounded-full text-sm">
           Send a gift
-        </button>
+        </div>
       </div>
       </div>
-      <h2 className="text-3xl font-bold">Welcome to Circa</h2>
-      <p className="text-gray-400">
-        Navigate to Explore to see the 3-column layout in action, or Message for
-        the chat layout.
-      </p>
-      <Link href="/home/post-details">
-        <button className="bg-primary hover:bg-opacity-90 transition-all text-black font-semibold py-2.5 px-4 rounded-lg text-sm">
-          Post Details
-        </button>
-      </Link>
+
+      
+      {/* Posts Feed Grid */}
+      <div className="grid grid-cols-1  gap-6">
+        {MOCK_POSTS.map(post => (
+          <Link href={`/home/post-details?type=${post.type}`} key={post.id}>
+             <PostCard post={post} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import React, { ReactNode } from "react";
+import HomeRightSide from "@/components/ui/fans/home/HomeRightSide";
+import PostDetailsRightSide from "@/components/ui/fans/home/post-details/PostDetailsRightSide";
 
 export default function DashboardGroup({
   children,
@@ -39,7 +41,9 @@ export default function DashboardGroup({
       </div>
     ),
 
-    "/home": <div>Home Sidebar</div>,
+    "/home": <HomeRightSide/>,
+    "/": <HomeRightSide/>,
+    "/home/post-details": <PostDetailsRightSide/>,
   };
 
   const rightSidebarContent = rightSidebarMap[pathname] || null;
