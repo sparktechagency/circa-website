@@ -5,6 +5,7 @@
   --foreground: #ffffff;
   --primary: #99a0fd;
   --secondary: #99a0fd;
+  --cardBg: #15131A;
 }
 
 @theme inline {
@@ -13,6 +14,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-primary: var(--primary);
+  --color-cardBg: var(--cardBg);
 }
 
 @layer utilities {
