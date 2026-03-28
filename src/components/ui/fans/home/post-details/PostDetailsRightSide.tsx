@@ -2,6 +2,7 @@
 import { Post } from '@/types/post';
 import { CheckCircle2, Crown } from "lucide-react";
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 const PostDetailsRightSide = () => {
@@ -14,7 +15,6 @@ const PostDetailsRightSide = () => {
         title: "Just Finished a new watercolor piece! 🎨✨",
         description:
             "Painting my emotions today. This series means so much to me. 🎨✨ Full time-lapse coming tonight!\n\nThis painting captures a quiet yet powerful moment through rich colors and expressive brushstrokes. The composition draws the eye toward the central subject, while subtle textures and layered tones add depth and emotion.",
-        // Sample image depending on type to match screenshots roughly
         imageUrl: postType === "free" ? "/homeBanner.svg" : "https://images.unsplash.com/photo-1544465544-1b71aee9dfa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
         likes: 1200,
         commentsCount: 1200,
@@ -49,10 +49,10 @@ const PostDetailsRightSide = () => {
                         Welcome to my creative sanctuary. Sharing art, life, and everything in between. ✨
                     </p>
                     <div className="w-full flex gap-3">
-                        <button className="flex-1 bg-[#D08BFF] hover:bg-[#b070de] text-black font-semibold py-2 rounded-xl text-sm transition-colors">
+                        <button className="flex-1 bg-[#D08BFF] hover:bg-[#b070de] text-black font-medium py-2 rounded-xl text-white text-sm transition-colors">
                             Message
                         </button>
-                        <button className="flex-1 bg-transparent border border-gray-600 hover:border-gray-400 text-white font-semibold py-2 rounded-xl text-sm transition-colors">
+                        <button className="flex-1 bg-transparent border border-gray-600 hover:border-gray-400 text-white font-medium py-2 rounded-xl text-sm transition-colors">
                             {isPremium ? "Follow" : "Join"}
                         </button>
                     </div>
@@ -90,12 +90,15 @@ const PostDetailsRightSide = () => {
                             ))}
                         </ul>
 
-                        <button className="w-full bg-[#7971FF] hover:bg-[#6c64e6] text-white font-semibold py-2.5 rounded-xl text-sm transition-colors">
+<div className='w-full flex items-center justify-end'> 
+
+                        <Link href={"/explore/creator-profile/membership"} className=" bg-[#7971FF] hover:bg-[#6c64e6] text-white font-semibold py-2.5 px-10 rounded-xl text-sm transition-colors">
                             Join
-                        </button>
+                        </Link>
+</div>
                     </div>
                 </div>
-            </div>
+            </div>  
         </div>
     );
 };
