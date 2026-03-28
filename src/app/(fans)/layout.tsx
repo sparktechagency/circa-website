@@ -7,6 +7,7 @@ import HomeRightSide from "@/components/ui/fans/home/HomeRightSide";
 import PostDetailsRightSide from "@/components/ui/fans/home/post-details/PostDetailsRightSide";
 import BrowseRightSide from "@/components/ui/fans/explore/Browse-Creators/BrowseRightSide";
 import MembershipRightSide from "@/components/ui/fans/explore/creator-profile/membership/MembershipRightSide";
+import { generateBreadcrumbs } from "@/utils/breadcrumbs";
 
 export default function DashboardGroup({
   children,
@@ -16,10 +17,7 @@ export default function DashboardGroup({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const exploreTab = searchParams.get("tab") || "browse";
-
-  const rawPath =
-    pathname === "/" ? "Home" : pathname?.replace("/", "") || "Home";
-  const title = rawPath.charAt(0).toUpperCase() + rawPath.slice(1);
+  const breadcrumbs = generateBreadcrumbs(pathname, exploreTab);
 
   const rightSidebarMap: Record<string, ReactNode> = {
     "/explore": exploreTab === "browse" ? (
@@ -38,7 +36,7 @@ export default function DashboardGroup({
   const rightSidebarContent = rightSidebarMap[pathname] || null;
 
   return (
-    <DashboardLayout title={title} rightSidebar={rightSidebarContent}>
+    <DashboardLayout  breadcrumbs={breadcrumbs} rightSidebar={rightSidebarContent}>
       {children}
     </DashboardLayout>
   );

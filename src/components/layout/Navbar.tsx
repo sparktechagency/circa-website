@@ -1,13 +1,12 @@
-import Image from "next/image";
-import { LuShoppingCart } from "react-icons/lu";
-import { MdOutlineNotificationsNone } from "react-icons/md";
+
 import { RiSearch2Line } from "react-icons/ri";
+import Breadcrumbs from "../ui/Breadcrumbs";
 
 export function Navbar({
-  title = "Explore",
+  title = [],
   onMenuClick,
 }: {
-  title?: string;
+  title?:{ label: string; href: string }[];
   onMenuClick?: () => void;
 }) {
   return (
@@ -16,9 +15,7 @@ export function Navbar({
         <button className="md:hidden text-white text-2xl" onClick={onMenuClick}>
           ☰
         </button>
-        <h1 className="text-xl font-medium text-white tracking-wide">
-          {title}
-        </h1>
+     <Breadcrumbs items={title} />
       </div>
 
       <div className="flex items-center gap-4 md:gap-6">

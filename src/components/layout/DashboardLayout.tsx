@@ -8,13 +8,13 @@ import { RightSidebarNav } from "./RightSidebarNav";
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  title?: string;
+ breadcrumbs?: { label: string; href: string }[];
   rightSidebar?: ReactNode;
 }
 
 export function DashboardLayout({
   children,
-  title = "Explore",
+  breadcrumbs=[],
   rightSidebar,
 }: DashboardLayoutProps) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -28,7 +28,7 @@ export function DashboardLayout({
 
       {/* MIDDLE CONTAINER → 5 COL */}
       <div className=" border-x border-[#242424] flex flex-col min-h-dvh overflow-y-auto w-full">
-        <Navbar title={title} onMenuClick={() => setSidebarOpen(true)} />
+        <Navbar title={breadcrumbs} onMenuClick={() => setSidebarOpen(true)} />
 
         <ContentWrapper>
           <main className="p-4 sm:p-3 lg:p-4 w-full flex-1">{children}</main>
