@@ -84,13 +84,9 @@ function FanMain({ onNav }: { onNav: (p: PageId) => void }) {
   return (
     <div style={{ paddingBottom: 24 }}>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 28,
-        }}
+        className="flex flex-col  md:flex-row gap-3 justify-between mb-7"
       >
-        <div style={{ display: "flex", gap: 14 }}>
+        <div className="flex flex-col items-center md:flex-row  gap-3">
           <img
             src="https://api.dicebear.com/7.x/personas/svg?seed=jhonlur"
             alt=""
@@ -103,7 +99,7 @@ function FanMain({ onNav }: { onNav: (p: PageId) => void }) {
               background: SURFACE2,
             }}
           />
-          <div>
+          <div className="text-center md:text-start">
             <div style={{ color: "#fff", fontWeight: 700 }}>
               Jhon Lura
             </div>
@@ -113,19 +109,18 @@ function FanMain({ onNav }: { onNav: (p: PageId) => void }) {
           </div>
         </div>
         <Link href="/become-creator">
-        <button
-          style={{
-            background: ACCENT,
-            color: "#fff",
-            border: "none",
-            borderRadius: 12,
-            padding: "10px 20px",
-            cursor: "pointer",
-            fontWeight: 600
-          }}
-        >
-          Be Creator
-        </button>
+          <button
+            className="
+    w-full sm:w-auto
+    bg-[#8b7cf8] text-white
+    border-none rounded-xl
+    px-5 py-2.5
+    font-semibold
+    cursor-pointer
+  "
+          >
+            Be Creator
+          </button>
         </Link>
 
       </div>

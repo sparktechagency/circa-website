@@ -123,13 +123,8 @@ export default function Credits() {
       <div style={{ color: "#fff", fontSize: 20, marginBottom: 18 }}>
         Select a package
       </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 20,
-          marginBottom: 20,
-        }}
+      <div       
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5"
       >
         {CREDIT_PACKS.map((pack, i) => {
           const isSelected = selected === i;

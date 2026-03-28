@@ -339,7 +339,7 @@ export default function MessagePage() {
   const [showReport, setShowReport] = useState(false);
   const [showReportSuccess, setShowReportSuccess] = useState(false);
   const [showMassMessage, setShowMassMessage] = useState(false);
-  const [mobileView, setMobileView] = useState<"list" | "chat">("list");
+  const [mobileView, setMobileView] = useState<"list" | "chat">("chat");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -360,7 +360,7 @@ export default function MessagePage() {
   return (
     <div className="flex h-[90vh] font-sans overflow-hidden">
       {/* ── Contact List ─────────────────────────────────────────── */}
-      <div className={`flex flex-col w-full md:w-1/3 border-r border-white/8 bg-[#0d0e14] shrink-0
+      <div className={`flex flex-col w-full lg:w-1/3 border-r border-white/8 bg-[#0d0e14] shrink-0
         ${mobileView === "chat" ? "hidden md:flex" : "flex"}`}>
         {/* Header */}
         <div className="px-4 py-4 border-b border-white/8">
