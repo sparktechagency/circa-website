@@ -14,7 +14,7 @@ const ContactUs = () => {
                     minHeight: "600px",
                     maxHeight: "600px",
                     marginTop: "20px",
-                    color: "#ededed",
+                    color: "rgba(255,255,255,0.8)",
                     overflow: "auto",
                     background: "var(--color-inputBg)",
                 }}
