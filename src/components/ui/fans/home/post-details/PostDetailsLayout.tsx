@@ -1,6 +1,8 @@
 import { Heart, MessageCircle, Lock, } from "lucide-react";
 import { Post } from "@/types/post";
 import Image from "next/image";
+import SendGiftModal from "@/components/modals/fans/SendGiftModal";
+import CreditsModal from "@/components/modals/fans/CreditsModal";
 
 interface PostDetailsLayoutProps {
   post: Post;
@@ -10,7 +12,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
   const isPremium = post.type === "premium";
 
   return (
-    <div className=" w-full  mx-auto bg-[#0a0a0a] min-h-screen text-white">
+    <div className=" w-full  mx-auto bg-[#0a0a0a] min-h-screen text-white pb-10">
       {/* Left Column - Main Post Content */}
       <div className="flex flex-col">
         {/* Post Card */}
@@ -40,33 +42,25 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
               src={post.imageUrl}
               alt="Post Image"
               fill
-              className={`object-cover w-full h-full transition-all duration-300 ${
-                isPremium ? "blur-md scale-105" : ""
-              }`}
+              className={`object-cover w-full h-full transition-all duration-300`}
             />
           </div>
-            {/* Send Gift Button */}
             {!isPremium && (
-              <button className="absolute top-4 right-4 bg-white text-black font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                <span>🎁</span> Send Gift
-              </button>
+           <SendGiftModal />
             )}
             
-            {/* If Premium blurred image, we could put full lock overlay, but it seems there is a bottom lock box instead */}
             {isPremium && (
-               <button className="absolute top-4 right-4 bg-white text-black font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md hover:bg-gray-100 transition-colors">
-                 <span>🎁</span> Send Gift
-               </button>
+   <SendGiftModal />
             )}
           </div>
 
           {/* Actions */}
-          <div className="flex gap-4 mb-6">
-            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 text-gray-300 hover:text-white hover:bg-white/5 transition-colors text-sm">
+          <div className="flex gap-4 mb-5 pb-5 text-primary border-b border-[#2D2D2D]  ">
+            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700  hover:text-white hover:bg-white/5 transition-colors text-sm">
               <Heart className="w-4 h-4" />
               <span>{(post.likes / 1000).toFixed(1)}k</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 text-gray-300 hover:text-white hover:bg-white/5 transition-colors text-sm">
+            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700  hover:text-white hover:bg-white/5 transition-colors text-sm">
               <MessageCircle className="w-4 h-4" />
               <span>{(post.commentsCount / 1000).toFixed(1)}k</span>
             </button>
@@ -76,7 +70,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
           <div className="relative">
             <h2 className="text-xl font-bold mb-3">{post.title}</h2>
             
-            <p className={`text-gray-300 leading-relaxed text-sm ${isPremium ? "blur-sm select-none opacity-50" : ""}`}>
+            <p className={`text-gray-300 leading-relaxed text-sm ${isPremium ? "blur-sm select-none opacity-90" : ""}`}>
               {post.description}
               {isPremium && (
                 <>
@@ -89,13 +83,13 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
 
             {/* Lock / Upgrade Box */}
             {isPremium && (
-              <div className="mt-8 bg-[#2A2B3D] border border-gray-700 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="mt-8 bg-[#2b3047] border border-primary rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center shrink-0">
                     <Lock className="w-5 h-5 text-gray-300" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-sm">Exclusive Post</h4>
+                    <h4 className="font-medium text-sm">Exclusive Post</h4>
                     <p className="text-xs text-gray-400">Upgrade membership to view the post</p>
                   </div>
                 </div>
@@ -103,9 +97,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
                   <button className="bg-[#7971FF] hover:bg-[#6c64e6] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap">
                     Membership plan
                   </button>
-                  <button className="border border-yellow-600 bg-[#3D3524] text-yellow-500 text-xs font-medium gap-1 flex items-center px-4 py-2 rounded-full transition-colors whitespace-nowrap">
-                    <span>🪙</span> 10 Credits
-                  </button>
+                  <CreditsModal />
                 </div>
               </div>
             )}

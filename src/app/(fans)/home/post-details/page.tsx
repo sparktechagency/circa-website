@@ -1,5 +1,4 @@
 import PostDetailsLayout from "@/components/ui/fans/home/post-details/PostDetailsLayout";
-import PostDetailsRightSide from "@/components/ui/fans/home/post-details/PostDetailsRightSide";
 import { Post } from "@/types/post";
 
 interface PageProps {
@@ -19,8 +18,7 @@ export default async function PostDetailsPage({ searchParams }: PageProps) {
     title: "Just Finished a new watercolor piece! 🎨✨",
     description:
       "Painting my emotions today. This series means so much to me. 🎨✨ Full time-lapse coming tonight!\n\nThis painting captures a quiet yet powerful moment through rich colors and expressive brushstrokes. The composition draws the eye toward the central subject, while subtle textures and layered tones add depth and emotion.",
-    // Sample image depending on type to match screenshots roughly
-    imageUrl: postType === "free" ? "/homeBanner.svg" : "https://images.unsplash.com/photo-1544465544-1b71aee9dfa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", 
+    imageUrl: postType === "free" ? "/post2.png" : "/post1.png", 
     likes: 1200,
     commentsCount: 1200,
     timeAgo: "2 hour ago",
