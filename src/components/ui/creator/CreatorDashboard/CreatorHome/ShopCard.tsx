@@ -30,7 +30,7 @@ const ShopCard = ({ shop }:any) => {
                     )}
                 </div>
                 <div>
-                    <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">
+                    <h3 className="text-md text-lg leading-tight group-hover:text-primary transition-colors">
                         {shop.title}
                     </h3>
                     <p className="text-gray-500 text-sm mt-0.5">{shop.price}</p>

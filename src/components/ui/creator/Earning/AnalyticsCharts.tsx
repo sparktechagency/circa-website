@@ -14,20 +14,24 @@ import {
 import { Star, MessageSquare, ShoppingBag } from 'lucide-react';
 
 
-const ChartCard = ({ icon, iconBg, iconColor, barColor }: any) => {
+const ChartCard = ({ title, icon, iconBg, iconColor, barColor }: any) => {
     return (
         <div className="flex flex-col gap-4 w-full">
             <div className="flex items-center justify-between">
-                {/* Icon Header */}
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
-                    <div style={{ color: iconColor }}>{icon}</div>
-                </div>   
+                <div className="flex items-center gap-2">
+                    {/* Icon Header */}
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
+                        <div style={{ color: iconColor }}>{icon}</div>
+                    </div>
+                    <span>{title}</span>
+                </div>
+
 
                 <select className='px-5 py-1 bg-cardBg rounded-full border border-gray-800'>
                     <option value="week">Week</option>
                     <option value="month">Month</option>
                     <option value="year">Year</option>
-                </select>             
+                </select>
             </div>
 
 
@@ -114,6 +118,7 @@ const AnalyticsCharts = () => {
 
                     {/* Chart 1: Orange/Gold */}
                     <ChartCard
+                        title={"Tier"}
                         icon={<Star size={20} fill="currentColor" />}
                         iconBg="bg-orange-500/10"
                         iconColor="#d97706"
@@ -122,6 +127,7 @@ const AnalyticsCharts = () => {
 
                     {/* Chart 2: Blue */}
                     <ChartCard
+                        title={"Message"}
                         icon={<MessageSquare size={20} fill="currentColor" />}
                         iconBg="bg-blue-500/10"
                         iconColor="#3b82f6"
@@ -130,6 +136,7 @@ const AnalyticsCharts = () => {
 
                     {/* Chart 3: Red/Pink */}
                     <ChartCard
+                        title={"Shop"}
                         icon={<ShoppingBag size={20} fill="currentColor" />}
                         iconBg="bg-red-500/10"
                         iconColor="#ef4444"

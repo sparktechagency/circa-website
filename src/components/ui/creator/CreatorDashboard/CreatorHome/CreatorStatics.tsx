@@ -18,7 +18,7 @@ const CreatorStatics = () => {
                 </div>
                 <span className="text-gray-400 font-medium">{stat.label}</span>
               </div>
-              <span className="text-2xl font-bold tracking-tight">{stat.value}</span>
+              <span className="text-2xl font-semibold tracking-tight">{stat.value}</span>
             </div>
           ))}
         </div>

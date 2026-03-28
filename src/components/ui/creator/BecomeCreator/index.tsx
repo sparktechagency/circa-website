@@ -59,7 +59,7 @@ export default function BecomeCreator() {
 
     return (
         <div className="min-h-screen flex items-center justify-center font-sans px-4 py-10">
-            <div className="w-full md:max-w-xl">
+            <div className="w-full md:max-w-2xl">
 
                 {step === "landing" && (
                     <GetStarted onGetStarted={() => setStep("vibe")} />

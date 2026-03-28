@@ -22,6 +22,8 @@ const Verify = ({
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [sampleFile, setSampleFile] = useState<File | null>(null);
+    const [samplePreviewUrl, setSamplePreviewUrl] = useState<string | null>(null);
+    const [sampleFileType, setSampleFileType] = useState<"image" | "video" | "audio" | null>(null);
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
@@ -33,7 +35,22 @@ const Verify = ({
 
     const handleSampleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
-        setSampleFile(file);
+        if (file) {
+            setSampleFile(file);
+            const url = URL.createObjectURL(file);
+            setSamplePreviewUrl(url);
+            if (file.type.startsWith("image/")) setSampleFileType("image");
+            else if (file.type.startsWith("video/")) setSampleFileType("video");
+            else if (file.type.startsWith("audio/")) setSampleFileType("audio");
+            else setSampleFileType(null);
+        }
+    };
+
+    const handleRemoveSample = () => {
+        if (samplePreviewUrl) URL.revokeObjectURL(samplePreviewUrl);
+        setSampleFile(null);
+        setSamplePreviewUrl(null);
+        setSampleFileType(null);
     };
 
     const handleConfirm = () => {
@@ -45,15 +62,15 @@ const Verify = ({
 
     return (
         <div className="fade-in" style={{ color: "#fff" }}>
-            <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 24 }}>Get Verified</h1>
+            <h1 style={{ fontSize: 26, marginBottom: 24 }}>Get Verified</h1>
 
             {/* Avatar upload */}
             <div className='flex justify-center mb-10'>
-                <div style={{ position: "relative", width: 100, height: 100 }}>
+                <div style={{ position: "relative", width: 150, height: 150 }}>
                     <div
                         style={{
-                            width: 100,
-                            height: 100,
+                            width: 150,
+                            height: 150,
                             borderRadius: "50%",
                             overflow: "hidden",
                             border: "2px solid #7c6ef5",
@@ -64,7 +81,7 @@ const Verify = ({
                             <img src={avatarPreview} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#555" }}>
-                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                     <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" />
                                 </svg>
                             </div>
@@ -75,8 +92,8 @@ const Verify = ({
                             position: "absolute",
                             bottom: 0,
                             right: 0,
-                            width: 30,
-                            height: 30,
+                            width: 50,
+                            height: 50,
                             borderRadius: "50%",
                             background: "#7c6ef5",
                             display: "flex",
@@ -122,7 +139,6 @@ const Verify = ({
                         type="date"
                         value={dob}
                         onChange={(e) => setDob(e.target.value)}
-                        placeholder={`Enter your date of birth`}
                         style={{
                             width: "100%",
                             padding: "14px 16px",
@@ -162,35 +178,119 @@ const Verify = ({
                 {/* Upload sample content */}
                 <div style={{ marginBottom: 28 }}>
                     <label style={{ fontSize: 14, color: "#c8c8d8", fontWeight: 500, display: "block", marginBottom: 10 }}>Upload Sample Content</label>
-                    <label
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 8,
-                            padding: "28px 16px",
-                            borderRadius: 12,
-                            border: `2px dashed ${sampleFile ? "#7c6ef5" : "#2e2e3e"}`,
-                            background: sampleFile ? "#18181f" : "#12121a",
-                            cursor: "pointer",
-                            transition: "border-color 0.2s",
-                        }}
-                    >
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" strokeWidth="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" />
-                            <path d="m21 15-5-5L5 21" />
-                        </svg>
-                        {sampleFile ? (
-                            <span style={{ color: "#a89af5", fontSize: 14, fontWeight: 500 }}>{sampleFile.name}</span>
-                        ) : (
-                            <>
-                                <span style={{ color: "#c8c8d8", fontSize: 14 }}>Tap to browse</span>
-                                <span style={{ color: "#666", fontSize: 12 }}>Image, Video or Audio</span>
-                            </>
-                        )}
-                        <input type="file" accept="image/*,video/*,audio/*" style={{ display: "none" }} onChange={handleSampleChange} />
-                    </label>
+
+                    {/* Preview area — shown when a file is selected */}
+                    {sampleFile && samplePreviewUrl ? (
+                        <div
+                            style={{
+                                position: "relative",
+                                borderRadius: 12,
+                                overflow: "hidden",
+                                border: "1.5px solid #7c6ef5",
+                                background: "#12121a",
+                            }}
+                        >
+                            {/* Media preview */}
+                            {sampleFileType === "image" && (
+                                <img
+                                    src={samplePreviewUrl}
+                                    alt="preview"
+                                    style={{ width: "100%", maxHeight: 220, objectFit: "cover", display: "block" }}
+                                />
+                            )}
+                            {sampleFileType === "video" && (
+                                <video
+                                    src={samplePreviewUrl}
+                                    controls
+                                    style={{ width: "100%", maxHeight: 220, display: "block", background: "#000" }}
+                                />
+                            )}
+                            {sampleFileType === "audio" && (
+                                <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" strokeWidth="1.5">
+                                        <path d="M9 18V5l12-2v13" />
+                                        <circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+                                    </svg>
+                                    <audio src={samplePreviewUrl} controls style={{ width: "100%" }} />
+                                </div>
+                            )}
+
+                            {/* File name bar */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "10px 14px",
+                                    background: "rgba(18,18,26,0.9)",
+                                    borderTop: "1px solid #2a2a36",
+                                }}
+                            >
+                                <span
+                                    style={{
+                                        color: "#a89af5",
+                                        fontSize: 13,
+                                        fontWeight: 500,
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                        maxWidth: "80%",
+                                    }}
+                                >
+                                    {sampleFile.name}
+                                </span>
+
+                                {/* Remove button */}
+                                <button
+                                    onClick={handleRemoveSample}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 5,
+                                        padding: "5px 10px",
+                                        borderRadius: 8,
+                                        background: "rgba(220,60,60,0.15)",
+                                        border: "1px solid rgba(220,60,60,0.35)",
+                                        color: "#f07070",
+                                        fontSize: 12,
+                                        fontWeight: 500,
+                                        cursor: "pointer",
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                        <path d="M18 6 6 18M6 6l12 12" />
+                                    </svg>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        /* Drop zone — shown when no file selected */
+                        <label
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 8,
+                                padding: "28px 16px",
+                                borderRadius: 12,
+                                border: "2px dashed #2e2e3e",
+                                background: "#12121a",
+                                cursor: "pointer",
+                                transition: "border-color 0.2s",
+                            }}
+                        >
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" strokeWidth="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" />
+                                <path d="m21 15-5-5L5 21" />
+                            </svg>
+                            <span style={{ color: "#c8c8d8", fontSize: 14 }}>Tap to browse</span>
+                            <span style={{ color: "#666", fontSize: 12 }}>Image, Video or Audio</span>
+                            <input type="file" accept="image/*,video/*,audio/*" style={{ display: "none" }} onChange={handleSampleChange} />
+                        </label>
+                    )}
                 </div>
             </div>
 

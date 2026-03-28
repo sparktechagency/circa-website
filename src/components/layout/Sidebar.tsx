@@ -25,6 +25,7 @@ const navItems: NavItem[] = [
   { href: "/explore", label: "Explore", icon: FiCompass },
   { href: "/message", label: "Message", icon: FiMessageCircle },
   { href: "/profile", label: "Profile", icon: FiUser },
+  { href: "/setting", label: "Setting", icon: FiUser },
 ];
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
@@ -38,10 +39,11 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         />
       )}
 
+
       {/* Sidebar */}
       <aside
-        className={`h-full w-full border-r border-[#242424] flex flex-col pt-2 pb-8 px-4 z-40 transition-transform duration-300 
-        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0 hidden md:flex"}`}
+        className={`fixed md:relative inset-y-0 left-0 h-full w-[240px] md:w-full border-r border-[#242424] flex flex-col pt-2 pb-8 px-4 z-40 bg-[#0a0a0a] transition-transform duration-300
+    ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-2 h-[85px] mb-5">
@@ -126,10 +128,9 @@ function SidebarLink({
       href={href}
       onClick={onClick}
       className={`flex items-center gap-3 px-3 py-3 rounded-lg font-semibold transition-all 
-        ${
-          isActive
-            ? "bg-primary text-white"
-            : "text-gray-400 hover:text-white hover:bg-[#1a1a1e]"
+        ${isActive
+          ? "bg-primary text-white"
+          : "text-gray-400 hover:text-white hover:bg-[#1a1a1e]"
         }`}
     >
       <Icon className="text-2xl" />

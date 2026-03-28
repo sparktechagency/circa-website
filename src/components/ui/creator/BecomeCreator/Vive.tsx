@@ -54,13 +54,13 @@ const Vive = ({
             <p style={{ color: "#8a8a9a", fontSize: 14, marginBottom: 24 }}>You can select multiple categories.</p>
 
             {/* Category grid */}
-            <div className='grid grid-cols-2 md::grid-cols-4 gap-3 mb-10' >
+            <div className='grid grid-cols-2 md:grid-cols-4 gap-3 mb-10' >
                 {CATEGORIES.map((cat) => (
                     <button
                         key={cat.id}
                         onClick={() => toggleCategory(cat.id)}
                         style={{
-                            background: selectedCategories.includes(cat.id) ? "#2a2450" : "#18181f",
+                            background: selectedCategories.includes(cat.id) ? "#2a2450" : "var(--inputBg)",
                             border: `1.5px solid ${selectedCategories.includes(cat.id) ? "#7c6ef5" : "#2a2a36"}`,
                             borderRadius: 16,
                             padding: "20px 12px",

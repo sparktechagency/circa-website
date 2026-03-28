@@ -21,8 +21,8 @@ const ApplicationSubmitted = () => {
               </svg>
             </div>
 
-            <h1 style={{ fontSize: 26, fontWeight: 700, color: "#a89af5", marginBottom: 12 }}>Application Submitted!</h1>
-            <p style={{ color: "#8a8a9a", fontSize: 15, lineHeight: 1.7 }}>
+            <h1 style={{ fontSize: 30, fontWeight: 500, color: "#a89af5", marginBottom: 12 }}>Application Submitted!</h1>
+            <p style={{ color: "#8a8a9a", fontSize: 20, lineHeight: 1.7 }}>
               Thanks for applying to be a creator on Circa.<br />
               Our team is currently reviewing your details.
             </p>
@@ -36,7 +36,8 @@ const ApplicationSubmitted = () => {
                 padding: "14px 18px",
                 display: "flex",
                 alignItems: "center",
-                gap: 12,
+                justifyContent: "center",
+                gap: 7,
                 textAlign: "left",
               }}
             >
@@ -44,7 +45,7 @@ const ApplicationSubmitted = () => {
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
               </svg>
-              <span style={{ color: "#8a8a9a", fontSize: 13 }}>
+              <span style={{ color: "#8a8a9a", fontSize: 16, textAlign: "center" }}>
                 We will send a notification to your email once your profile is approved
               </span>
             </div>

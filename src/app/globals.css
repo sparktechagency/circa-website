@@ -6,6 +6,7 @@
   --primary: #99a0fd;
   --secondary: #99a0fd;
   --cardBg: #15131A;
+  --inputBg: #20232C;
 }
 
 @theme inline {
@@ -15,6 +16,7 @@
   --font-mono: var(--font-geist-mono);
   --color-primary: var(--primary);
   --color-cardBg: var(--cardBg);
+  --color-inputBg: var(--inputBg);
 }
 
 @layer utilities {
