@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { X, Image as ImageIcon, Globe, Star, Crown, Upload } from "lucide-react";
+import { X, Image as ImageIcon, Globe, Star, Crown, Calendar, ChevronDown } from "lucide-react";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -48,6 +48,124 @@ const visibilityOptions = [
   },
 ] as const;
 
+/* ─────────────────────────────────────────
+   Custom Date & Time Picker Section
+───────────────────────────────────────── */
+interface SchedulePickerProps {
+  scheduleDate: string;
+  scheduleTime: string;
+  scheduleAmPm: "AM" | "PM";
+  onDateChange: (v: string) => void;
+  onTimeChange: (v: string) => void;
+  onAmPmChange: (v: "AM" | "PM") => void;
+}
+
+const SchedulePicker: React.FC<SchedulePickerProps> = ({
+  scheduleDate,
+  scheduleTime,
+  scheduleAmPm,
+  onDateChange,
+  onTimeChange,
+  onAmPmChange,
+}) => {
+  const [amPmOpen, setAmPmOpen] = useState(false);
+  const dateRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div className="space-y-4">
+      {/* Date */}
+      <div className="space-y-2">
+        <label className="text-sm text-gray-300 font-medium">Date</label>
+        <div
+          onClick={() => dateRef.current?.showPicker?.()}
+          className="relative flex items-center justify-between px-4 py-4 rounded-2xl bg-[#1c1d27] border border-white/8 hover:border-white/20 cursor-pointer transition-all"
+        >
+          <span className={`text-sm ${scheduleDate ? "text-white" : "text-gray-500"}`}>
+            {scheduleDate
+              ? new Date(scheduleDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })
+              : "Select Date"}
+          </span>
+          <Calendar size={18} className="text-gray-500" />
+          {/* Hidden native date input */}
+          <input
+            ref={dateRef}
+            type="date"
+            value={scheduleDate}
+            onChange={(e) => onDateChange(e.target.value)}
+            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+            style={{ colorScheme: "dark" }}
+          />
+        </div>
+      </div>
+
+      {/* Time */}
+      <div className="space-y-2">
+        <label className="text-sm text-gray-300 font-medium">Time</label>
+        <div className="flex items-center justify-between px-4 py-4 rounded-2xl bg-[#1c1d27] border border-white/8 hover:border-white/20 transition-all gap-3">
+          {/* Time input */}
+          <input
+            type="text"
+            value={scheduleTime}
+            onChange={(e) => {
+              // Allow only numbers and colon, max "12.59" format
+              const val = e.target.value.replace(/[^0-9.]/g, "").slice(0, 5);
+              onTimeChange(val);
+            }}
+            placeholder="12.00"
+            className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
+          />
+
+          {/* AM / PM dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setAmPmOpen((p) => !p)}
+              className="flex items-center gap-1.5 text-gray-300 text-sm font-semibold hover:text-white transition-colors"
+            >
+              <span className="underline underline-offset-2 decoration-gray-600">
+                {scheduleAmPm}
+              </span>
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${amPmOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {amPmOpen && (
+              <div className="absolute right-0 bottom-8 z-30 w-20 bg-[#1c1d27] border border-white/10 rounded-xl shadow-xl overflow-hidden">
+                {(["AM", "PM"] as const).map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => {
+                      onAmPmChange(val);
+                      setAmPmOpen(false);
+                    }}
+                    className={`w-full px-3 py-2.5 text-sm text-left transition-colors
+                      ${scheduleAmPm === val
+                        ? "bg-indigo-500/20 text-indigo-300 font-semibold"
+                        : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                  >
+                    {val}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────
+   Main Modal
+───────────────────────────────────────── */
 export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePostModalProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -60,7 +178,12 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
   const [nsfw, setNsfw] = useState(true);
   const [dragOver, setDragOver] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
+
+  // Separate date / time / ampm state
   const [scheduleDate, setScheduleDate] = useState("");
+  const [scheduleTime, setScheduleTime] = useState("12.00");
+  const [scheduleAmPm, setScheduleAmPm] = useState<"AM" | "PM">("AM");
+
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
@@ -78,7 +201,12 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
     if (file) handleFile(file);
   }, []);
 
-  const handlePublish = (scheduled?: string) => {
+  const buildScheduledString = () => {
+    if (!scheduleDate) return undefined;
+    return `${scheduleDate} ${scheduleTime} ${scheduleAmPm}`;
+  };
+
+  const handlePublish = (withSchedule = false) => {
     const post: PostFormData = {
       id: Date.now().toString(),
       title,
@@ -91,7 +219,7 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
       hideComments,
       nsfw,
       createdAt: new Date().toISOString(),
-      scheduled,
+      scheduled: withSchedule ? buildScheduledString() : undefined,
     };
     onPublish(post);
     resetForm();
@@ -110,17 +238,18 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
     setNsfw(true);
     setShowSchedule(false);
     setScheduleDate("");
+    setScheduleTime("12.00");
+    setScheduleAmPm("AM");
   };
 
   if (!isOpen) return null;
 
+  const scheduleReady = showSchedule && scheduleDate && scheduleTime;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
       <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#12131a] border border-white/10 shadow-2xl">
@@ -231,9 +360,7 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
                   </div>
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all
                     ${visibility === opt.value ? "border-indigo-500 bg-indigo-500" : "border-gray-600"}`}>
-                    {visibility === opt.value && (
-                      <div className="w-2 h-2 rounded-full bg-white" />
-                    )}
+                    {visibility === opt.value && <div className="w-2 h-2 rounded-full bg-white" />}
                   </div>
                 </button>
               ))}
@@ -285,35 +412,38 @@ export default function CreatePostModal({ isOpen, onClose, onPublish }: CreatePo
             </div>
           </div>
 
-          {/* Schedule (optional expand) */}
+          {/* ── Custom Schedule Picker ── */}
           {showSchedule && (
-            <div className="space-y-2">
-              <label className="text-sm text-gray-300 font-medium">Schedule Date & Time</label>
-              <input
-                type="datetime-local"
-                value={scheduleDate}
-                onChange={(e) => setScheduleDate(e.target.value)}
-                className="w-full bg-[#1c1d27] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-indigo-500/60 transition-all [color-scheme:dark]"
-              />
-            </div>
+            <SchedulePicker
+              scheduleDate={scheduleDate}
+              scheduleTime={scheduleTime}
+              scheduleAmPm={scheduleAmPm}
+              onDateChange={setScheduleDate}
+              onTimeChange={setScheduleTime}
+              onAmPmChange={setScheduleAmPm}
+            />
           )}
 
           {/* Action Buttons */}
           <div className="space-y-3 pt-1 pb-2">
             <button
               onClick={() => {
-                if (showSchedule && scheduleDate) {
-                  handlePublish(scheduleDate);
+                if (scheduleReady) {
+                  handlePublish(true);
                 } else {
                   setShowSchedule(true);
                 }
               }}
               className="w-full py-3.5 rounded-xl border border-indigo-500/50 text-indigo-300 font-semibold text-sm hover:bg-indigo-500/10 transition-all tracking-wide"
             >
-              {showSchedule ? (scheduleDate ? "Confirm Schedule" : "Pick a date above") : "Schedule Post"}
+              {scheduleReady
+                ? "Confirm Schedule"
+                : showSchedule
+                ? "Pick a date & time above"
+                : "Schedule Post"}
             </button>
             <button
-              onClick={() => handlePublish()}
+              onClick={() => handlePublish(false)}
               disabled={!title.trim()}
               className="w-full py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm transition-all tracking-wide shadow-lg shadow-indigo-500/25"
             >

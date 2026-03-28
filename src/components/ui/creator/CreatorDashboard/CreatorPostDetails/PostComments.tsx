@@ -19,10 +19,10 @@ This painting captures a quiet yet powerful moment through rich colors and expre
     <img src={avatar} alt={user} className="w-10 h-10 rounded-full object-cover shrink-0 mt-1" />
     <div className="flex-1">
       <div className="flex items-center gap-2 mb-1">
-        <span className="font-bold text-sm text-white">{user}</span>
+        <span className="font-semibold text-sm text-white">{user}</span>
         <span className="text-gray-500 text-[10px]">• {time}</span>
       </div>
-      <p className="text-gray-300 text-sm leading-relaxed mb-3">
+      <p className="text-gray-400 text-sm leading-relaxed mb-3">
         {text}
       </p>
       <div className="flex gap-6">
@@ -42,7 +42,7 @@ const PostComments = () => {
     
   return (     
         <section className="mt-16">
-          <h2 className="text-xl font-bold mb-8 flex items-center gap-3">
+          <h2 className="text-xl font-medium mb-8 flex items-center gap-3">
             Comments <span className="text-gray-500 font-medium">({postData.commentsCount})</span>
           </h2>
 

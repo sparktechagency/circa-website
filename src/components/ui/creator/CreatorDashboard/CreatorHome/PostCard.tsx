@@ -33,7 +33,7 @@ const PostCard = ({ post }:any) => {
                     )}
                 </div>
                 <div>
-                    <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">
+                    <h3 className="text-md leading-tight group-hover:text-primary transition-colors">
                         {post.title}
                     </h3>
                     <p className="text-gray-500 text-sm mt-0.5">{post.time}</p>

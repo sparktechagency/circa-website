@@ -52,25 +52,6 @@ export default  function ChangeYourVive() {
         })}
       </div>
 
-      {/* Selected chips */}
-      {selected.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {selected.map((id) => {
-            const cat = VIBE_CATEGORIES.find((c) => c.id === id);
-            if (!cat) return null;
-            return (
-              <div
-                key={id}
-                className="flex flex-col items-center gap-1.5 px-5 py-4 rounded-2xl bg-[#1e1f35] border border-white/8 text-pink-400"
-              >
-                {cat.icon}
-                <span className="text-xs text-white/80">{cat.label}</span>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
       {/* Permission toggle */}
       <div>
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Permission</p>

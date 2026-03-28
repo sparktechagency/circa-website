@@ -320,13 +320,13 @@ const TransactionsPage: React.FC = () => {
                         {/* Info */}
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                                <span className="font-semibold text-sm text-white truncate">{tx.title}</span>
+                                <span className="font-normal text-sm text-white truncate">{tx.title}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <img src={tx.buyerAvatar} alt={tx.buyerName} className="w-4 h-4 rounded-full object-cover" />
-                                <span className="text-gray-500 text-[11px] truncate">{tx.buyerName}</span>
-                                <span className="text-gray-700 text-[10px]">•</span>
-                                <span className="text-gray-600 text-[11px] shrink-0">{tx.time}</span>
+                                <span className="text-gray-400 text-[15px] truncate">{tx.buyerName}</span>
+                                <span className="text-gray-500 text-[13px]">•</span>
+                                <span className="text-gray-500 text-[15px] shrink-0">{tx.time}</span>
                             </div>
                         </div>
                         {/* Amount */}

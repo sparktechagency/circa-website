@@ -7,6 +7,8 @@ import {
   AlertCircle, MessageSquare, Filter, Paperclip, Smile,
   Image as ImageIcon, CheckCheck, Circle
 } from "lucide-react";
+import { GiFallingStar } from "react-icons/gi";
+import { IoIosStar } from "react-icons/io";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 interface Contact {
@@ -357,7 +359,6 @@ export default function CreatorMessage() {
 
   return (
     <div className="flex h-[90vh] font-sans overflow-hidden">
-      
       {/* ── Contact List ─────────────────────────────────────────── */}
       <div className={`flex flex-col w-full md:w-1/3 border-r border-white/8 bg-[#0d0e14] shrink-0
         ${mobileView === "chat" ? "hidden md:flex" : "flex"}`}>
@@ -408,13 +409,19 @@ export default function CreatorMessage() {
               <Avatar src={c.avatar} size={10} online={c.online} />
               <div className="flex-1 min-w-0 text-left">
                 <div className="flex items-center justify-between">
-                  <span className="text-white text-sm font-medium truncate">{c.name}</span>
+                  <div className="flex gap-2">
+                    <span className="text-slate-200 text-sm font-normal truncate">{c.name}</span>
+                    <TierBadge tier={c.tier} color={c.tierColor} points={c.points} />
+
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-semibold `}>
+                      <IoIosStar size={15} className=" text-amber-300"/> 30
+                    </span>
+                  </div>
                   <span className="text-gray-600 text-xs flex-shrink-0 ml-2">{c.time}</span>
                 </div>
                 <div className="flex items-center justify-between mt-0.5">
                   <div>
-                    <TierBadge tier={c.tier} color={c.tierColor} points={c.points} />
-                    <p className="text-gray-500 text-xs truncate">{c.lastMessage}</p>
+                    <p className={`${c.unread ? "text-gray-500 text-bold" : "text-gray-300 text-sm"} truncate`}>{c.lastMessage}</p>
                   </div>
                   {c.unread && (
                     <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0 ml-1">

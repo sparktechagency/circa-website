@@ -8,7 +8,7 @@ const EarningOverview = () => {
     <div className="space-y-2">
       <h3 className="text-gray-400 text-sm font-medium">Total Earning</h3>
       <div className="flex items-baseline gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-[#b085f5]">$2,450.00</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold text-[#b085f5]">$2,450.00</h1>
       </div>
       <div className="flex items-center gap-2 pt-2">
         <span className="flex items-center gap-1 text-green-500 bg-green-500/10 px-2 py-1 rounded-full text-xs font-bold">
@@ -28,12 +28,12 @@ const EarningOverview = () => {
             <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
             <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1m5 1a1 1 0 110-2 1 1 0 010 2zm5 0a1 1 0 110-2 1 1 0 010 2z" clip-rule="evenodd" />
           </svg>
-          <span className="font-semibold text-sm">Balance : 120 Coins</span>
+          <span className="font-medium text-sm">Balance : 120 Coins</span>
         </div>
         <p className="text-gray-500 text-xs mt-2 mr-1">1 coin = 0.5 USD</p>
       </div>
 
-      <button className="group flex items-center gap-2 border border-[#7c66dc] text-[#7c66dc] hover:bg-[#7c66dc] hover:text-white transition-all duration-300 px-6 py-3 rounded-xl font-semibold">
+      <button className="group flex items-center gap-2 border border-[#7c66dc] text-[#7c66dc] hover:bg-[#7c66dc] hover:text-white transition-all duration-300 px-2 py-3 rounded-xl font-semibold">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>

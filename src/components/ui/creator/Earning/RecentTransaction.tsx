@@ -139,7 +139,7 @@ const RecentTransactions: React.FC = () => {
         <div className="mt-5">
             {/* Header */}
             <div className="flex items-center justify-between mb-1">
-                <h2 className="text-xl font-black text-white tracking-tight">Transactions</h2>
+                <h2 className="text-xl font-semibold text-white tracking-tight">Transactions</h2>
             </div>
             <div className="flex items-center justify-between mb-4">
                 <p className="text-sm text-gray-500">Recent activity</p>
@@ -171,13 +171,13 @@ const RecentTransactions: React.FC = () => {
                         {/* Info */}
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                                <span className="font-semibold text-sm text-white truncate">{tx.title}</span>
+                                <span className="font-normal text-sm text-white truncate">{tx.title}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <img src={tx.buyerAvatar} alt={tx.buyerName} className="w-4 h-4 rounded-full object-cover" />
-                                <span className="text-gray-500 text-[11px] truncate">{tx.buyerName}</span>
-                                <span className="text-gray-700 text-[10px]">•</span>
-                                <span className="text-gray-600 text-[11px] shrink-0">{tx.time}</span>
+                                <span className="text-gray-400 text-[13px] truncate">{tx.buyerName}</span>
+                                <span className="text-gray-500 text-[12px]">•</span>
+                                <span className="text-gray-500 text-[13px] shrink-0">{tx.time}</span>
                             </div>
                         </div>
                         {/* Amount */}
