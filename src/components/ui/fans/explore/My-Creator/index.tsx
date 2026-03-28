@@ -1,13 +1,12 @@
 "use client";
 import { useState } from "react";
 import { creatorsData } from "@/constants/explore-data";
+import Image from "next/image";
 
 const categories = ["All", "Musician", "Artist", "Singer", "Videos"];
 
 const MyCreator = () => { 
-      const [activeTab, setActiveTab] = useState("All");
-
-  // Filter logic for clicking buttons
+      const [activeTab, setActiveTab] = useState("All"); 
   const filteredCreators = creatorsData.filter(creator => {
     if (activeTab === "All") return true;
     return creator.categoryType === activeTab;
@@ -36,12 +35,14 @@ const MyCreator = () => {
         {filteredCreators.map((creator) => (
           <div
             key={creator.id}
-            className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]"
+            className="group relative rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]" 
           >
-            <img
+            <Image
               src={creator.imageUrl}
               alt={creator.name}
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+              width={500}
+              height={300}
+              className="object-cover w-full h-[300px] group-hover:scale-105 transition-transform duration-500"
             />
             
             {/* Gradient Dark Overlay */}

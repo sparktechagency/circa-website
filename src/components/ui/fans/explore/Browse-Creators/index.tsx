@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 import { creatorsData } from "@/constants/explore-data";
+import { useRouter } from "next/navigation";
 
 const categories = ["All", "Musician", "Artist", "Singer", "Videos"];
 
 const BrowseCreators = () => {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("All"); 
+  const router = useRouter()
 
   // Filter logic for clicking buttons
   const filteredCreators = creatorsData.filter(creator => {
@@ -36,13 +38,14 @@ const BrowseCreators = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-10">
         {filteredCreators.map((creator) => (
           <div
-            key={creator.id}
-            className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]"
+            key={creator.id} 
+            onClick={() => router.push("/explore/creator-profile")}
+            className="group relative rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]"
           >
             <img
               src={creator.imageUrl}
               alt={creator.name}
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+              className="object-cover w-full h-[300px] group-hover:scale-105 transition-transform duration-500"
             />
             
             {/* Gradient Dark Overlay */}
