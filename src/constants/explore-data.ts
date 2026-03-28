@@ -1,0 +1,115 @@
+const creatorsData = [
+  {
+    id: 1,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Artist",
+    imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 2,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Musician",
+    imageUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 3,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Singer",
+    imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 4,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Artist",
+    imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 5,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Videos",
+    imageUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 6,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Musician",
+    imageUrl: "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 7,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Artist",
+    imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 8,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Singer",
+    imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 9,
+    name: "Sarah Chen",
+    category: "Visual Artist",
+    members: "1,234 members",
+    categoryType: "Videos",
+    imageUrl: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=600&auto=format&fit=crop", 
+  }
+];  
+
+const friendsData = [
+  {
+    id: 1,
+    name: "Zephyr",
+    age: 27,
+    isOnline: true,
+    role: "Digital Artist",
+    bio: "Coffee lover, gamer, and weekend traveler looking for friends! If you can beat at...",
+    imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 2,
+    name: "Aria",
+    age: 24,
+    isOnline: false,
+    role: "Visual Artist",
+    bio: "Always humming a tune. Let's explore new cafes and talk about our favorite bands.",
+    imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 3,
+    name: "Elena",
+    age: 26,
+    isOnline: true,
+    role: "Photographer",
+    bio: "Capturing moments. Looking for someone to join me on photo walks.",
+    imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop", 
+  },
+  {
+    id: 4,
+    name: "Maya",
+    age: 25,
+    isOnline: true,
+    role: "Content Creator",
+    bio: "Making videos and telling stories. Coffee is my fuel.",
+    imageUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop", 
+  }
+];
+
+export {creatorsData, friendsData}

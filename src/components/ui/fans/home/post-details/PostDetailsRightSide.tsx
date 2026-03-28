@@ -1,12 +1,13 @@
 "use client";
 import { Post } from '@/types/post';
 import { CheckCircle2, Crown } from "lucide-react";
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
-const PostDetailsRightSide = ()  => {
-const params = useSearchParams();
-const type = params.get("type");
-  const postType: "free" | "premium" = type === "premium" ? "premium" : "free";
+const PostDetailsRightSide = () => {
+    const params = useSearchParams();
+    const type = params.get("type");
+    const postType: "free" | "premium" = type === "premium" ? "premium" : "free";
     const mockPost: Post = {
         id: "post-1",
         type: postType,
@@ -26,17 +27,18 @@ const type = params.get("type");
             membershipPrice: "$4.99"
         }
     };
-  const isPremium = mockPost.type === "premium";
+    const isPremium = mockPost.type === "premium";
     return (
         <div>
             <div className="flex flex-col gap-4">
                 {/* Profile Card */}
                 <div className="bg-[#1C1A24] rounded-2xl p-6 border border-gray-800 flex flex-col items-center text-center">
                     <div className="w-20 h-20 rounded-full overflow-hidden mb-3">
-                        <img
+                        <Image
                             src={mockPost.author.avatarUrl}
                             alt={mockPost.author.name}
-                            className="object-cover w-full h-full"
+                            width={80}
+                            height={80}
                         />
                     </div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">

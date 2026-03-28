@@ -27,7 +27,7 @@ export function DashboardLayout({
       </div>
 
       {/* MIDDLE CONTAINER → 5 COL */}
-      <div className=" border-x border-[#242424] flex flex-col min-h-dvh overflow-y-auto">
+      <div className=" border-x border-[#242424] flex flex-col min-h-dvh overflow-y-auto w-full">
         <Navbar title={title} onMenuClick={() => setSidebarOpen(true)} />
 
         <ContentWrapper>
