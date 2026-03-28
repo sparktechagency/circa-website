@@ -1,12 +1,10 @@
-import CreatorProfile from '@/components/ui/creator/Profile'
-import FanProfile from '@/components/ui/creator/Profile/FanProfile'
-import React from 'react'
+import CreatorProfile from "@/components/ui/creator/Profile"
+
 
 const page = () => {
   return (
     <div className="">      
-      {/* <CreatorProfile /> */}
-      <FanProfile />
+      <CreatorProfile />      
     </div>
 
   )

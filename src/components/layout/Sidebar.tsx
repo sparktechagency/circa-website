@@ -25,6 +25,7 @@ const navItems: NavItem[] = [
   { href: "/explore", label: "Explore", icon: FiCompass },
   { href: "/message", label: "Message", icon: FiMessageCircle },
   { href: "/profile", label: "Profile", icon: FiUser },
+  { href: "/setting", label: "Setting", icon: FiUser },
 ];
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {

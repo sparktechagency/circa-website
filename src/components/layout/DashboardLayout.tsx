@@ -27,27 +27,23 @@ export function DashboardLayout({
       </div>
 
       {/* MIDDLE CONTAINER → 5 COL */}
-      <div className=" border-x border-[#242424] flex flex-col min-h-dvh overflow-y-auto">
+      <div className=" border-x border-[#242424] flex flex-col min-h-dvh overflow-y-auto w-full">
         <Navbar title={title} onMenuClick={() => setSidebarOpen(true)} />
 
         <ContentWrapper>
-          <main className="p-4 sm:p-6 lg:p-8 w-full flex-1">{children}</main>
+          <main className="p-4 sm:p-3 lg:p-4 w-full flex-1">{children}</main>
         </ContentWrapper>
       </div>
 
       {/* RIGHT SIDEBAR → 2 COL */}
       <div className="">
-
         <div className=" flex flex-col min-h-dvh overflow-y-auto">
           <RightSidebarNav />
 
           <ContentWrapper>
-            {rightSidebar && (
-              <RightSidebar>{rightSidebar}</RightSidebar>
-            )}
+            {rightSidebar && <RightSidebar>{rightSidebar}</RightSidebar>}
           </ContentWrapper>
         </div>
-
       </div>
     </div>
   );
