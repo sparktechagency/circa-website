@@ -12,11 +12,11 @@ const MembershipCard = () => (
         <Lock size={24} />
       </div>
       <div>
-        <h4 className="font-bold text-white text-base">Upgrade Membership</h4>
+        <h4 className="font-normal text-white text-base">Upgrade Membership</h4>
         <p className="text-gray-400 text-xs mt-0.5">Unlock to see the full Photo from today</p>
       </div>
     </div>
-    <button className="w-full sm:w-auto bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] hover:from-[#4f46e5] hover:to-[#7c3aed] text-white text-sm font-bold px-8 py-3 rounded-full transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
+    <button className="w-full sm:w-auto bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] hover:from-[#4f46e5] hover:to-[#7c3aed] text-white text-sm font-normal px-8 py-3 rounded-full transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
       Membership plan
     </button>
   </div>

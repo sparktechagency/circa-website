@@ -14,7 +14,7 @@ export function MessageLayout({ children }: MessageLayoutProps) {
   return (
     <div
       className="grid min-h-dvh w-full bg-[#0a0a0a] text-white font-sans
-                    grid-cols-[220px_1fr]"
+                    md:grid-cols-[220px_1fr]"
     >
       <div className="hidden md:block sticky top-0 h-dvh">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />

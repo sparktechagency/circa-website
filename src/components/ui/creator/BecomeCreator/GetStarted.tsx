@@ -28,10 +28,10 @@ const GetStarted = ({ onGetStarted }: { onGetStarted: () => void }) => {
             </div>
 
             <div>
-              <h1 style={{ fontSize: 28, fontWeight: 700, color: "#a89af5", marginBottom: 10 }}>
+              <h1 style={{ fontSize: 28, fontWeight: 500, color: "#a89af5", marginBottom: 10 }}>
                 Become a Creator
               </h1>
-              <p style={{ color: "#8a8a9a", fontSize: 15, lineHeight: 1.6 }}>
+              <p style={{ color: "#8a8a9a", fontSize: 20, lineHeight: 1.6 }}>
                 Share your content, connect with fans,<br />and earn from your creativity.
               </p>
             </div>
