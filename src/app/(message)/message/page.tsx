@@ -329,7 +329,8 @@ function FilterMenu({ onClose }: { onClose: () => void }) {
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function MessagePage() {
-  const [activeContact, setActiveContact] = useState<Contact | null>(CONTACTS[0]);
+  // ── KEY CHANGE: start with null active contact and "list" view ──
+  const [activeContact, setActiveContact] = useState<Contact | null>(null);
   const [messages, setMessages] = useState<Message[]>(MESSAGES);
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
@@ -339,7 +340,8 @@ export default function MessagePage() {
   const [showReport, setShowReport] = useState(false);
   const [showReportSuccess, setShowReportSuccess] = useState(false);
   const [showMassMessage, setShowMassMessage] = useState(false);
-  const [mobileView, setMobileView] = useState<"list" | "chat">("chat");
+  // ── KEY CHANGE: default to "list" so chat is hidden on all breakpoints initially ──
+  const [mobileView, setMobileView] = useState<"list" | "chat">("list");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -360,8 +362,12 @@ export default function MessagePage() {
   return (
     <div className="flex h-[90vh] font-sans overflow-hidden">
       {/* ── Contact List ─────────────────────────────────────────── */}
-      <div className={`flex flex-col w-full lg:w-1/3 border-r border-white/8 bg-[#0d0e14] shrink-0
-        ${mobileView === "chat" ? "hidden md:flex" : "flex"}`}>
+      {/* KEY CHANGE: show list when mobileView === "list", hide on lg only when chat is active */}
+      <div className={`flex flex-col border-r border-white/8 bg-[#0d0e14] shrink-0
+        ${mobileView === "chat"
+          ? "hidden lg:flex lg:w-1/3"
+          : "flex w-full lg:w-1/3"
+        }`}>
         {/* Header */}
         <div className="px-4 py-4 border-b border-white/8">
           <div className="flex items-center justify-between mb-3">
@@ -412,7 +418,6 @@ export default function MessagePage() {
                   <div className="flex gap-2">
                     <span className="text-slate-200 text-sm font-normal truncate">{c.name}</span>
                     <TierBadge tier={c.tier} color={c.tierColor} points={c.points} />
-
                     <span className={`inline-flex items-center gap-1 text-[10px] font-semibold `}>
                       <IoIosStar size={15} className=" text-amber-300" /> 30
                     </span>
@@ -436,16 +441,21 @@ export default function MessagePage() {
       </div>
 
       {/* ── Chat Area ─────────────────────────────────────────────── */}
+      {/* KEY CHANGE: show chat only when mobileView === "chat", hide otherwise (all breakpoints until lg) */}
       <div className={`flex-1 flex flex-col min-w-0
-        ${mobileView === "list" ? "hidden md:flex" : "flex"}`}>
+        ${mobileView === "list"
+          ? "hidden lg:flex"
+          : "flex"
+        }`}>
         {activeContact ? (
           <>
             {/* Chat Header */}
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/8 bg-[#0d0e14]">
               <div className="flex items-center gap-3">
+                {/* Back button now shows on all breakpoints below lg */}
                 <button
-                  onClick={() => setMobileView("list")}
-                  className="md:hidden text-gray-400 hover:text-white mr-1"
+                  onClick={() => { setMobileView("list"); setActiveContact(null); }}
+                  className="lg:hidden text-gray-400 hover:text-white mr-1"
                 >
                   <ChevronLeft size={20} />
                 </button>
@@ -542,6 +552,7 @@ export default function MessagePage() {
             </div>
           </>
         ) : (
+          // Empty state shown on lg when no contact is selected
           <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
             <div className="w-16 h-16 rounded-2xl bg-[#1a1b26] border border-white/8 flex items-center justify-center">
               <MessageSquare size={28} className="text-white/20" />
