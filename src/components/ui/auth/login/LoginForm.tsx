@@ -63,7 +63,7 @@ export function LoginForm() {
         {/* Heading */}
         <h1
           className="text-2xl font-bold mb-1"
-          style={{ color: '#a89fe8', fontFamily: "'DM Sans', sans-serif" }}
+          style={{ color: '#a89fe8' }}
         >
           Hey, you&apos;re back!
         </h1>
