@@ -4,7 +4,7 @@ import { MdOutlineNotificationsNone } from "react-icons/md";
 
 export function MessageNav() {
   return (
-    <header className="sticky top-0 z-10 bg-[#0a0a0a]/90 backdrop-blur-md  h-25 flex items-center justify-between px-4 md:px-6 border-b border-[#242424]">
+    <header className="hidden md:flex items-center justify-between sticky top-0 z-10 bg-[#0a0a0a]/90 backdrop-blur-md  h-25  px-4 md:px-6 border-b border-[#242424]">
       <div className="flex items-center  justify-between w-full">
         <h1 className="text-xl font-medium text-white tracking-wide">
           Message
