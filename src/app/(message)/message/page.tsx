@@ -369,28 +369,16 @@ export default function MessagePage() {
           : "flex w-full lg:w-1/3"
         }`}>
         {/* Header */}
-        <div className="px-4 py-4 border-b border-white/8">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-white font-semibold">Message</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowMassMessage(true)}
-                className="w-8 h-8 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 flex items-center justify-center text-indigo-400 transition-colors"
-                title="Mass Message"
-              >
-                <Users size={15} />
-              </button>
-            </div>
-          </div>
-          <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
+        <div className="px-4 py-4 flex items-center gap-2 border-b border-white/8">
+          <div className="relative flex-1">
+            <Search size={14} className="absolute left-3 top-1/2 -mt-1 -translate-y-1/2 text-gray-600" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search"
               className="w-full bg-[#1a1b26] border border-white/8 rounded-xl pl-9 pr-10 py-2 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-indigo-500/40 transition-all"
             />
-            <div className="relative">
+            <div className="relative mt-2">
               <button
                 onClick={() => setShowFilter(!showFilter)}
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md bg-white/5 flex items-center justify-center text-gray-500 hover:text-white transition-colors"
@@ -400,6 +388,15 @@ export default function MessagePage() {
               </button>
               {showFilter && <FilterMenu onClose={() => setShowFilter(false)} />}
             </div>
+          </div>
+          <div className="flex gap-2 -mt-2">
+            <button
+              onClick={() => setShowMassMessage(true)}
+              className="w-8 h-8 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 flex items-center justify-center text-indigo-400 transition-colors"
+              title="Mass Message"
+            >
+              <Users size={15} />
+            </button>
           </div>
         </div>
 
@@ -417,10 +414,7 @@ export default function MessagePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2">
                     <span className="text-slate-200 text-sm font-normal truncate">{c.name}</span>
-                    <TierBadge tier={c.tier} color={c.tierColor} points={c.points} />
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-semibold `}>
-                      <IoIosStar size={15} className=" text-amber-300" /> 30
-                    </span>
+                    <TierBadge tier={c.tier} color={c.tierColor} points={c.points} />                    
                   </div>
                   <span className="text-gray-600 text-xs flex-shrink-0 ml-2">{c.time}</span>
                 </div>
