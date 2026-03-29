@@ -1,5 +1,6 @@
 "use client";
 
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,7 +8,7 @@ import React from "react";
 import { IconType } from "react-icons";
 import { FiHome, FiCompass, FiMessageCircle, FiUser } from "react-icons/fi";
 import { IoMdWallet } from "react-icons/io";
-import { IoDiamondSharp } from "react-icons/io5";
+import { IoDiamondSharp, IoSettingsOutline } from "react-icons/io5";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -25,7 +26,7 @@ const navItems: NavItem[] = [
   { href: "/explore", label: "Explore", icon: FiCompass },
   { href: "/message", label: "Message", icon: FiMessageCircle },
   { href: "/profile", label: "Profile", icon: FiUser },
-  { href: "/setting", label: "Setting", icon: FiUser },
+  { href: "/setting", label: "Setting", icon: IoSettingsOutline },
 ];
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {

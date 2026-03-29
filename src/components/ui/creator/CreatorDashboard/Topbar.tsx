@@ -1,53 +1,53 @@
-"use client";
 
-import React from "react";
-import { usePathname } from "next/navigation";
-import { Bell, ChevronRight, Dot } from "lucide-react";
 import Link from "next/link";
+import Breadcrumbs from "../../Breadcrumbs";
+import { MdOutlineNotificationsNone } from "react-icons/md";
+import { LuShoppingCart } from "react-icons/lu";
+import Image from "next/image";
 
-export default function Topbar() {
-  const pathname = usePathname();
-
-  // Convert pathname to breadcrumb
-  const getBreadcrumb = () => {
-    const segments = pathname.split("/").filter(Boolean);
-
-    // Format each segment
-    const formatted = segments.map((segment) => {
-      // Convert kebab-case or snake_case to Title Case
-      return segment
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    });
-
-    return formatted;
-  };
-
-  const breadcrumbs = getBreadcrumb();
-
+export default function Topbar({
+  title = [],
+}: {
+  title?: { label: string; href: string }[];
+  onMenuClick?: () => void;
+}) {
   return (
-    <div className="sticky top-0 z-10 h-25 flex flex-col gap-2 sm:flex-row items-center justify-between bg-[#0A0A0A]/95 backdrop-blur-sm border-b border-primary/20 px-6 sm:px-20 lg:px-8">
-      <div className="flex items-center gap-2 text-sm">
-        {breadcrumbs.map((crumb, index) => (
-          <div key={index} className="flex items-center text-xs sm:text-base">
-            {index > 0 && (
-              <ChevronRight className="w-4 h-4 text-gray-500 mx-1" />
-            )}
-            <h1 className="text-2xl font-medium text-white tracking-wide"> {crumb} </h1>
-          </div>
-        ))}
+    <header className="sticky top-0 z-10 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#242424] h-20 flex items-center justify-between px-4 md:px-6">
+      <div className="flex items-center gap-3 pl-5  lg:pl-0">
+        <Breadcrumbs items={title} />
       </div>
 
-      <div className="flex items-center gap-6">
-        <Link
-          href="/user-dashboard/notifications"
-          className="text-white relative hover:text-primary transition-colors"
-        >
-          <Dot className="text-primary absolute -top-3 -right-3.5 size-8" />
-          <Bell className="w-5 h-5" />
-        </Link>
+     
+
+      <div className="flex items-center gap-2 md:gap-3">
+         <div className="flex items-center gap-4">
+        <div className="w-10.50 h-10.50  rounded-full bg-gray-100 overflow-hidden border border-[#242424] cursor-pointer">
+          <Image src="/user.png" width={100} height={100} alt="avatar" className="w-full h-full" />
+        </div>
+        <div>
+          <h1 className="text-md font-bold tracking-tight">Jhon G.</h1>
+          <p className="text-primary/70 text-sm">Digital Artist</p>
+        </div>
       </div>
-    </div>
+        <Link href="/notifications">  <button className="hidden sm:flex cursor-pointer relative w-11 h-11 rounded-full bg-[#15131A] border border-[#242424] justify-center items-center text-gray-400 hover:text-white transition-colors">
+          <MdOutlineNotificationsNone size={25} />
+          {/* Badge */}
+          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+            3
+          </span>
+        </button>
+        </Link>
+        <Link href="/add-to-card">
+          <button className="hidden sm:flex cursor-pointer relative w-11 h-11 rounded-full bg-[#15131A] border border-[#242424] justify-center items-center text-gray-400 hover:text-white transition-colors">
+            <LuShoppingCart size={21} />
+            {/* Badge */}
+            <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+              2
+            </span>
+          </button>
+        </Link>
+       
+      </div>
+    </header>
   );
 }

@@ -2,16 +2,13 @@
 
 import Cookies from "js-cookie";
 import {
-  ChevronLeft,
   CircleDollarSign,
   LayoutDashboard,
   LogOut,
-  Menu,
   MessageCircleMore,
   Plus,
   Settings,
-  User,
-  X
+  User
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,16 +52,12 @@ export function CreatorSidebar() {
   return (
     <>
       {/* Mobile Menu Button */}
-      <button
+     {!isMobileOpen && <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-4 left-1 sm:left-4 z-50 p-2 bg-[#111111] border border-primary/20 rounded-lg text-white hover:bg-[#1A1A1A] transition-colors cursor-pointer"
-      >
-        {isMobileOpen ? (
-          <X className="size-5" />
-        ) : (
-          <Menu className="size-4 sm:size-6" />
-        )}
-      </button>
+        className="lg:hidden fixed top-6 left-3 sm:left-4 z-50 p-2 text-white text-2xl transition-colors cursor-pointer"
+      >                    
+          ☰        
+      </button>}
 
       {/* Mobile Overlay */}
       {isMobileOpen && (
@@ -102,6 +95,12 @@ export function CreatorSidebar() {
                 </Link>
               )}
 
+              <button
+                onClick={() => setIsMobileOpen(!isMobileOpen)}
+                className="md:hidden text-gray-400 hover:text-white text-xl p-1"
+              >
+                ✕
+              </button>
             </div>
           </div>
 

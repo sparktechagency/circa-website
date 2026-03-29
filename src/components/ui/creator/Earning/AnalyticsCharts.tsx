@@ -12,6 +12,7 @@ import {
     Cell,
 } from 'recharts';
 import { Star, MessageSquare, ShoppingBag } from 'lucide-react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../../select';
 
 
 const ChartCard = ({ title, icon, iconBg, iconColor, barColor }: any) => {
@@ -26,12 +27,18 @@ const ChartCard = ({ title, icon, iconBg, iconColor, barColor }: any) => {
                     <span>{title}</span>
                 </div>
 
-
-                <select className='px-5 py-1 bg-cardBg rounded-full border border-gray-800'>
-                    <option value="week">Week</option>
-                    <option value="month">Month</option>
-                    <option value="year">Year</option>
-                </select>
+                <Select>
+                    <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent className='bg-black'>
+                        <SelectGroup>
+                            <SelectItem value="week">Week</SelectItem>
+                            <SelectItem value="month">Month</SelectItem>
+                            <SelectItem value="year">Year</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
 
 
