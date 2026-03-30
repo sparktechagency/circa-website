@@ -4,12 +4,17 @@ import React, { useState } from 'react';
 import { Mail, Lock, EyeOff, Eye, UserRound, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { myFetch } from '../../../../../helpers/myFetch';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
+import Image from 'next/image';
+
 
 export function SignupForm() {
   const router = useRouter();
-  const [fullName, setFullName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,10 +26,25 @@ export function SignupForm() {
     setError('');
 
     try {
-      console.log('Signup successful:', { fullName, email, phone });
-      router.replace('/user-dashboard');
-    } catch (err) {
-      setError('Something went wrong. Please try again.');
+      const response = await myFetch("/user", { method: "POST", body: { email, name, contact, password } })
+      if (response?.success) {
+        toast.success(response?.message)        
+        router.replace(`/verify-otp?email=${email}`);
+        setIsLoading(false);
+      } else {
+        // @ts-ignore
+        setError(response?.error[0]?.message);
+         if (response?.error && Array.isArray(response.error)) {
+          response.error.forEach((err: { message: string }) => {
+            toast.error(err.message, { id: "sign-up" });
+          });
+        } else {
+          toast.error(response?.message || "Something went wrong!", {
+            id: "sign-up",
+          });
+        }
+      }
+    } catch (err) {      
       console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
@@ -38,29 +58,13 @@ export function SignupForm() {
         style={{ background: '#15151a' }}
       >
         {/* App Icon */}
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-          style={{
-            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
-            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
-          }}
-        >
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path
-              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M22 3.5L24.5 8.5L19.5 9"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="Circa Logo"
+          width={60}
+          height={60}
+          className="w-14 h-14"
+        />
 
         {/* Heading */}
         <h1
@@ -83,8 +87,8 @@ export function SignupForm() {
             <UserRound className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
             <input
               type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Full Name"
               required
               className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
@@ -115,8 +119,8 @@ export function SignupForm() {
             <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#6b6b7b' }} />
             <input
               type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
               placeholder="Phone No"
               required
               className="flex-1 bg-transparent text-white placeholder-[#6b6b7b] text-sm focus:outline-none"
@@ -165,7 +169,7 @@ export function SignupForm() {
               boxShadow: '0 4px 20px rgba(123, 111, 212, 0.4)',
             }}
           >
-            {isLoading ? 'Creating Account...' : 'Login'}
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
@@ -177,7 +181,7 @@ export function SignupForm() {
             className="font-medium"
             style={{ color: '#a89fe8' }}
           >
-            Sign in
+            Sign In
           </Link>
         </p>
       </div>

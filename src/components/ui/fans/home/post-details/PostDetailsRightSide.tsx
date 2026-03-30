@@ -8,6 +8,10 @@ import { useSearchParams } from 'next/navigation';
 const PostDetailsRightSide = () => {
     const params = useSearchParams();
     const type = params.get("type");
+    const id = params.get("id");
+
+    console.log("post idd", id)
+
     const postType: "free" | "premium" = type === "premium" ? "premium" : "free";
     const mockPost: Post = {
         id: "post-1",
