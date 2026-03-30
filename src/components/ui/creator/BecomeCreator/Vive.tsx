@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 
 const CATEGORIES = [
     { id: "music", label: "Music", emoji: "🎵" },
@@ -41,6 +42,12 @@ const Vive = ({
     };
 
     const handleConfirm = () => {
+        if(!selectedCategories?.length){
+           return toast.error("Select minimum one category")
+        }
+        if(friendsMode && !selectedSocialTags?.length){
+             return toast.error("Select friends one category")
+        }
         onVibeComplete({
             selectedCategories,
             friendsMode,

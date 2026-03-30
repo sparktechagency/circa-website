@@ -5,31 +5,46 @@ import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../button";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { toast } from "sonner";
+import { myFetch } from "../../../../../helpers/myFetch";
+import Cookies from "js-cookie";
 
-export function ResetPasswordForm() {
+
+export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
 
     try {
-      // TODO: Replace with actual password reset API call
-      // const response = await fetch('/api/auth/forgot-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email })
-      // });
-
-      // Mock successful request
-      router.push("otp-verify");
+      const response = await myFetch("/auth/forget-password", { method: "POST", body: { email } })
+      if (response?.success) {
+        toast.success(response?.message)
+        router.replace(`/verify-otp?email=${email}&userType=forget`);
+        setIsLoading(false);
+        // ⏱️ OTP valid for 2 minutes
+        const expiryTime = Date.now() + 3 * 60 * 1000;
+        Cookies.set("otpExpiry", expiryTime.toString());
+      } else {
+        // @ts-ignore
+        setError(response?.error[0]?.message);
+        if (response?.error && Array.isArray(response.error)) {
+          response.error.forEach((err: { message: string }) => {
+            toast.error(err.message, { id: "forgot-password" });
+          });
+        } else {
+          toast.error(response?.message || "Something went wrong!", {
+            id: "forgot-password",
+          });
+        }
+      }
     } catch (err) {
-      setError("An error occurred. Please try again.");
       console.error("Password reset error:", err);
     } finally {
       setIsLoading(false);
@@ -39,30 +54,13 @@ export function ResetPasswordForm() {
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-br from-black via-[#0A0A0A] to-black">
       <div className="w-full max-w-md">
-        <div
-          className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-5"
-          style={{
-            background: "linear-gradient(145deg, #a89fe8, #7b6fd4)",
-            boxShadow: "0 8px 24px rgba(123, 111, 212, 0.35)",
-          }}
-        >
-          {/* Refresh / C icon */}
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path
-              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M22 3.5L24.5 8.5L19.5 9"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="Circa Logo"
+          width={60}
+          height={60}
+          className="w-16 h-16 mx-auto mb-2"
+        />
         <div className="text-center mb-8">
           {/* <Logo className="justify-center mb-8" /> */}
           <h1 className="text-4xl  text-white mb-2">Reset Password</h1>
@@ -93,10 +91,6 @@ export function ResetPasswordForm() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Sending OTP" : "Send OTP"}
             </Button>
-
-            {error && (
-              <div className="text-sm text-red-500 text-center">{error}</div>
-            )}
           </form>
 
           <div className="mt-6 text-center">

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { MOCK_POSTS } from "@/constants/home-data";
 import PostCard from "@/components/ui/fans/home/PostCard";
+import { myFetch } from "../../../helpers/myFetch";
 
-export default function HomePage() {
+export default async  function  HomePage() {
 
+  const  response = await myFetch("/post/feed");
 
   return (
     <div className="space-y-6 pb-10">
@@ -31,8 +33,8 @@ export default function HomePage() {
       
       {/* Posts Feed Grid */}
       <div className="grid grid-cols-1  gap-6">
-        {MOCK_POSTS.map(post => (
-          <Link href={`/home/post-details?type=${post.type}`} key={post.id}>
+        {response?.data?.map((post:any) => (
+          <Link href={`/home/post-details?id=${post._id}&type=${post?.isPrimium ? "premium" : "free"}`} key={post._id}>
              <PostCard post={post} />
           </Link>
         ))}

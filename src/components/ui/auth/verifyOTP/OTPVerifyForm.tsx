@@ -1,52 +1,35 @@
 "use client";
-import {
-  useState,
-  useEffect,
-  useRef,
-  FormEvent,
-  ChangeEvent,
-  KeyboardEvent,
-} from "react";
-import {
-  ArrowLeft,
-  ShieldCheck,
-  RefreshCcw,
-  AlertCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useRouter } from "next/navigation";
+import { AlertCircle, ArrowLeft, RefreshCcw } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEvent,
+  useRef,
+  useState,
+} from "react";
+import { myFetch } from "../../../../../helpers/myFetch";
+import { toast } from "sonner";
+import { OtpCountdown } from "@/components/shared/Otpcountdown";
+import Cookies from "js-cookie";
+
+
+const OTP_LENGTH = 4;
 
 export default function OTPVerifyForm() {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [timeLeft, setTimeLeft] = useState(180);
+  const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const searchParams = useSearchParams();
 
+  const email = searchParams.get("email");
+  const userType = searchParams.get("userType");
   const router = useRouter();
-
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      setIsExpired(true);
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft]);
-
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
 
   const handleChange = (index: number, value: string): void => {
     if (!/^\d*$/.test(value)) return;
@@ -55,14 +38,14 @@ export default function OTPVerifyForm() {
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
 
-    if (value && index < 5) {
+    if (value && index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleKeyDown = (
     index: number,
-    e: KeyboardEvent<HTMLInputElement>,
+    e: KeyboardEvent<HTMLInputElement>
   ): void => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -74,17 +57,17 @@ export default function OTPVerifyForm() {
     const pasteData = e.clipboardData
       .getData("text")
       .replace(/\D/g, "")
-      .slice(0, 6)
+      .slice(0, OTP_LENGTH)
       .split("");
 
     if (pasteData.length > 0) {
       const newOtp = [...otp];
       pasteData.forEach((char: string, i: number) => {
-        if (i < 6) newOtp[i] = char;
+        if (i < OTP_LENGTH) newOtp[i] = char;
       });
       setOtp(newOtp);
 
-      const nextIndex = pasteData.length < 6 ? pasteData.length : 5;
+      const nextIndex = pasteData.length < OTP_LENGTH ? pasteData.length : OTP_LENGTH - 1;
       inputRefs.current[nextIndex]?.focus();
     }
   };
@@ -92,16 +75,43 @@ export default function OTPVerifyForm() {
   const handleVerify = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const code = otp.join("");
-    if (code.length < 6) {
+    if (code.length < OTP_LENGTH) {
       setError("Please enter the complete verification code.");
       return;
     }
 
     setIsLoading(true);
     setError("");
-    router.push("new-password");
+
     try {
-      // Api call here
+      const response = await myFetch("/auth/verify-email", {
+        method: "POST",
+        body: { email, oneTimeCode: Number(code) },
+      });
+
+      if (response?.success) {
+        toast.success(response?.message || "OTP verified successfully", {
+          id: "otp-verify",
+        });
+        Cookies.remove("otpExpiry")
+        if (userType === "forget") {
+          router.push(`/new-password?token=${response?.data?.accessToken}`);
+        } else {
+          router.push(`/auth/login`);
+        }
+      } else {
+        // @ts-ignore
+        setError(response?.error[0]?.message);
+        if (response?.error && Array.isArray(response.error)) {
+          response.error.forEach((err: { message: string }) => {
+            toast.error(err.message, { id: "sign-up" });
+          });
+        } else {
+          toast.error(response?.message || "Something went wrong!", {
+            id: "sign-up",
+          });
+        }
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An error occurred";
@@ -111,26 +121,28 @@ export default function OTPVerifyForm() {
     }
   };
 
-  const handleResend = () => {
-    setTimeLeft(180);
-    setIsExpired(false);
-    setOtp(["", "", "", "", "", ""]);
+  const handleResendSuccess = () => {
+    setOtp(Array(OTP_LENGTH).fill(""));
     setError("");
-    setIsLoading(false);
+    setIsExpired(false);
     setTimeout(() => inputRefs.current[0]?.focus(), 100);
+     // ⏱️ OTP valid for 2 minutes
+      const expiryTime = Date.now() + 3 * 60 * 1000;
+      Cookies.set("otpExpiry", expiryTime.toString());
   };
+
+  const isOtpComplete = !otp.includes("");
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-b from-[#0F0F0F] to-black text-white font-sans">
       <div className="w-full max-w-md">
         <div
-          className="w-16 h-16  mx-auto rounded-2xl flex items-center justify-center mb-5"
+          className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-5"
           style={{
             background: "linear-gradient(145deg, #a89fe8, #7b6fd4)",
             boxShadow: "0 8px 24px rgba(123, 111, 212, 0.35)",
           }}
         >
-          {/* Refresh / C icon */}
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             <path
               d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
@@ -149,10 +161,9 @@ export default function OTPVerifyForm() {
         </div>
 
         <div className="text-center mb-8">
-          {/* <Logo className="justify-center mb-8" /> */}
-          <h1 className="text-4xl  text-white mb-2">Verify OTP</h1>
+          <h1 className="text-4xl text-white mb-2">Verify OTP</h1>
           <p className="text-gray-400">
-            Enter the code sent to your email (check Inbox or Spam)
+            Enter the 4-digit code sent to your email (check Inbox or Spam)
           </p>
         </div>
 
@@ -165,8 +176,9 @@ export default function OTPVerifyForm() {
                 Enter Verification Code
               </label>
 
+              {/* 4-digit OTP inputs — wider gaps since fewer boxes */}
               <div
-                className="flex justify-between gap-2 md:gap-3"
+                className="flex justify-center gap-4"
                 onPaste={handlePaste}
               >
                 {otp.map((digit, index) => (
@@ -187,67 +199,45 @@ export default function OTPVerifyForm() {
                     }
                     disabled={isExpired || isLoading}
                     maxLength={1}
-                    className={`w-full h-14 md:h-16 text-center text-2xl font-bold ${
-                      isExpired ? "opacity-50" : ""
-                    }`}
+                    className={`w-16 h-16 text-center text-2xl font-bold ${isExpired ? "opacity-50" : ""
+                      }`}
                   />
                 ))}
               </div>
             </div>
 
-            {isExpired ? (
-              <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>This code has expired</AlertDescription>
-                </Alert>
-                <Button
-                  variant="outline"
-                  onClick={handleResend}
-                  className="w-full"
-                >
-                  <RefreshCcw className="w-4 h-4 mr-2" />
-                  Resend New Code
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading || otp.includes("")}
-                >
-                  {isLoading ? (
-                    <span className="flex items-center">
-                      <RefreshCcw className="w-4 h-4 mr-2 animate-spin" />
-                      Verifying...
-                    </span>
-                  ) : (
-                    "Verify Code"
-                  )}
-                </Button>
-
-                <div className="flex items-center justify-between text-xs md:text-sm">
-                  <div className="flex items-center text-gray-500">
-                    Code expires in:
-                    <span
-                      className={`ml-2 font-mono font-bold ${timeLeft < 30 ? "text-red-400 animate-pulse" : "text-primary"}`}
-                    >
-                      {formatTime(timeLeft)}
-                    </span>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={handleResend}
-                    disabled={timeLeft > 120}
-                    className="text-primary hover:text-[#E4C77D] text-xs md:text-sm p-0 h-auto"
-                  >
-                    Resend
-                  </Button>
-                </div>
-              </div>
+            {/* Expired alert */}
+            {isExpired && (
+              <Alert variant="destructive" className="animate-in slide-in-from-top-2 duration-300">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  This code has expired. Please request a new one.
+                </AlertDescription>
+              </Alert>
             )}
+
+            {/* Submit button */}
+            <Button
+              type="submit"
+              className="w-full"
+            disabled={isLoading || !isOtpComplete || isExpired}
+            >
+              {isLoading ? (
+                <span className="flex items-center">
+                  <RefreshCcw className="w-4 h-4 mr-2 animate-spin" />
+                  Verifying...
+                </span>
+              ) : (
+                "Verify Code"
+              )}
+            </Button>
+
+            {/* Reusable countdown + resend */}
+            <OtpCountdown
+              email={email}
+              onExpire={() => setIsExpired(true)}
+              onResendSuccess={handleResendSuccess}
+            />
 
             {error && !isExpired && (
               <div className="text-xs text-red-500 text-center animate-shake">

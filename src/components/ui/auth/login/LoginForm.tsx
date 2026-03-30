@@ -4,6 +4,11 @@ import React, { useState } from 'react';
 import { Mail, Lock, EyeOff, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { myFetch } from '../../../../../helpers/myFetch';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
+import Image from 'next/image';
+
 
 export function LoginForm() {
   const router = useRouter();
@@ -18,11 +23,29 @@ export function LoginForm() {
     setIsLoading(true);
     setError('');
 
-    try {      
-      router.replace('/user-dashboard');
+    try {
+      const response = await myFetch("/auth/login", { method: "POST", body: { email, password } })
+
+      if (response?.success) {
+        Cookies.set("accessToken", response?.data?.accessToken);
+        Cookies.set("role", response?.data?.role);
+        toast.success(response?.message)
+        // router.replace(response?.data?.role === "CREATOR" ? '/creator-home' : '/');
+        setIsLoading(false);
+      } else {
+        if (response?.error && Array.isArray(response.error)) {
+          response.error.forEach((err: { message: string }) => {
+            toast.error(err.message, { id: "sign-up" });
+          });
+        } else {
+          toast.error(response?.message || "Something went wrong!", {
+            id: "sign-up",
+          });
+        }
+      }
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
       console.error('Login error:', err);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -35,30 +58,13 @@ export function LoginForm() {
         style={{ background: '#15151a' }}
       >
         {/* App Icon */}
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-          style={{
-            background: 'linear-gradient(145deg, #a89fe8, #7b6fd4)',
-            boxShadow: '0 8px 24px rgba(123, 111, 212, 0.35)',
-          }}
-        >
-          {/* Refresh / C icon */}
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path
-              d="M27 16c0 6.075-4.925 11-11 11S5 22.075 5 16 9.925 5 16 5c3.3 0 6.263 1.452 8.3 3.75"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M22 3.5L24.5 8.5L19.5 9"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="Circa Logo"
+          width={60}
+          height={60}
+          className="w-14 h-14"
+        />
 
         {/* Heading */}
         <h1
@@ -119,7 +125,7 @@ export function LoginForm() {
           {/* Forgot Password */}
           <div className="flex justify-end">
             <Link
-              href="/reset-password"
+              href="/forgot-password"
               className="text-xs underline"
               style={{ color: '#a89fe8' }}
             >
