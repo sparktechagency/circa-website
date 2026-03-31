@@ -4,6 +4,8 @@ import { Heart, Lock, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { imgUrl } from "../../../../../../helpers/imgUrl";
 import PostComments from "./PostComments";
+import LikeCommentButton from "./LikeCommentButton";
+import { imageFormatter } from "../../../../../../helpers/imageFormatter";
 
 interface PostDetailsLayoutProps {
   post: any;
@@ -18,6 +20,9 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
   const likeCount = post?.likeCount ?? post?.like_count ?? 0;
   const commentCount = post?.comment_count ?? 0;
 
+console.log("comments count", post);
+    
+
   return (
     <div className="w-full mx-auto bg-[#0a0a0a] min-h-screen text-white pb-10">
       {/* Left Column - Main Post Content */}
@@ -30,7 +35,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden relative">
                 <Image
-                  src={imgUrl + authorImage}
+                  src={imageFormatter(authorImage)}
                   alt={authorName}
                   fill
                   className="object-cover w-full h-full"
@@ -48,7 +53,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
             <div className="relative w-full rounded-xl overflow-hidden mb-4 bg-red-100">
               <div className="h-136.25 w-full relative">
                 <Image
-                  src={ imgUrl + postImage}
+                  src={imageFormatter(postImage)}
                   alt="Post Image"
                   fill
                   className="object-cover w-full h-full transition-all duration-300"
@@ -59,24 +64,7 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
           )}
 
           {/* Actions */}
-          <div className="flex gap-4 mb-5 pb-5 text-primary border-b border-[#2D2D2D]">
-            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 hover:text-white hover:bg-white/5 transition-colors text-sm">
-              <Heart className="w-4 h-4" />
-              <span>
-                {likeCount >= 1000
-                  ? `${(likeCount / 1000).toFixed(1)}k`
-                  : likeCount}
-              </span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 hover:text-white hover:bg-white/5 transition-colors text-sm">
-              <MessageCircle className="w-4 h-4" />
-              <span>
-                {commentCount >= 1000
-                  ? `${(commentCount / 1000).toFixed(1)}k`
-                  : commentCount}
-              </span>
-            </button>
-          </div>
+          <LikeCommentButton post={post} />
 
           {/* Content */}
           <div className="relative">
@@ -113,11 +101,11 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
                 </div>
               </div>
             )}
-           
+
           </div>
         </div>
 
-       <PostComments post={post}/>
+        <PostComments post={post} />
       </div>
     </div>
   );

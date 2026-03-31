@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Heart, Lock } from "lucide-react";
 import Link from "next/link";
 import { postsData } from "@/constants/explore-data";
+import { imageFormatter } from "../../../../../../helpers/imageFormatter";
 
 const Posts = () => {
   return (
@@ -10,7 +11,7 @@ const Posts = () => {
         <Link href={`/explore/creator-profile/post-details?type=${post.isLocked ? "premium" : "free"}`} key={post.id} className="flex flex-col gap-3 group cursor-pointer">
           <div className="relative w-full rounded-[22px] overflow-hidden bg-[#1c1c20]">
             <Image
-              src={post.image}
+              src={imageFormatter(post.image)}
               width={500}
               height={300}
               className={`object-cover  h-[300px] transition-transform duration-500 group-hover:scale-105 ${post.isLocked ? 'brightness-75' : ''}`}

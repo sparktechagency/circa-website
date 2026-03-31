@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Heart, MessageCircle } from "lucide-react";
 import { imgUrl } from "../../../../../helpers/imgUrl";
+import { imageFormatter } from "../../../../../helpers/imageFormatter";
 
 interface PostUser {
   _id: string;
@@ -57,7 +58,7 @@ export default function PostCard({ post }: PostCardProps) {
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-full overflow-hidden">
             <Image
-              src={imgUrl + post.user.image}
+              src={imageFormatter(post.user.image)}
               alt={post.user.name}
               fill
               className="object-cover w-full h-full"
@@ -97,7 +98,7 @@ export default function PostCard({ post }: PostCardProps) {
       {coverImage && (
         <div className="relative w-full h-72 overflow-hidden mb-5 bg-black/40 rounded-lg">
           <Image
-            src={imgUrl + coverImage}
+            src={imageFormatter(coverImage)}
             alt={post.title || "Post Cover"}
             fill
             className="object-cover w-full h-full"            

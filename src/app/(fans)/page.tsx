@@ -7,6 +7,8 @@ export default async  function  HomePage() {
 
   const  response = await myFetch("/post/feed");
 
+  console.log("response", response);
+  
   return (
     <div className="space-y-6 pb-10">
       <div
