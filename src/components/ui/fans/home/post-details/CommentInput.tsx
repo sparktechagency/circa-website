@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { imgUrl } from '../../../../../../helpers/imgUrl'
 import { myFetch } from '../../../../../../helpers/myFetch'
 import { revalidate } from '../../../../../../helpers/revalidateHelper'
+import { imageFormatter } from '../../../../../../helpers/imageFormatter'
 
 const CommentInput = ({ postId, profileData }: { postId: string, profileData:any }) => {
     console.log("postId", postId);
@@ -54,7 +55,7 @@ const CommentInput = ({ postId, profileData }: { postId: string, profileData:any
             {/* Avatar */}
             <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-gray-700 relative">
                 <Image
-                    src={profileData?.image ? imgUrl + profileData?.image: "/placeholder.png"}
+                    src={imageFormatter(profileData?.image)}
                     alt={profileData?.name || 'User'}
                     fill
                     className="object-cover"

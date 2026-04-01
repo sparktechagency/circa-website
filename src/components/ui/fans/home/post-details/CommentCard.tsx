@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Heart } from 'lucide-react'
 import { imgUrl } from '../../../../../../helpers/imgUrl'
 import ReplyInput from './ReplyInput'
+import { imageFormatter } from '../../../../../../helpers/imageFormatter'
 
 interface CommentCardProps {
     comment: any;
@@ -30,7 +31,7 @@ const CommentCard = ({ comment, profileData }: CommentCardProps) => {
         <div className="flex gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 relative">
                 <Image
-                    src={author?.image ? imgUrl + author.image : '/asset/default.jpg'}
+                    src={imageFormatter(author.image)}
                     alt={author?.name || 'User'}
                     fill
                     className="object-cover"
@@ -75,7 +76,7 @@ const CommentCard = ({ comment, profileData }: CommentCardProps) => {
                                 <div key={reply._id} className="flex gap-3">
                                     <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 relative">
                                         <Image
-                                            src={replyAuthor?.image ? imgUrl + replyAuthor.image : '/asset/default.jpg'}
+                                            src={imageFormatter(replyAuthor.image)}
                                             alt={replyAuthor?.name || 'User'}
                                             fill
                                             className="object-cover"

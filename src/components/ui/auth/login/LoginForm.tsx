@@ -30,7 +30,7 @@ export function LoginForm() {
         Cookies.set("accessToken", response?.data?.accessToken);
         Cookies.set("role", response?.data?.role);
         toast.success(response?.message)
-        // router.replace(response?.data?.role === "CREATOR" ? '/creator-home' : '/');
+        router.replace(response?.data?.role === "CREATOR" ? '/creator-home' : '/');
         setIsLoading(false);
       } else {
         if (response?.error && Array.isArray(response.error)) {

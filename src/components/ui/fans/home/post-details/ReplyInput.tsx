@@ -6,6 +6,7 @@ import { myFetch } from '../../../../../../helpers/myFetch'
 import { revalidate } from '../../../../../../helpers/revalidateHelper'
 import { imgUrl } from '../../../../../../helpers/imgUrl'
 import { toast } from 'sonner'
+import { imageFormatter } from '../../../../../../helpers/imageFormatter'
 
 interface ReplyInputProps {
     commentId: string;
@@ -56,7 +57,7 @@ const ReplyInput = ({ commentId, profileData, onClose }: ReplyInputProps) => {
         <div className="flex items-center gap-2 mt-3">
             <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 border border-gray-700 relative">
                 <Image
-                    src={profileData?.image ? imgUrl + profileData.image : '/asset/default.jpg'}
+                    src={imageFormatter(profileData.image)}
                     alt={profileData?.name || 'User'}
                     fill
                     className="object-cover"

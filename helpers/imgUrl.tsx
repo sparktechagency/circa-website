@@ -1,2 +1,1 @@
-export const imgUrl =
-  process.env.IMAGE_BASE_URL || "";
+export const imgUrl =   process.env.IMAGE_BASE_URL || "";

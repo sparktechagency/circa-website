@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { Heart, MessageCircle } from "lucide-react";
 import { imgUrl } from "../../../../../helpers/imgUrl";
+import { imageFormatter } from "../../../../../helpers/imageFormatter";
+import PostCardButton from "./PostCardButton";
 
 interface PostUser {
   _id: string;
@@ -57,7 +59,7 @@ export default function PostCard({ post }: PostCardProps) {
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-full overflow-hidden">
             <Image
-              src={imgUrl + post.user.image}
+              src={imageFormatter(post.user.image)}
               alt={post.user.name}
               fill
               className="object-cover w-full h-full"
@@ -97,7 +99,7 @@ export default function PostCard({ post }: PostCardProps) {
       {coverImage && (
         <div className="relative w-full h-72 overflow-hidden mb-5 bg-black/40 rounded-lg">
           <Image
-            src={imgUrl + coverImage}
+            src={imageFormatter(coverImage)}
             alt={post.title || "Post Cover"}
             fill
             className="object-cover w-full h-full"            
@@ -109,18 +111,7 @@ export default function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Footer Actions */}
-      <div className="flex gap-4">
-        <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 text-primary text-sm">
-          <Heart
-            className={`w-4 h-4 ${post.isLiked ? "fill-red-500 text-red-500" : ""}`}
-          />
-          <span>{formatCount(post.likeCount)}</span>
-        </button>
-        <button className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 text-primary text-sm">
-          <MessageCircle className="w-4 h-4" />
-          <span>{formatCount(post.comment_count)}</span>
-        </button>
-      </div>
+      <PostCardButton post={post}/>
     </div>
   );
 }

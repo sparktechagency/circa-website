@@ -5,7 +5,7 @@ import { myFetch } from "../../../helpers/myFetch";
 
 export default async  function  HomePage() {
 
-  const  response = await myFetch("/post/feed");
+  const  response = await myFetch("/post/feed", {tags: ['feed-posts']});
 
   return (
     <div className="space-y-6 pb-10">
