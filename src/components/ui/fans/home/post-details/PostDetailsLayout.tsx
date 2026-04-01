@@ -17,11 +17,6 @@ export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
   const authorImage = post?.user?.image;
   const authorName = post?.user?.name;
   const postImage = post?.images?.[0]; // ✅ images is an array
-  const likeCount = post?.likeCount ?? post?.like_count ?? 0;
-  const commentCount = post?.comment_count ?? 0;
-
-console.log("comments count", post);
-    
 
   return (
     <div className="w-full mx-auto bg-[#0a0a0a] min-h-screen text-white pb-10">

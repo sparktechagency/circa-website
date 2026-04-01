@@ -89,7 +89,7 @@ const PostDetailsRightSide = () => {
                             <Crown className="w-5 h-5 text-yellow-500" />
                             Membership
                         </h3>
-                        <Link href={`/explore/creator-profile/membership/${postData?.user?._id}`}><button className='text-xs cursor-pointer'>View All</button></Link>
+                        <Link href={`/explore/creator-profile/membership?creatorId=${postData?.user?._id}`}><button className='text-xs cursor-pointer'>View All</button></Link>
                     </div>
 
                     <div className="bg-[#2A2B3D] rounded-xl p-5 border border-gray-700/50">
@@ -112,7 +112,7 @@ const PostDetailsRightSide = () => {
                         </ul>
 
                         <div className='w-full flex items-center justify-end'>
-                            <Link href={"/explore/creator-profile/membership"} className={`w-full ${!membershipPlan?.isSubscribed && "cursor-not-allowed"} bg-[#7971FF] hover:bg-[#6c64e6] text-white font-semibold py-2.5 text-center rounded-xl text-sm transition-colors`}>
+                            <Link href={`/explore/creator-profile/membership?creatorId=${postData?.user?._id}`} className={`w-full ${!membershipPlan?.isSubscribed && "cursor-not-allowed"} bg-[#7971FF] hover:bg-[#6c64e6] text-white font-semibold py-2.5 text-center rounded-xl text-sm transition-colors`}>
                                 Join
                             </Link>
                         </div>
