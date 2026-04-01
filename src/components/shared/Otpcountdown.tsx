@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 
 import { toast } from "sonner";
 import { myFetch } from "../../../helpers/myFetch";
+import { useRouter } from "next/navigation";
 
 interface OtpCountdownProps {
   email: string | null;
   onExpire?: () => void;
-  onResendSuccess?: () => void;
+  onResendSuccess?: () => void;  
 }
 
 function getOtpExpiryFromCookie(): number | null {
@@ -35,13 +36,13 @@ function getRemainingSeconds(): number {
 export function OtpCountdown({
   email,
   onExpire,
-  onResendSuccess,
+  onResendSuccess,  
 }: OtpCountdownProps) {
   const [timeLeft, setTimeLeft] = useState<number>(() => getRemainingSeconds());
   const [isResending, setIsResending] = useState(false);
 
   const isExpired = timeLeft <= 0;
-
+  const router = useRouter();
   useEffect(() => {
     // Re-sync from cookie whenever component mounts or resets
     const initial = getRemainingSeconds();
@@ -73,37 +74,44 @@ export function OtpCountdown({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleResend = async () => {
-    if (!email) return;
-    setIsResending(true);
-    try {
-      const res = await myFetch("/auth/forget-password", {
-        method: "POST",
-        body: { email },
-      });
-      if (res?.success) {
-        toast.success(res?.message || "OTP resent successfully", {
-          id: "otp-resend",
-        });
-        // Re-read expiry from the newly set cookie after a short delay
-        setTimeout(() => {
-          const newTime = getRemainingSeconds();
-          setTimeLeft(newTime > 0 ? newTime : 180);
-        }, 300);
-        onResendSuccess?.();
-      } else {
-        toast.error(res?.message || "Failed to resend OTP", {
-          id: "otp-resend",
-        });
-      }
-    } catch {
-      toast.error("Something went wrong while resending OTP", {
+const handleResend = async () => {
+  if (!email) return;
+  setIsResending(true);
+  try {
+    const res = await myFetch("/auth/forget-password", {
+      method: "POST",
+      body: { email },
+    });
+    if (res?.success) {
+      toast.success(res?.message || "OTP resent successfully", {
         id: "otp-resend",
       });
-    } finally {
-      setIsResending(false);
+
+      // ✅ Set a temporary non-zero value immediately so the
+      // timeLeft useEffect doesn't fire onExpire before the
+      // cookie is written and re-read.
+      setTimeLeft(180);
+
+      setTimeout(() => {
+        const newTime = getRemainingSeconds();
+        setTimeLeft(newTime > 0 ? newTime : 180);
+      }, 300);
+
+      onResendSuccess?.();
+      router.refresh();
+    } else {
+      toast.error(res?.message || "Failed to resend OTP", {
+        id: "otp-resend",
+      });
     }
-  };
+  } catch {
+    toast.error("Something went wrong while resending OTP", {
+      id: "otp-resend",
+    });
+  } finally {
+    setIsResending(false);
+  }
+};
 
   return (
     <div className="flex items-center justify-between text-xs md:text-sm">
