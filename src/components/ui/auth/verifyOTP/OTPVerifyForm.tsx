@@ -31,6 +31,8 @@ export default function OTPVerifyForm() {
   const userType = searchParams.get("userType");
   const router = useRouter();
 
+  console.log("isExpired", isExpired);
+  
   const handleChange = (index: number, value: string): void => {
     if (!/^\d*$/.test(value)) return;
 
@@ -197,7 +199,7 @@ export default function OTPVerifyForm() {
                     onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
                       handleKeyDown(index, e)
                     }
-                    disabled={isExpired || isLoading}
+                    disabled={isExpired}
                     maxLength={1}
                     className={`w-16 h-16 text-center text-2xl font-bold ${isExpired ? "opacity-50" : ""
                       }`}
@@ -205,17 +207,7 @@ export default function OTPVerifyForm() {
                 ))}
               </div>
             </div>
-
-            {/* Expired alert */}
-            {isExpired && (
-              <Alert variant="destructive" className="animate-in slide-in-from-top-2 duration-300">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  This code has expired. Please request a new one.
-                </AlertDescription>
-              </Alert>
-            )}
-
+           
             {/* Submit button */}
             <Button
               type="submit"
@@ -235,7 +227,7 @@ export default function OTPVerifyForm() {
             {/* Reusable countdown + resend */}
             <OtpCountdown
               email={email}
-              onExpire={() => setIsExpired(true)}
+              onExpire={() => setIsExpired(true)}              
               onResendSuccess={handleResendSuccess}
             />
 
