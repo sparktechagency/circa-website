@@ -12,8 +12,7 @@ const TopCreators = () => {
   useEffect(() => {
     const getCreators = async () => {
       try {
-        const res = await myFetch('/user/creator');
-        console.log(res?.data);
+        const res = await myFetch('/user/creator');        
         setCreators(res?.data?.slice(0, 2) ?? []);
       } catch (err) {
         console.error('Failed to fetch creators:', err);
@@ -22,9 +21,7 @@ const TopCreators = () => {
 
     getCreators();
   }, []); // ← empty array = runs once only
-
-  console.log("creators", creators);
-  
+    
   return (
     <div className="bg-[#15131A] border border-[#2D2D2D] rounded-2xl p-5">
       <div className="mb-5 border-b border-[#2D2D2D] pb-4">
