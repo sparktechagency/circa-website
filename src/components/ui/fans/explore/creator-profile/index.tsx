@@ -6,9 +6,13 @@ import Shop from "./Shop";
 import About from "./about";
 import Membership from "./membership";
 import Link from "next/link";
+import { imageFormatter } from "../../../../../../helpers/imageFormatter";
 
 
-const CreatorProfile = () => {
+const CreatorProfile = ({creatorData}: any) => {
+
+  console.log("CreatorProfile", creatorData);
+  
   return (
     <div className="w-full ">
       {/* Main Header Card */}
@@ -20,8 +24,8 @@ const CreatorProfile = () => {
         {/* Avatar */}
         <div className="shrink-0 flex justify-center md:justify-start">
           <Image
-            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=361&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Creator"
+            src={imageFormatter(creatorData?.image)}
+            alt={creatorData?.name}
             width={180}
             height={180}
             className="rounded-full object-cover w-[120px] h-[120px] md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px]"
@@ -36,10 +40,10 @@ const CreatorProfile = () => {
             <div>
               <div className="flex flex-wrap items-center gap-3 mb-1.5">
                 <h1 className="text-[26px] md:text-3xl lg:text-[32px] font-medium text-white tracking-wide">
-                  Jhon G.
+                 {creatorData?.name}
                 </h1>
                 <span className="px-3.5 py-2 rounded-full bg-[#181624] text-[#8e95f5] text-[11px] md:text-xs font-medium">
-                  Digital Artist
+                  {creatorData?.nickname}
                 </span>
               </div>
 
@@ -63,8 +67,7 @@ const CreatorProfile = () => {
 
           {/* Bio Text */}
           <p className="text-gray-300 text-[15px] leading-relaxed max-w-[85%] mb-6 md:mb-5 font-light tracking-wide">
-            Living, laughing, loving," "Dreamer & doer," "Coffee, books, bliss,"
-            or "Chasing dreams and catching vibes.
+            {creatorData?.short_bio}
           </p>
 
           {/* Primary Buttons */}
@@ -72,9 +75,11 @@ const CreatorProfile = () => {
             <button className="px-6 py-4 rounded-xl bg-[#9EA4F9] text-white font-normal text-[15px] hover:bg-[#8e95f5] transition-colors w-full sm:w-auto">
               Join for free
             </button>
-            <button className="px-6 py-4 rounded-xl bg-[#232332] text-[#D8D8E0] font-normal text-[15px] hover:bg-[#2b2b3d] border border-[#2A2A3A] transition-colors w-full sm:w-auto">
+          <Link href={`/explore/creator-profile/membership?creatorId=${creatorData?._id}`}>
+           <button className="px-6 py-4 rounded-xl bg-[#232332] text-[#D8D8E0] font-normal text-[15px] hover:bg-[#2b2b3d] border border-[#2A2A3A] transition-colors w-full sm:w-auto">
               Membership option
             </button>
+          </Link> 
           </div>
         </div>
       </div> 

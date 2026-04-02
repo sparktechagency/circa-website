@@ -1,15 +1,41 @@
 "use client";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { myFetch } from "../../../../helpers/myFetch";
+import { toast } from "sonner";
 
 interface WowModalProps {
   children: React.ReactNode;
+  friend: any,
 }
 
-const WowModal = ({ children }: WowModalProps) => { 
+const WowModal = ({ children, friend }: WowModalProps) => { 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
 
+    const handleSendWow = async()=>{
+    try {
+      const response = await myFetch(`/gift/wow/${friend?._id}`, {method: "POST"});
+
+      if(response?.success){
+        toast?.success(response?.message);
+        setOpen(false)
+      }else{
+         if (response?.error && Array.isArray(response.error)) {
+          response.error.forEach((err: { message: string }) => {
+            toast.error(err.message, { id: "friends" });
+          });
+        } else {
+          toast.error(response?.message || "Something went wrong!", {
+            id: "friends",
+          });
+        }
+      }
+      
+    } catch (error) {
+      console.log("error", error);    
+    }
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -57,7 +83,7 @@ const WowModal = ({ children }: WowModalProps) => {
             </span>
           </div>
 
-          <button className="w-full mt-3 py-3.5 rounded-[12px] bg-[#9EA4F9] hover:bg-[#8D94F5] text-white font-medium text-[15.5px] transition-colors duration-200">
+          <button onClick={()=>handleSendWow()} className="w-full mt-3 py-3.5 rounded-[12px] bg-[#9EA4F9] hover:bg-[#8D94F5] text-white font-medium text-[15.5px] transition-colors duration-200">
             Send Wow
           </button>
         </div>
