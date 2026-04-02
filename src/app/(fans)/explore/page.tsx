@@ -1,9 +1,49 @@
 import { ExploreTabs } from "@/components/ui/fans/explore/ExploreTabs";
+import { myFetch } from "../../../../helpers/myFetch";
 
-export default function ExplorePage() {
+interface PageProps {
+  searchParams: Promise<{
+    tab?: string,
+    category?: string,
+  }>
+}
+
+export default async function ExplorePage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const response = await myFetch(params?.category ? `/user/creator?category=${params?.category}` : "/user/creator"
+  );
+
+
+  const { tab, ...rest } = params;
+  const queryString = new URLSearchParams(rest).toString();
+  let data;
+
+  switch (tab) {
+    case "browse":
+      data = await myFetch(queryString ? `/user/creator?${queryString}`
+        : `/user/creator`);
+      break;
+
+    case "my-creator":
+      data = await myFetch(queryString ? `/user/my-creator?${queryString}`
+        : `/user/my-creator`);
+      break;
+
+    case "friends":
+      data = await myFetch(queryString ? `/user/friend-flirty?${queryString}`
+        : `/user/friend-flirty`);
+      break;
+
+    case "popular":
+    default:
+      data = await myFetch(queryString ? `/user/creator?${queryString}`
+        : `/user/creator`);
+      break;
+  }
+
   return (
     <div>
-      <ExploreTabs defaultTab="browse" />
+      <ExploreTabs response={response} tab={params?.tab || "browse"} />
     </div>
   );
 }
