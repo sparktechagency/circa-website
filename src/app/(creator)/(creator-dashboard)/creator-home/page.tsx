@@ -18,12 +18,21 @@ const page = async () => {
       "Content-Type": "application/json",
     },
   })
+  const shopRes = await myFetch('/product', {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+
   // DATA RESPONSE
   const statistics = statisticsRes?.data || {};
   const posts = Array.isArray(postRes?.data) ? postRes?.data : [];
-  console.log(posts)
+  const shops = Array.isArray(shopRes?.data) ? shopRes?.data : [];
 
-  return <CreatorHome user={user} statistics={statistics} posts={posts} />
+  console.log(shopRes)
+  return <CreatorHome user={user} statistics={statistics} posts={posts} shops={shops} />
 
 }
 

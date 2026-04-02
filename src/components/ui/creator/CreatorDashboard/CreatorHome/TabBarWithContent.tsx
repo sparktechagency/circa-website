@@ -1,25 +1,11 @@
 'use client'
-import React, { useState } from "react";
+import { useState } from "react";
 import PostCard from "./PostCard";
 import ShopCard from "./ShopCard";
-import { Post } from "@/types";
+import { Post, Product } from "@/types";
 
 
-const posts = [
-  { id: 1, title: 'Just done my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200', locked: true },
-  { id: 2, title: 'Just done my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200', duration: '10:12' },
-  { id: 3, title: 'Just done my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=200', locked: true },
-  { id: 4, title: 'Just done my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1507290439931-a861b5a38200?w=200', isIllustration: true },
-  { id: 5, title: 'Just done my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200', duration: '10:12' },
-];
-const shops = [
-  { id: 1, title: 'Shops Shops my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200', locked: true },
-  { id: 2, title: 'Shops Shops my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200', duration: '10:12' },
-  { id: 3, title: 'Shops Shops my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=200', locked: true },
-  { id: 4, title: 'Shops Shops my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1507290439931-a861b5a38200?w=200', isIllustration: true },
-  { id: 5, title: 'Shops Shops my new paint', time: '2 hr ago', likes: '2.4k', comments: '1.4k', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200', duration: '10:12' },
-];
-const TabBarWithContent = ({ posts }: { posts: Post[] }) => {
+const TabBarWithContent = ({ posts, shops }: { posts: Post[], shops: Product[] }) => {
   const [activeTab, setActiveTab] = useState('Post');
 
   return (
@@ -52,8 +38,8 @@ const TabBarWithContent = ({ posts }: { posts: Post[] }) => {
             ))}
           </div>) : (
           <div className="space-y-2 pb-20">
-            {shops.map((shop) => (
-              <ShopCard key={shop.id} shop={shop} />
+            {shops?.map((shop) => (
+              <ShopCard key={shop._id} shop={shop} />
             ))}
           </div>
         )

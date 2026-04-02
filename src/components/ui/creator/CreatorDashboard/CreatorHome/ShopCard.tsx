@@ -1,56 +1,34 @@
-import { Heart, Lock, MessageCircle, MoreVertical } from "lucide-react";
+import { Product } from "@/types";
+import { getImageUrl } from "@/utils/getImageUrl";
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-export interface ShopItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string;
-  sold: string;
-}
-
-const ShopCard = ({ shop }:any) => {
-  return (
-     <Link href={`/shop/${shop.id}`}>
-        <div            
-            className="border-b border-[#2a2a35] py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group hover:bg-white/[0.02] px-2 rounded-lg transition-colors"
-        >
-            <div className="flex items-center gap-4 flex-1">
-                <div className={`relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden ${shop.isIllustration ? 'bg-yellow-100 p-2' : ''}`}>
-                    <img
-                        src={shop.image}
-                        alt={shop.title}
-                        className={`w-full h-full object-cover ${shop.isIllustration ? 'object-contain' : ''}`}
-                    />  
-                    {shop.duration && (
-                        <span className="absolute bottom-1 right-1 bg-black/70 text-[10px] px-1 rounded font-mono">
-                            {shop.duration}
-                        </span>
-                    )}
+const ShopCard = ({ shop }: { shop: Product }) => {
+    return (
+        <Link href={`/shop/${shop._id}`}>
+            <div className="py-4 flex flex-row items-center gap-6 group hover:bg-white/3 px-2 rounded-2xl transition-all duration-300">
+                {/* Product Image */}
+                <div className="relative w-[110px] h-[90px] shrink-0 rounded-[22px] overflow-hidden">
+                    <Image
+                        src={getImageUrl(shop?.image)}
+                        alt={shop.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
                 </div>
-                <div>
-                    <h3 className="text-md text-lg leading-tight group-hover:text-primary transition-colors">
-                        {shop.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm mt-0.5">{shop.price}</p>
-                    <div className="flex gap-4 mt-3">
-                        <span className="text-gray-400 text-xs flex items-center gap-1.5 cursor-pointer hover:text-pink-400 transition-colors">
-                            <Heart size={14} /> {shop.likes}
-                        </span>
-                        <span className="text-gray-400 text-xs flex items-center gap-1.5 cursor-pointer hover:text-purple-400 transition-colors">
-                            <MessageCircle size={14} /> {shop.comments}
-                        </span>
+
+                {/* Product Metrics */}
+                <div className="flex flex-col gap-0.5">
+                    <div className="text-[#FF8A71] text-2xl font-bold leading-tight tracking-tight">
+                        ${shop.price.toFixed(2)}
+                    </div>
+                    <div className="text-[#A5B4FC] text-lg font-medium opacity-90">
+                        {shop.total_sold} sold
                     </div>
                 </div>
             </div>
-
-            <button className="p-2 text-gray-600 hover:text-gray-400 transition-colors">
-                {shop.locked ? <Lock size={18} /> : <MoreVertical size={18} />}
-            </button>
-        </div>
         </Link>
-  );
+    );
 };
 
 export default ShopCard;

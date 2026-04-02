@@ -26,3 +26,18 @@ export interface Post {
     __v: number;
     timeAgo: string;
 }
+
+export interface Product {
+    _id: string;
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    status: "active" | "inactive";
+    product_style: "Physical" | "Digital";
+    author: string;
+    total_sold: number;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
