@@ -41,7 +41,7 @@ export function RightSidebarNav() {
           </button>
           </Link>
           <div className="w-10.50 h-10.50  rounded-full bg-gray-100 overflow-hidden border border-[#242424] cursor-pointer">
-            <Image src={imageFormatter(profileData?.image)} width={100} height={100} alt="avatar" className="w-full h-full" />
+            <Image src={imageFormatter(profileData?.image)} width={100} height={100} alt="avatar" className="w-10.5 h-10.5" />
           </div>
         </div>
       </div>
