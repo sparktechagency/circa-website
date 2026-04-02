@@ -2,8 +2,8 @@ import { getImageUrl } from "@/utils/getImageUrl";
 import { Coins } from "lucide-react";
 
 
-const Header = ({ user }: { user: any }) => {
-  console.log(user)
+const Header = ({ user, balance }: { user: any, balance: any }) => {
+
   return (
     <nav className=" flex justify-between items-center mb-10">
       <div className="flex items-center gap-4">
@@ -23,7 +23,7 @@ const Header = ({ user }: { user: any }) => {
 
       <div className="bg-yellow-900/20 border border-yellow-600/50 rounded-xl px-4 py-2 flex items-center gap-2">
         <Coins size={18} className="text-yellow-500" />
-        <span className="text-yellow-500 font-semibold text-sm">Balance : 120 Coins</span>
+        <span className="text-yellow-500 font-semibold text-sm">Balance : {balance} Coins</span>
       </div>
     </nav>
   );
