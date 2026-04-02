@@ -24,7 +24,7 @@ const Verify = ({
   const [sampleFile, setSampleFile] = useState<File | null>(null);
   const [samplePreviewUrl, setSamplePreviewUrl] = useState<string | null>(null);
   const [sampleFileType, setSampleFileType] = useState<
-    "image" | "video" | "audio" | null
+    "image" | "video" | "audio" | "pdf" | null
   >(null);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -424,7 +424,7 @@ const Verify = ({
               </span>
               <input
                 type="file"
-                accept="image/*,video/*,audio/*"
+                accept="image/*,video/*,audio/*,pdf/*"
                 style={{ display: "none" }}
                 onChange={handleSampleChange}
               />

@@ -29,9 +29,7 @@ const Vive = ({
   };
 
   const toggleSocialTag = (tag: string) => {
-    setSelectedSocialTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
+    setSelectedSocialTags((prev) => (prev.includes(tag) ? [] : [tag]));
   };
 
   const handleConfirm = () => {
@@ -41,6 +39,7 @@ const Vive = ({
     if (friendsMode && !selectedSocialTags?.length) {
       return toast.error("Select friends one category");
     }
+
     onVibeComplete({
       categories: selectedCategories,
       friends_and_flirty_mode: friendsMode,

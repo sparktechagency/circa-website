@@ -4,31 +4,31 @@ import Breadcrumbs from "../../Breadcrumbs";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { LuShoppingCart } from "react-icons/lu";
 import Image from "next/image";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 export default function Topbar({
   title = [],
+  user
 }: {
   title?: { label: string; href: string }[];
   onMenuClick?: () => void;
+  user: any;
 }) {
   return (
     <header className="sticky top-0 z-10 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#242424] h-20 flex items-center justify-between px-4 md:px-6">
       <div className="flex items-center gap-3 pl-5  lg:pl-0">
         <Breadcrumbs items={title} />
       </div>
-
-     
-
       <div className="flex items-center gap-2 md:gap-3">
-         <div className="flex items-center gap-4">
-        <div className="w-10.50 h-10.50  rounded-full bg-gray-100 overflow-hidden border border-[#242424] cursor-pointer">
-          <Image src="/user.png" width={100} height={100} alt="avatar" className="w-full h-full" />
+        <div className="flex items-center gap-4">
+          <div className="w-10.50 h-10.50  rounded-full bg-gray-100 overflow-hidden border border-[#242424] cursor-pointer">
+            <Image src={getImageUrl(user?.image)} width={100} height={100} alt="avatar" className="w-fit h-[50px] object-contain" />
+          </div>
+          <div>
+            <h1 className="text-md font-bold tracking-tight">{user?.name}</h1>
+            <p className="text-primary/70 text-sm">{user?.role}</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-md font-bold tracking-tight">Jhon G.</h1>
-          <p className="text-primary/70 text-sm">Digital Artist</p>
-        </div>
-      </div>
         <Link href="/notifications">  <button className="hidden sm:flex cursor-pointer relative w-11 h-11 rounded-full bg-[#15131A] border border-[#242424] justify-center items-center text-gray-400 hover:text-white transition-colors">
           <MdOutlineNotificationsNone size={25} />
           {/* Badge */}
@@ -46,7 +46,7 @@ export default function Topbar({
             </span>
           </button>
         </Link>
-       
+
       </div>
     </header>
   );

@@ -29,7 +29,7 @@ interface VerifyFiles {
 }
 
 export default function BecomeCreator({ categories }: { categories: any[] }) {
-  console.log(categories);
+  // console.log(categories);
   const [step, setStep] = useState<Step>("landing");
   const [vibeData, setVibeData] = useState<VibeData | null>(null);
 
@@ -64,8 +64,9 @@ export default function BecomeCreator({ categories }: { categories: any[] }) {
       formData.append("image", files.avatar);
     }
     if (files.sampleContent) {
-      formData.append("doc", files.sampleContent);
+      formData.append("document", files.sampleContent);
     }
+    console.log(formData);
 
     toast.promise(
       myFetch("/user/apply-for-creator", {
