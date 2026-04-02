@@ -75,9 +75,11 @@ const CreatorProfile = ({creatorData}: any) => {
             <button className="px-6 py-4 rounded-xl bg-[#9EA4F9] text-white font-normal text-[15px] hover:bg-[#8e95f5] transition-colors w-full sm:w-auto">
               Join for free
             </button>
-            <button className="px-6 py-4 rounded-xl bg-[#232332] text-[#D8D8E0] font-normal text-[15px] hover:bg-[#2b2b3d] border border-[#2A2A3A] transition-colors w-full sm:w-auto">
+          <Link href={`/explore/creator-profile/membership?creatorId=${creatorData?._id}`}>
+           <button className="px-6 py-4 rounded-xl bg-[#232332] text-[#D8D8E0] font-normal text-[15px] hover:bg-[#2b2b3d] border border-[#2A2A3A] transition-colors w-full sm:w-auto">
               Membership option
             </button>
+          </Link> 
           </div>
         </div>
       </div> 
