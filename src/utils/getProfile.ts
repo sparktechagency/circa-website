@@ -14,8 +14,7 @@ const getProfile = async (): Promise<any | null> => {
       "Content-Type": "application/json",
     },
   });
-  const { data } = await res?.json();
-  console.log(data)
+  const { data } = await res?.json();  
   return data;
 };
 

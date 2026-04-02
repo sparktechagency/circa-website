@@ -1,9 +1,20 @@
 import CreatorProfile from "@/components/ui/fans/explore/creator-profile";
+import { myFetch } from "../../../../../helpers/myFetch";
 
-const CreatorProfilePage = () => {
+
+interface pageProps {
+    searchParams: Promise<{
+        [key:string]: string| string[] | undefined
+    }>
+}
+const CreatorProfilePage = async({searchParams}: pageProps) => {
+    const params = await searchParams;    
+    const creatorData = await myFetch(`/user/creator/${params?.creatorId}`);
+
+    
     return (
         <div>
-            <CreatorProfile />
+            <CreatorProfile creatorData={creatorData?.data}/>
         </div>
     );
 };

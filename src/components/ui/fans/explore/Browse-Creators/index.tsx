@@ -17,7 +17,7 @@ const BrowseCreators = ({creatorData}: {creatorData: any}) => {
         {creatorData.map((creator:any) => (
           <div
             key={creator._id}
-            onClick={() => router.push("/explore/creator-profile")}
+            onClick={() => router.push(`/explore/creator-profile?creatorId=${creator._id}`)}
             className="group relative rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]"
           >
             <img

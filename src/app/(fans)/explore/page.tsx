@@ -1,5 +1,6 @@
 import { ExploreTabs } from "@/components/ui/fans/explore/ExploreTabs";
 import { myFetch } from "../../../../helpers/myFetch";
+import { toast } from "sonner";
 
 interface PageProps {
   searchParams: Promise<{
@@ -10,8 +11,7 @@ interface PageProps {
 
 export default async function ExplorePage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const response = await myFetch(params?.category ? `/user/creator?category=${params?.category}` : "/user/creator"
-  );
+  
 
 
   const { tab, ...rest } = params;
@@ -31,10 +31,9 @@ export default async function ExplorePage({ searchParams }: PageProps) {
 
     case "friends":
       data = await myFetch(queryString ? `/user/friend-flirty?${queryString}`
-        : `/user/friend-flirty`);
+        : `/user/friend-flirty`);        
       break;
-
-    case "popular":
+    
     default:
       data = await myFetch(queryString ? `/user/creator?${queryString}`
         : `/user/creator`);
@@ -43,7 +42,7 @@ export default async function ExplorePage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <ExploreTabs response={response} tab={params?.tab || "browse"} />
+      <ExploreTabs response={data} tab={params?.tab || "browse"} />
     </div>
   );
 }
