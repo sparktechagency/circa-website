@@ -7,8 +7,8 @@ import UploadProductDialog from "./UploadProductForm";
 
 
 // ─── Option Card ──────────────────────────────────────────────────────────────
- 
-function OptionCard({ icon: Icon, title, description, accent, onClick }:any) {
+
+function OptionCard({ icon: Icon, title, description, accent, onClick }: any) {
   return (
     <button
       onClick={onClick}
@@ -16,7 +16,7 @@ function OptionCard({ icon: Icon, title, description, accent, onClick }:any) {
     >
       {/* Glow */}
       <div className={`absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${accent === "indigo" ? "bg-indigo-500" : "bg-purple-500"}`} />
- 
+
       <div className="relative">
         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${accent === "indigo" ? "bg-indigo-500/15" : "bg-purple-500/15"}`}>
           <Icon size={22} className={accent === "indigo" ? "text-indigo-400" : "text-purple-400"} />
@@ -31,36 +31,36 @@ function OptionCard({ icon: Icon, title, description, accent, onClick }:any) {
   );
 }
 
-export default function CreatorHub() {
+export default function CreatorPost() {
   const [postOpen, setPostOpen] = useState(false);
   const [productOpen, setProductOpen] = useState(false);
- 
+
   return (
     <div>
-      <div className="flex flex-col md:flex-row items-center gap-5 px-6 py-12 w-full md:w-3/5 mx-auto">        
-          <OptionCard
-            icon={Sparkles}
-            title="Create Post"
-            description="Share content with your audience — photos, text, and exclusive posts for subscribers."
-            accent="purple"
-            onClick={() => setPostOpen(true)}
-          />
-          <OptionCard
-            icon={ShoppingBag}
-            title="Upload Product"
-            description="Sell physical or digital items — merchandise, files, PDFs, presets, and more."
-            accent="indigo"
-            onClick={() => setProductOpen(true)}
-          />        
+      <div className="flex flex-col md:flex-row items-center gap-5 px-6 py-12 w-full md:w-3/5 mx-auto">
+        <OptionCard
+          icon={Sparkles}
+          title="Create Post"
+          description="Share content with your audience — photos, text, and exclusive posts for subscribers."
+          accent="purple"
+          onClick={() => setPostOpen(true)}
+        />
+        <OptionCard
+          icon={ShoppingBag}
+          title="Upload Product"
+          description="Sell physical or digital items — merchandise, files, PDFs, presets, and more."
+          accent="indigo"
+          onClick={() => setProductOpen(true)}
+        />
       </div>
- 
-      <CreatePostModal isOpen={postOpen} onClose={() => setPostOpen(false)} onPublish={(formdata)=>console.log(formdata)}/>
+
+      <CreatePostModal isOpen={postOpen} onClose={() => setPostOpen(false)} onPublish={(formdata) => console.log(formdata)} />
       <UploadProductDialog isOpen={productOpen} onClose={() => setProductOpen(false)} />
- 
-    
+
+
     </div>
   );
 }
- 
+
 
 

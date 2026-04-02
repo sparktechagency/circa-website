@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import PostEditModal from './PostEditModal';
+import { useRouter } from 'next/navigation';
+import { Post } from '@/types';
 // import PostEditModal, { DEFAULT_POST_DATA } from './PostEditModal';
 
 const postData = {
@@ -140,7 +142,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 /* ─────────────────────────────────────────
    Main Component
 ───────────────────────────────────────── */
-const PostInfo = () => {
+const PostInfo = ({ post }: { post: Post }) => {
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -180,7 +183,7 @@ const PostInfo = () => {
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between mb-8">
         <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
-          <div className="p-2 rounded-full group-hover:bg-white/5">
+          <div onClick={() => router.back()} className="p-2 rounded-full group-hover:bg-white/5 cursor-pointer">
             <ArrowLeft size={20} />
           </div>
           <span className="font-semibold text-sm">Back</span>
@@ -279,7 +282,7 @@ const PostInfo = () => {
       {/* ── Edit modal (uncomment when PostEditModal is ready) ── */}
       <PostEditModal
         isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}        
+        onClose={() => setIsEditModalOpen(false)}
         onUpdate={(updated) => console.log(updated)}
       />
     </div>

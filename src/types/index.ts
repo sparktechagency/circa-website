@@ -41,3 +41,16 @@ export interface Product {
     updatedAt: string;
     __v: number;
 }
+
+export interface Comment {
+    _id: string;
+    user: User | User[];
+    post: string;
+    for: "post" | "reel" | "story";
+    comment_text: string;
+    like_count: number;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    reply: Comment[];
+}
