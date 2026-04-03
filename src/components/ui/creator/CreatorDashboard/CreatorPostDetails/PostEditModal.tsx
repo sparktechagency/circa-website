@@ -75,14 +75,14 @@ interface VisibilityOption {
 }
 
 export const ENGAGEMENT_OPTIONS: EngagementOption[] = [
-    { value: 'only_me',        label: 'Only me' },
-    { value: 'hide_likes',     label: 'Hide likes from Fans' },
-    { value: 'hide_comments',  label: 'Hide comments from Fans' },
+    { value: 'only_me', label: 'Only me' },
+    { value: 'hide_likes', label: 'Hide likes from Fans' },
+    { value: 'hide_comments', label: 'Hide comments from Fans' },
 ];
 
 export const VISIBILITY_OPTIONS: VisibilityOption[] = [
-    { value: 'everyone',     label: 'Everyone',          description: 'All fans',             icon: Globe },
-    { value: 'subscribers',  label: 'Subscribers Only',  description: 'Paying subscribers',   icon: Star },
+    { value: 'everyone', label: 'Everyone', description: 'All fans', icon: Globe },
+    { value: 'subscribers', label: 'Subscribers Only', description: 'Paying subscribers', icon: Star },
 ];
 
 // ─────────────────────────────────────────────
@@ -120,17 +120,15 @@ interface RadioOptionProps {
 const RadioOption: React.FC<RadioOptionProps> = ({ label, description, icon: Icon, isSelected, onClick }) => (
     <div
         onClick={onClick}
-        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-200 ${
-            isSelected
+        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-200 ${isSelected
                 ? 'bg-[#1a1a24] border-purple-500/60 shadow-[0_0_18px_rgba(168,85,247,0.12)]'
                 : 'bg-[#16161e] border-[#2a2a35] hover:border-[#3a3a48]'
-        }`}
+            }`}
     >
         <div className="flex items-center gap-3">
             {Icon && (
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                    isSelected ? 'bg-purple-500/20 text-purple-400' : 'bg-[#2a2a35] text-gray-400'
-                }`}>
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${isSelected ? 'bg-purple-500/20 text-purple-400' : 'bg-[#2a2a35] text-gray-400'
+                    }`}>
                     <Icon size={18} />
                 </div>
             )}
@@ -139,9 +137,8 @@ const RadioOption: React.FC<RadioOptionProps> = ({ label, description, icon: Ico
                 {description && <p className="text-[11px] text-gray-500 mt-0.5">{description}</p>}
             </div>
         </div>
-        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-            isSelected ? 'border-purple-500' : 'border-[#3a3a45]'
-        }`}>
+        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected ? 'border-purple-500' : 'border-[#3a3a45]'
+            }`}>
             {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />}
         </div>
     </div>
@@ -151,11 +148,11 @@ const RadioOption: React.FC<RadioOptionProps> = ({ label, description, icon: Ico
 // CONSOLE PANEL
 // ─────────────────────────────────────────────
 const LOG_COLORS: Record<LogType, string> = {
-    info:    'text-sky-400',
+    info: 'text-sky-400',
     success: 'text-emerald-400',
-    error:   'text-red-400',
-    diff:    'text-amber-300',
-    data:    'text-purple-300',
+    error: 'text-red-400',
+    diff: 'text-amber-300',
+    data: 'text-purple-300',
 };
 
 interface ConsoleLineProps {
@@ -207,11 +204,11 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
     initialData = DEFAULT_POST_DATA,
     onUpdate,
 }) => {
-    const [formData,    setFormData]    = useState<PostData>({ ...initialData });
-    const [savedData,   setSavedData]   = useState<PostData>({ ...initialData });
+    const [formData, setFormData] = useState<PostData>({ ...initialData });
+    const [savedData, setSavedData] = useState<PostData>({ ...initialData });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [showSuccess,  setShowSuccess]  = useState(false);
-    const [logs,         setLogs]         = useState<LogEntry[]>([]);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [logs, setLogs] = useState<LogEntry[]>([]);
     const consoleBottomRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll console to bottom on new log
@@ -266,11 +263,11 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
             });
 
         const payload: PostUpdatePayload = {
-            title:       formData.title,
+            title: formData.title,
             description: formData.description,
-            visibility:  formData.visibility,
-            engagement:  formData.engagement,
-            nsfw:        formData.nsfw,
+            visibility: formData.visibility,
+            engagement: formData.engagement,
+            nsfw: formData.nsfw,
         };
 
         addLog(`→ PATCH /api/posts/${formData.id}`, 'info');
@@ -298,11 +295,11 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
     // ─────────────────────────────────────────
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 overflow-y-auto">
-            <div className="bg-[#0d0d12] border border-[#2a2a35] w-full max-w-2xl rounded-[2rem] shadow-2xl flex flex-col max-h-[92vh]">
+            <div className="bg-[#0d0d12] border border-[#2a2a35] w-full max-w-2xl rounded-4xl shadow-2xl flex flex-col max-h-[92vh]">
                 <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
 
                     {/* ── Header ── */}
-                    <div className="px-6 py-5 border-b border-[#2a2a35] flex items-center justify-between sticky top-0 bg-[#0d0d12] z-10 rounded-t-[2rem] shrink-0">
+                    <div className="px-6 py-5 border-b border-[#2a2a35] flex items-center justify-between sticky top-0 bg-[#0d0d12] z-10 rounded-t-4xl shrink-0">
                         <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
                             Edit Post <Palette size={18} className="text-purple-500" />
                             {isDirty && (
@@ -324,7 +321,7 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
                     <div className="p-6 overflow-y-auto space-y-7 custom-scrollbar flex-1">
 
                         {/* Image Preview */}
-                        <div className="relative group rounded-2xl overflow-hidden border border-[#2a2a35] aspect-[21/9] bg-[#1a1a24] cursor-pointer">
+                        <div className="relative group rounded-2xl overflow-hidden border border-[#2a2a35] aspect-21/9 bg-[#1a1a24] cursor-pointer">
                             <img
                                 src={formData.imageUrl}
                                 className="w-full h-full object-cover opacity-60 group-hover:opacity-30 transition-opacity duration-300"
@@ -380,9 +377,8 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
                             <button
                                 type="button"
                                 onClick={() => setField('nsfw', !formData.nsfw)}
-                                className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${
-                                    formData.nsfw ? 'bg-purple-600 border-purple-600' : 'bg-transparent border-[#3a3a45]'
-                                }`}
+                                className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${formData.nsfw ? 'bg-purple-600 border-purple-600' : 'bg-transparent border-[#3a3a45]'
+                                    }`}
                             >
                                 {formData.nsfw && <X size={13} strokeWidth={4} className="text-white" />}
                             </button>
@@ -415,17 +411,16 @@ const PostEditModal: React.FC<PostEditModalProps> = ({
                     </div>
 
                     {/* ── Footer ── */}
-                    <div className="px-6 py-5 border-t border-[#2a2a35] bg-[#0d0d12] rounded-b-[2rem] shrink-0">
+                    <div className="px-6 py-5 border-t border-[#2a2a35] bg-[#0d0d12] rounded-b-4xl shrink-0">
                         <button
                             type="submit"
                             disabled={isSubmitting || !isDirty}
-                            className={`w-full relative font-bold py-3.5 rounded-full shadow-lg transition-all active:scale-[0.98] text-sm text-white ${
-                                showSuccess
+                            className={`w-full relative font-bold py-3.5 rounded-full shadow-lg transition-all active:scale-[0.98] text-sm text-white ${showSuccess
                                     ? 'bg-emerald-600 shadow-emerald-500/20'
                                     : isDirty
-                                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-purple-500/20'
-                                    : 'bg-[#1a1a24] border border-[#2a2a35] text-gray-500 cursor-not-allowed'
-                            }`}
+                                        ? 'bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-purple-500/20'
+                                        : 'bg-[#1a1a24] border border-[#2a2a35] text-gray-500 cursor-not-allowed'
+                                }`}
                         >
                             {isSubmitting ? (
                                 <span className="flex items-center justify-center gap-2">

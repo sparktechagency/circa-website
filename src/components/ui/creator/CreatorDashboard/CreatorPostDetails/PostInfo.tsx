@@ -213,7 +213,7 @@ const PostInfo = ({ post }: { post: Post }) => {
         </div>
 
         {/* ── Three-dot menu with dropdown ── */}
-        <div className="relative flex-shrink-0" ref={menuRef}>
+        <div className="relative shrink-0" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
             className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/10 transition-colors"
@@ -234,7 +234,7 @@ const PostInfo = ({ post }: { post: Post }) => {
         <img
           src={postData.mainImage}
           alt="Watercolor Piece"
-          className="w-full aspect-[4/5] sm:aspect-square object-cover"
+          className="w-full aspect-4/5 sm:aspect-square object-cover"
         />
       </div>
 
