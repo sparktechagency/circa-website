@@ -3,13 +3,11 @@ import { MessageSquare, ChevronRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Posts from "./Posts";
 import Shop from "./Shop";
-import About from "./about";
-import Membership from "./membership";
 import Link from "next/link";
 import { imageFormatter } from "../../../../../../helpers/imageFormatter";
 
 
-const CreatorProfile = ({creatorData}: any) => {
+const CreatorProfile = ({creatorData , creatorId}: any) => {
 
   console.log("CreatorProfile", creatorData);
   
@@ -92,19 +90,11 @@ const CreatorProfile = ({creatorData}: any) => {
         </TabsList>
 
         <TabsContent value="post">
-          <Posts />
+          <Posts creatorId={creatorId} />
         </TabsContent>
 
         <TabsContent value="shop">
-          <Shop />
-        </TabsContent>
-
-        <TabsContent value="membership">
-          <Membership />
-        </TabsContent>
-
-        <TabsContent value="about">
-          <About />
+          <Shop creatorId={creatorId} />
         </TabsContent>
       </Tabs>
 

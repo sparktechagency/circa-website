@@ -9,12 +9,12 @@ interface pageProps {
 }
 const CreatorProfilePage = async({searchParams}: pageProps) => {
     const params = await searchParams;    
-    const creatorData = await myFetch(`/user/creator/${params?.creatorId}`);
-
+    const creatorData = await myFetch(`/user/creator/${params?.creatorId}`); 
+    const creatorId = params?.creatorId;
     
     return (
         <div>
-            <CreatorProfile creatorData={creatorData?.data}/>
+            <CreatorProfile creatorData={creatorData?.data} creatorId={creatorId}/>
         </div>
     );
 };
