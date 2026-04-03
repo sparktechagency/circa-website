@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PostEditModal from './PostEditModal';
 import { useRouter } from 'next/navigation';
 import { Post } from '@/types';
+import { getImageUrl } from '@/utils/getImageUrl';
 // import PostEditModal, { DEFAULT_POST_DATA } from './PostEditModal';
 
 const postData = {
@@ -143,6 +144,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
    Main Component
 ───────────────────────────────────────── */
 const PostInfo = ({ post }: { post: Post }) => {
+  // console.log(post)
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -198,17 +200,17 @@ const PostInfo = ({ post }: { post: Post }) => {
         <div className="flex items-center gap-3">
           <div className="relative">
             <img
-              src={postData.avatar}
-              alt={postData.author}
+              src={getImageUrl(post?.user?.image)}
+              alt={post?.user?.name}
               className="w-12 h-12 rounded-full object-cover border-2 border-purple-500/20"
             />
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0d0d12]" />
           </div>
           <div>
             <h3 className="font-normal text-white leading-tight">
-              {postData.author}
+              {post?.user?.name}
             </h3>
-            <p className="text-gray-500 text-xs">{postData.time}</p>
+            <p className="text-gray-500 text-xs">{post?.timeAgo}</p>
           </div>
         </div>
 

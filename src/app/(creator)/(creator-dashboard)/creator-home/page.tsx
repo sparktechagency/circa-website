@@ -31,7 +31,7 @@ const page = async () => {
   const posts = Array.isArray(postRes?.data) ? postRes?.data : [];
   const shops = Array.isArray(shopRes?.data) ? shopRes?.data : [];
 
-  console.log(shopRes)
+  // console.log(shopRes)
   return <CreatorHome user={user} statistics={statistics} posts={posts} shops={shops} />
 
 }
