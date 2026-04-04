@@ -4,19 +4,19 @@ interface PageProps {
   searchParams: Promise<{ creatorId: string | string[] | undefined }>;
 }
 
-const MembershipPage = async ({searchParams}: PageProps) => {
-    const params = await searchParams;
-    const creatorId = params?.creatorId;
-    
-    const response = await myFetch(`/plan/user/${creatorId}`)
-    const membershipPlans = response?.data;
-    console.log("membershipPlans",  membershipPlans);
-    
-    return (
-        <div>
-           <Membership plans={membershipPlans}/>
-        </div>
-    );
+const MembershipPage = async ({ searchParams }: PageProps) => {
+  const params = await searchParams;
+  const creatorId = params?.creatorId;
+
+  const response = await myFetch(`/plan/user/${creatorId}`)
+  const membershipPlans = response?.data;
+  // console.log("membershipPlans",  membershipPlans);
+
+  return (
+    <div>
+      <Membership plans={membershipPlans} />
+    </div>
+  );
 };
 
 export default MembershipPage;

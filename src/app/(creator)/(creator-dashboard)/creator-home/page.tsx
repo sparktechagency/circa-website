@@ -17,6 +17,7 @@ const page = async () => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+    tags: ["posts"]
   })
   const shopRes = await myFetch('/product', {
     method: "GET",

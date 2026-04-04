@@ -25,6 +25,7 @@ export interface Post {
     updatedAt: string; // ISO 8601 date string
     __v: number;
     timeAgo: string;
+    isLike?: boolean
 }
 
 export interface Product {
@@ -53,4 +54,5 @@ export interface Comment {
     updatedAt: string;
     __v: number;
     reply: Comment[];
+    isLike?: boolean
 }

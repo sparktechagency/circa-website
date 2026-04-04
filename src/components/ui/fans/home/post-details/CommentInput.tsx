@@ -8,12 +8,12 @@ import { myFetch } from '../../../../../../helpers/myFetch'
 import { revalidate } from '../../../../../../helpers/revalidateHelper'
 import { imageFormatter } from '../../../../../../helpers/imageFormatter'
 
-const CommentInput = ({ postId, profileData }: { postId: string, profileData:any }) => {
-    console.log("postId", postId);
-    
+const CommentInput = ({ postId, profileData }: { postId: string, profileData: any }) => {
+    // console.log("postId", postId);
+
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
     const handleComment = async () => {
         if (!comment.trim()) return;
         setLoading(true);
@@ -22,7 +22,7 @@ const CommentInput = ({ postId, profileData }: { postId: string, profileData:any
                 method: 'POST',
                 body: { type: "post", comment_text: comment },
             });
-            
+
             if (response?.success) {
                 revalidate("comments");
                 setComment('');
@@ -81,7 +81,7 @@ const CommentInput = ({ postId, profileData }: { postId: string, profileData:any
                             : 'text-[#7971FF] hover:bg-[#7971FF]/10 cursor-pointer'
                         }`}
                 >
-                    <SendHorizonal className="w-4 h-4" /> 
+                    <SendHorizonal className="w-4 h-4" />
                 </button>
             </div>
         </div>

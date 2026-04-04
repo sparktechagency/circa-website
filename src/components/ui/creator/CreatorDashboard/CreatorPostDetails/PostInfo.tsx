@@ -6,32 +6,20 @@ import {
   Heart,
   MessageCircle,
   MoreHorizontal,
-  Palette,
   Share2,
-  Sparkles,
   Trash2,
 } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 import PostEditModal from './PostEditModal';
 import { useRouter } from 'next/navigation';
 import { Post } from '@/types';
 import { getImageUrl } from '@/utils/getImageUrl';
+import { myFetch } from '../../../../../../helpers/myFetch';
+import { toast } from 'sonner';
+import { revalidateTags } from '../../../../../../helpers/revalidateTags';
 // import PostEditModal, { DEFAULT_POST_DATA } from './PostEditModal';
 
-const postData = {
-  id: '1',
-  title: 'Just Finished a new watercolor piece!',
-  author: 'Michel Lin',
-  time: '2 hour ago',
-  avatar:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
-  mainImage: '/post-image.png',
-  likes: '1.2k',
-  commentsCount: 122,
-  description: `Painting my emotions today. This series means so much to me. 🎨✨ Full time-lapse coming tonight! 
-
-This painting captures a quiet yet powerful moment through rich colors and expressive brushstrokes. The composition draws the eye toward the central subject, while subtle textures and layered tones add depth and emotion.`,
-};
 
 /* ─────────────────────────────────────────
    Delete Confirmation Modal
@@ -144,7 +132,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
    Main Component
 ───────────────────────────────────────── */
 const PostInfo = ({ post }: { post: Post }) => {
-  // console.log(post)
+
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -176,9 +164,55 @@ const PostInfo = ({ post }: { post: Post }) => {
 
   const handleDeleteConfirm = async () => {
     setShowDeleteModal(false);
-    console.log('Deleting post id:', postData.id);
-    // await deletePost(postData.id);
+    console.log('Deleting post id:', post._id);
+    // await deletePost(post._id);
   };
+
+  const handleLike = async () => {
+    if (!post._id) return;
+
+    const res = await myFetch(`/post/like/${post._id}`, {
+      method: "POST",
+      body: {
+        type: "post"
+      }
+    })
+
+    if (res?.success) {
+      revalidateTags(["post"])
+    } else {
+      toast.error("Failed to like post");
+    }
+
+    console.log('Liking post id:', res);
+    // Hit API logic here
+  };
+
+  const scrollToComments = () => {
+    const element = document.getElementById('comments-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      // Focus the input if it exists
+      const input = element.querySelector('input');
+      if (input) input.focus();
+    }
+  };
+
+  /* Carousel setup */
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
     <div>
@@ -200,8 +234,8 @@ const PostInfo = ({ post }: { post: Post }) => {
         <div className="flex items-center gap-3">
           <div className="relative">
             <img
-              src={getImageUrl(post?.user?.image)}
-              alt={post?.user?.name}
+              src={getImageUrl(post?.user?.image) || '/default-avatar.png'}
+              alt={post?.user?.name || "User"}
               className="w-12 h-12 rounded-full object-cover border-2 border-purple-500/20"
             />
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0d0d12]" />
@@ -231,33 +265,67 @@ const PostInfo = ({ post }: { post: Post }) => {
         </div>
       </div>
 
-      {/* ── Main image ── */}
-      <div className="rounded-[2.5rem] overflow-hidden mb-6 border border-white/5 shadow-2xl bg-[#1a1a24]">
-        <img
-          src={postData.mainImage}
-          alt="Watercolor Piece"
-          className="w-full aspect-4/5 sm:aspect-square object-cover"
-        />
+      {/* ── Main image slider ── */}
+      <div className="relative group mb-6">
+        <div className="rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-[#1a1a24] embla" ref={emblaRef}>
+          <div className="embla__container flex">
+            {post?.images && post.images.length > 0 ? (
+              post.images.map((img, idx) => (
+                <div key={idx} className="embla__slide flex-[0_0_100%] min-w-0 relative">
+                  <img
+                    src={getImageUrl(img) || '/placeholder-image.png'}
+                    alt={`${post.title} - ${idx + 1}`}
+                    className="w-full aspect-4/5 sm:aspect-square object-cover h-[500px] sm:h-[600px]"
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="embla__slide flex-[0_0_100%] min-w-0 h-[400px] flex items-center justify-center text-gray-500">
+                No images available
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Carousel Indicators */}
+        {post?.images && post.images.length > 1 && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            {post?.images?.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => emblaApi?.scrollTo(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${idx === selectedIndex ? 'bg-purple-500 w-6' : 'bg-white/20'
+                  }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ── Action buttons ── */}
       <div className="flex gap-4 mb-8">
-        <button className="flex items-center gap-2.5 bg-[#1a1a24] border border-[#2a2a35] px-6 py-3 rounded-full hover:border-purple-500/50 transition-all group">
+        <button
+          onClick={handleLike}
+          className="cursor-pointer flex items-center gap-2.5 bg-[#1a1a24] border border-[#2a2a35] px-6 py-3 rounded-full hover:border-purple-500/50 transition-all group active:scale-95"
+        >
           <Heart
             size={18}
-            className="text-purple-400 group-hover:scale-110 transition-transform"
+            className={`text-purple-400 group-hover:scale-110 transition-transform ${post?.isLike ? "fill-purple-400" : ""}`}
           />
           <span className="text-purple-400 font-bold text-sm">
-            {postData.likes}
+            {post?.like_count || 0}
           </span>
         </button>
-        <button className="flex items-center gap-2.5 bg-[#1a1a24] border border-[#2a2a35] px-6 py-3 rounded-full hover:border-purple-500/50 transition-all group">
+        <button
+          onClick={scrollToComments}
+          className="cursor-pointer flex items-center gap-2.5 bg-[#1a1a24] border border-[#2a2a35] px-6 py-3 rounded-full hover:border-purple-500/50 transition-all group active:scale-95"
+        >
           <MessageCircle
             size={18}
             className="text-purple-400 group-hover:scale-110 transition-transform"
           />
           <span className="text-purple-400 font-bold text-sm">
-            {postData.commentsCount}
+            {post?.comment_count || 0}
           </span>
         </button>
       </div>
@@ -265,12 +333,10 @@ const PostInfo = ({ post }: { post: Post }) => {
       {/* ── Post content ── */}
       <article className="space-y-4 mb-10">
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight">
-          {postData.title}{' '}
-          <Palette className="inline-block ml-1" size={24} />{' '}
-          <Sparkles className="inline-block" size={24} />
+          {post?.title}{' '}
         </h1>
         <div className="text-gray-300 text-base sm:text-lg leading-relaxed whitespace-pre-line opacity-90">
-          {postData.description}
+          {post?.description}
         </div>
       </article>
 
@@ -285,7 +351,7 @@ const PostInfo = ({ post }: { post: Post }) => {
       <PostEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        onUpdate={(updated) => console.log(updated)}
+        post={post}
       />
     </div>
   );

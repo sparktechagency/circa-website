@@ -1,21 +1,27 @@
 import CreatorPostDetails from '@/components/ui/creator/CreatorDashboard/CreatorPostDetails'
-import React from 'react'
 import { myFetch } from '../../../../../../helpers/myFetch';
+import getProfile from '@/utils/getProfile';
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   // console.log(id)
-  const postRes = await myFetch(`/post/${id}`)
+  const user = await getProfile()
+  const postRes = await myFetch(`/post/${id}`, {
+    method: "GET",
+    tags: ["post"],
+    cache: "no-cache"
+  })
   const commentRes = await myFetch(`/post/comment/${id}`, {
     method: "GET",
-    tags: ["post-comments"]
+    tags: ["post-comments"],
+    cache: "no-cache"
   })
   const post = postRes?.data || {};
   const comments = commentRes?.data || [];
-  console.log(comments)
+  // console.log(comments)
   return (
     <div>
-      <CreatorPostDetails post={post} comments={comments} />
+      <CreatorPostDetails post={post} comments={comments} user={user} />
     </div>
   )
 }
