@@ -11,7 +11,7 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
   const userAvatar = getImageUrl(user?.image);
 
   const hanndleCommentLike = async (commentId: string) => {
-    console.log("comment", commentId);
+    // console.log("comment", commentId);
     const res = await myFetch(`/post/like/${commentId}`, {
       method: "POST",
       body: {

@@ -25,6 +25,7 @@ const page = async () => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+    tags: ["shops"]
   })
 
   // DATA RESPONSE

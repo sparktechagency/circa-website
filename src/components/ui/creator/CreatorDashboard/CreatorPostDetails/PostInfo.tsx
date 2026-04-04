@@ -165,6 +165,23 @@ const PostInfo = ({ post }: { post: Post }) => {
   const handleDeleteConfirm = async () => {
     setShowDeleteModal(false);
     console.log('Deleting post id:', post._id);
+    toast.promise(myFetch(`/post/${post._id}`, {
+      method: 'DELETE',
+    }), {
+      loading: 'Deleting post...',
+      success: (res) => {
+        console.log(res)
+        if (res?.success) {
+          revalidateTags(['post', 'posts']);
+          router.back();
+        }
+        return res?.message || 'Post deleted successfully';
+      },
+      error: (err) => {
+        console.log(err)
+        return err?.message || 'Failed to delete post';
+      },
+    })
     // await deletePost(post._id);
   };
 

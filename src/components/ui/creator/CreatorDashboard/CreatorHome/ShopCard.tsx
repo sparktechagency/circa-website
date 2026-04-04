@@ -12,13 +12,17 @@ const ShopCard = ({ shop }: { shop: Product }) => {
                     <Image
                         src={getImageUrl(shop?.image)}
                         alt={shop?.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        width={110}
+                        height={90}
+                        className="object-cover transition-transform duration-500 group-hover:scale-110 w-full h-auto"
                     />
                 </div>
 
                 {/* Product Metrics */}
                 <div className="flex flex-col gap-0.5">
+                    <div className="text-white text-base font-semibold leading-snug truncate">
+                        {shop?.name}
+                    </div>
                     <div className="text-[#FF8A71] text-2xl font-bold leading-tight tracking-tight">
                         ${shop?.price?.toFixed(2)}
                     </div>
