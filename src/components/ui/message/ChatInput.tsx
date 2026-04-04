@@ -1,0 +1,138 @@
+"use client";
+
+import { useState, useRef } from "react";
+import { Smile, Paperclip, Image as ImageIcon, Send, X, Plus } from "lucide-react";
+import { toast } from "sonner";
+import { myFetch } from "../../../../helpers/myFetch";
+
+export function ChatInput({ chatId, onMessageSent }: { chatId: string; onMessageSent?: () => void }) {
+  const [text, setText] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [isSending, setIsSending] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length + files.length > 5) {
+      toast.error("You can only send up to 5 images at once");
+      return;
+    }
+    setFiles(prev => [...prev, ...selectedFiles]);
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSend = async () => {
+    if (!text.trim() && files.length === 0) return;
+
+    setIsSending(true);
+    const formData = new FormData();
+    formData.append("text", text);
+    formData.append("chatId", chatId);
+    formData.append("type", "text");
+
+    files.forEach(file => {
+      formData.append("image", file);
+    });
+
+    try {
+      const res = await myFetch("/message", {
+        method: "POST",
+        body: formData,
+        tags: ["chat"]
+      });
+
+      if (res?.success) {
+        setText("");
+        setFiles([]);
+        if (onMessageSent) onMessageSent();
+      } else {
+        toast.error(res?.message || "Failed to send message");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return (
+    <div className="px-5 py-4 border-t border-white/8 bg-[#0d0e14] relative z-20">
+      {/* File Previews */}
+      {files.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-3 bg-[#1a1b26] p-3 rounded-2xl border border-white/8">
+          {files.map((file, i) => (
+            <div key={i} className="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 group">
+              <img src={URL.createObjectURL(file)} alt="" className="w-full h-full object-cover" />
+              <button
+                onClick={() => removeFile(i)}
+                className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="w-16 h-16 rounded-xl border border-dashed border-white/20 flex items-center justify-center text-white/20 hover:text-white/40 hover:border-white/40 transition-all"
+          >
+            <Plus size={20} />
+          </button>
+        </div>
+      )}
+
+      {/* Main Bar */}
+      <div className="flex items-center gap-3 bg-[#1a1b26] border border-white/10 rounded-2xl px-4 py-2.5 shadow-lg focus-within:border-indigo-500/40 transition-all group">
+        <button className="text-gray-500 hover:text-indigo-400 transition-colors shrink-0">
+          <Smile size={20} />
+        </button>
+
+        <input
+          type="text"
+          value={text}
+          onChange={e => setText(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && !e.shiftKey && handleSend()}
+          placeholder="Type a message..."
+          disabled={isSending}
+          className="flex-1 bg-transparent text-white text-[14px] placeholder-gray-600 focus:outline-none min-w-0 font-normal"
+        />
+
+        <div className="flex items-center gap-2 border-l border-white/10 pl-3">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+            multiple
+            accept="image/*"
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="text-gray-500 hover:text-indigo-400 transition-colors 
+            shrink-0"
+          >
+            <Paperclip size={18} />
+          </button>
+
+          <button
+            onClick={handleSend}
+            disabled={isSending || (!text.trim() && files.length === 0)}
+            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0
+              ${isSending || (!text.trim() && files.length === 0)
+                ? "bg-[#252636] text-gray-700 cursor-not-allowed"
+                : "bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/20 active:scale-95"}`}
+          >
+            {isSending ? (
+              <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+            ) : (
+              <Send size={15} />
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,8 +1,8 @@
-import CreatorMessage from "@/components/ui/creator/CreatorMessage"
+import MessagePage from "@/app/(message)/message/page"
 
 const page = () => {
   return (
-    <CreatorMessage />
+    <MessagePage />
   )
 }
 

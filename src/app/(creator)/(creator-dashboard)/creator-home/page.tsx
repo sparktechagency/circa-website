@@ -8,6 +8,7 @@ const page = async () => {
   const token = (await cookies()).get("accessToken")?.value;
   // API CALLS
   const user = await getProfile();
+  console.log(user)
   const statisticsRes = await myFetch('/wallet', {
     method: "GET"
   })
