@@ -1,5 +1,4 @@
 import PostDetailsLayout from "@/components/ui/fans/home/post-details/PostDetailsLayout";
-import { Post } from "@/types/post";
 import { myFetch } from "../../../../../helpers/myFetch";
 
 interface PageProps {

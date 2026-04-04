@@ -3,10 +3,12 @@ import { creatorsData } from "@/constants/explore-data";
 import { useRouter } from "next/navigation";
 import { imageFormatter } from "../../../../../../helpers/imageFormatter";
 import CreatorFilter from "./CreatorFilter";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 
 const BrowseCreators = ({creatorData}: {creatorData: any}) => {  
-  const router = useRouter()
+  const router = useRouter() 
+  console.log("creatorData in BrowseCreators:", creatorData); // Debug log to check data structure
   return (
     <div className="w-full">
 
@@ -14,14 +16,14 @@ const BrowseCreators = ({creatorData}: {creatorData: any}) => {
 
       {/* Creator Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-10">
-        {creatorData.map((creator:any) => (
+        {creatorData?.map((creator:any) => (
           <div
             key={creator._id}
             onClick={() => router.push(`/explore/creator-profile?creatorId=${creator._id}`)}
             className="group relative rounded-2xl overflow-hidden border border-[#2A2A30] cursor-pointer bg-[#1c1c20]"
           >
             <img
-              src={imageFormatter(creator._id)}
+              src={getImageUrl(creator?.image)}
               alt={creator?.name}
               className="object-cover w-full h-[300px] group-hover:scale-105 transition-transform duration-500"
             />

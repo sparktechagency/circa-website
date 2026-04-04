@@ -9,7 +9,7 @@ const CreatorFilter = () => {
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const router = useRouter();
-  const pathname = usePathname(); // ✅ Fix 1: Call as a function
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -52,12 +52,12 @@ const CreatorFilter = () => {
         >
           All
         </button>
-        {categories.map((category: any, index: number) => (
+        {categories?.map((category: any, index: number) => (
           <button
             key={index}
             onClick={() => handleSelectCategory(category)}
             className={`px-6 py-2 rounded-full text-[14px] font-medium transition-colors whitespace-nowrap outline-none ${
-              activeTab === category?._id // ✅ Fix 2: Now correctly compares _id strings
+              activeTab === category?._id
                 ? "bg-[#9EA4F9] text-white"
                 : "bg-[#1A1A1F] text-[#A1A1AA] border border-[#2A2A30] hover:bg-[#2A2A30] hover:text-white"
             }`}
@@ -74,8 +74,8 @@ const CreatorFilter = () => {
           <input
             type="text"
             placeholder="Search"
-            value={search} // ✅ Fix 4: Controlled input
-            onChange={(e) => setSearch(e.target.value)} // ✅ Fix 4: Wired up handler
+            value={search} 
+            onChange={(e) => setSearch(e.target.value)} 
             className="bg-[#15131A] border border-[#242424] rounded-full py-1 pl-10 pr-4 text-sm w-full lg:max-w-sm text-white focus:outline-none focus:border-primary transition-colors h-12 placeholder:text-[#AFAFAF]"
           />
         </label>

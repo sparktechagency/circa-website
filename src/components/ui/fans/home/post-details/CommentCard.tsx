@@ -31,7 +31,7 @@ const CommentCard = ({ comment, profileData }: CommentCardProps) => {
         <div className="flex gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 relative">
                 <Image
-                    src={imageFormatter(author.image)}
+                    src={imageFormatter(author?.image)}
                     alt={author?.name || 'User'}
                     fill
                     className="object-cover"

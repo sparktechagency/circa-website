@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import { Tabs, TabsList, TabsTrigger } from '../../tabs'
 import { useRouter, useSearchParams } from 'next/navigation';
 

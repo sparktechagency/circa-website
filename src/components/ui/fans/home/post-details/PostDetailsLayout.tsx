@@ -1,8 +1,7 @@
 import CreditsModal from "@/components/modals/fans/CreditsModal";
 import SendGiftModal from "@/components/modals/fans/SendGiftModal";
-import { Heart, Lock, MessageCircle } from "lucide-react";
+import { Lock } from "lucide-react";
 import Image from "next/image";
-import { imgUrl } from "../../../../../../helpers/imgUrl";
 import PostComments from "./PostComments";
 import LikeCommentButton from "./LikeCommentButton";
 import { imageFormatter } from "../../../../../../helpers/imageFormatter";
@@ -12,11 +11,10 @@ interface PostDetailsLayoutProps {
 }
 
 export default function PostDetailsLayout({ post }: PostDetailsLayoutProps) {
-  const isPremium = post?.isPrimium; // ✅ matches API typo "isPrimium"
-
+  const isPremium = post?.isPrimium; 
   const authorImage = post?.user?.image;
   const authorName = post?.user?.name;
-  const postImage = post?.images?.[0]; // ✅ images is an array
+  const postImage = post?.images?.[0]; 
 
   return (
     <div className="w-full mx-auto bg-[#0a0a0a] min-h-screen text-white pb-10">
